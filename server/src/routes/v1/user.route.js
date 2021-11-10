@@ -1,8 +1,18 @@
 const router = require('express').Router()
-const { register, login } = require('../../controllers/user.controller')
-// const { register } = require('../../controllers/user.controller')
+const {
+	update,
+	detele,
+	get,
+	getAll,
+} = require('../../controllers/user.controller')
+const { verifyToken, verifyTokenAdmin } = require('../../middlewares/auth')
 
-router.post('/register', register)
-router.post('/login', login)
+router
+	.route('/users/:id')
+	.get(verifyToken, get)
+	.put(verifyToken, update)
+	.delete(verifyToken, verifyTokenAdmin, detele)
+
+router.route('/users').get(verifyToken, verifyTokenAdmin, getAll)
 
 module.exports = router

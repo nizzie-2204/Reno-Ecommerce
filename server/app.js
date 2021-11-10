@@ -3,10 +3,11 @@ const morgan = require('morgan')
 const helmet = require('helmet')
 const cors = require('cors')
 const fileUpload = require('express-fileupload')
-const { connectDB } = require('./src/configs/mongodb')
-const { errorHandler } = require('./src/middlewares/errorHandler')
 require('dotenv').config()
 
+const { errorHandler } = require('./src/middlewares/errorHandler')
+const { connectDB } = require('./src/configs/mongodb')
+const authRouter = require('./src/routes/v1/auth.route')
 const userRouter = require('./src/routes/v1/user.route')
 
 const app = express()
@@ -25,7 +26,7 @@ app.use(
 )
 
 // Routes
-app.use('/api/v1', userRouter)
+app.use('/api/v1', authRouter, userRouter)
 
 // Unhandled route
 app.all('*', (req, res, next) => {
