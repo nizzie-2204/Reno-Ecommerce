@@ -1,6 +1,6 @@
 const User = require('../models/user.model')
-var AES = require('crypto-js/aes')
-var CryptoJS = require('crypto-js')
+const AES = require('crypto-js/aes')
+const CryptoJS = require('crypto-js')
 const jwt = require('jsonwebtoken')
 
 const createToken = ({ id, isAdmin }) => {
@@ -41,6 +41,7 @@ exports.login = async (req, res, next) => {
 		}
 
 		const user = await User.findOne({ email: req.body.email })
+		console.log(req.body)
 		const { password, ...info } = user._doc
 
 		if (!user) {
