@@ -6,6 +6,16 @@ const createToken = ({ id, isAdmin }) => {
 	return jwt.sign({ id, isAdmin }, process.env.JWT_SECRET, { expiresIn: '7d' })
 }
 
+exports.register = async (req, res, next) => {
+	try {
+		const user = await User.create(req.body)
+
+		res.json({ message: 'Register successfully', user: user })
+	} catch (error) {
+		next(error)
+	}
+}
+
 const UserController = {
 	register: async (req, res, next) => {
 		try {
@@ -15,13 +25,9 @@ const UserController = {
 			// 	process.env.PASSWORD_SECRET
 			// ).toString()
 
-			const newUser = await User(req.body)
-			await newUser.save((error, user) => {
-				if (error) {
-					return next(error)
-				}
-				res.json({ message: 'Register successfully' })
-			})
+			const user = await User.create(req.body)
+
+			res.json({ message: 'Register successfully', user: user })
 			// const token = createToken({ id: newUser._id, isAdmin: newUser.isAdmin })
 		} catch (error) {
 			next(error)
@@ -29,4 +35,4 @@ const UserController = {
 	},
 }
 
-module.exports = UserController
+// module.exports = UserController

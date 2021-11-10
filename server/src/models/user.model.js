@@ -5,20 +5,20 @@ const userSchema = Schema(
 	{
 		username: {
 			type: String,
-			require: [true, 'Username is required'],
+			required: true,
 			trim: true,
 			minLength: 1,
 		},
 		password: {
 			type: String,
-			require: true,
+			required: true,
 			trim: true,
-			minLength: [8, 'Password is at least 8 characters'],
+			minLength: 8,
 		},
-		email: { type: String, require: true, unique: true, trim: true },
+		email: { type: String, required: true, unique: true, trim: true },
 		isAdmin: { type: Boolean, default: false },
-		phone: { type: Number, require: true, trim: true },
-		address: { type: String, require: true, trim: true },
+		phone: { type: Number, required: true, trim: true },
+		address: { type: String, required: true, trim: true },
 	},
 	{ timestamps: true }
 )

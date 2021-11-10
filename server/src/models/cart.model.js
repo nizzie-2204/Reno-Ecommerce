@@ -3,7 +3,7 @@ const { Schema } = mongoose
 
 const cartSchema = Schema(
 	{
-		userId: { type: Schema.Types.ObjectId, ref: 'User' },
+		userId: { type: Schema.Types.ObjectId, ref: 'User', require: true },
 		products: [
 			{
 				productId: { type: Schema.Types.ObjectId, ref: 'Product' },

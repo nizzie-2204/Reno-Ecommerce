@@ -3,7 +3,7 @@ const { Schema } = mongoose
 
 const categorySchema = Schema(
 	{
-		name: { typeo: String, require: true, trim: true },
+		name: { type: String, required: true, trim: true },
 	},
 	{ timestamps: true }
 )

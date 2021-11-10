@@ -27,15 +27,15 @@ app.use(
 // Routes
 app.use('/api/v1', userRouter)
 
-// Error handle
-app.use(errorHandler)
-
 // Unhandled route
 app.all('*', (req, res, next) => {
 	const err = new Error('The route can not be found')
 	err.statusCode = 404
 	next(err)
 })
+
+// Error handle
+app.use(errorHandler)
 
 const port = process.env.PORT || 5000
 app.listen(port, () => {
