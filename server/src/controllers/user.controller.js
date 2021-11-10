@@ -1,38 +1,65 @@
 const User = require('../models/user.model')
 var AES = require('crypto-js/aes')
+var CryptoJS = require('crypto-js')
 const jwt = require('jsonwebtoken')
 
 const createToken = ({ id, isAdmin }) => {
 	return jwt.sign({ id, isAdmin }, process.env.JWT_SECRET, { expiresIn: '7d' })
 }
 
+const checkPassword = (dbPassword, password) => {
+	const decodedPassword = AES.decrypt(dbPassword, process.env.PASSWORD_SECRET)
+	const originalPassword = decodedPassword.toString(CryptoJS.enc.Utf8)
+
+	if (password === originalPassword) return true
+	else return false
+}
+
 exports.register = async (req, res, next) => {
 	try {
-		const user = await User.create(req.body)
+		const hashedPassword = AES.encrypt(
+			req.body.password,
+			process.env.PASSWORD_SECRET
+		).toString()
 
-		res.json({ message: 'Register successfully', user: user })
+		const user = { ...req.body, password: hashedPassword }
+
+		await User.create(user)
+
+		res.json({ message: 'Register successfully' })
 	} catch (error) {
 		next(error)
 	}
 }
 
-const UserController = {
-	register: async (req, res, next) => {
-		try {
-			// Encrypt password
-			// const hashedPassword = AES.encrypt(
-			// 	req.body.password,
-			// 	process.env.PASSWORD_SECRET
-			// ).toString()
-
-			const user = await User.create(req.body)
-
-			res.json({ message: 'Register successfully', user: user })
-			// const token = createToken({ id: newUser._id, isAdmin: newUser.isAdmin })
-		} catch (error) {
-			next(error)
+exports.login = async (req, res, next) => {
+	try {
+		const { email, password } = req.body
+		if (!email || !password) {
+			const error = new Error('Please provide email or password')
+			error.statusCode = 400
+			return next(error)
 		}
-	},
-}
 
-// module.exports = UserController
+		const user = await User.findOne({ email })
+		if (!user) {
+			const error = new Error('Email is not correct')
+			error.statusCode = 400
+			return next(error)
+		}
+
+		const newUser = await User.findOne({ email }).select('-password')
+		if (checkPassword(user.password, req.body.password)) {
+			const token = createToken({ id: user._id, isAdmin: user.isAdmin })
+			res
+				.status(200)
+				.json({ message: 'Login successfully', token, user: newUser })
+		} else {
+			const error = new Error('Password is not correct')
+			error.statusCode = 400
+			return next(error)
+		}
+	} catch (error) {
+		next(error)
+	}
+}
