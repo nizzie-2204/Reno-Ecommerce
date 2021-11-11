@@ -5,11 +5,11 @@ const productSchema = Schema(
 	{
 		name: { type: String, required: true, unique: true, trim: true },
 		desc: { type: String, required: true, unique: true, trim: true },
-		categories: { type: Array },
-		size: { type: String },
-		color: { type: String },
+		category: { type: Schema.Types.ObjectId, ref: 'Category' },
+		size: [{ type: Schema.Types.ObjectId, ref: 'Size' }],
 		price: { type: Number, required: true },
 		images: { type: Array },
+		quantity: { type: Number, default: 0 },
 	},
 	{ timestamps: true }
 )

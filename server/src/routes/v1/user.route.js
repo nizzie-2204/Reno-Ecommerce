@@ -4,8 +4,8 @@ const {
 	detele,
 	get,
 	getAll,
+	forgotPassword,
 	resetPassword,
-	resetNewPassword,
 } = require('../../controllers/user.controller')
 const { verifyToken, verifyTokenAdmin } = require('../../middlewares/auth')
 
@@ -16,6 +16,7 @@ router
 	.delete(verifyToken, verifyTokenAdmin, detele)
 
 router.route('/users').get(verifyToken, verifyTokenAdmin, getAll)
-router.route('/users/password-reset').post(resetPassword)
-router.route('/users/password-reset/:id/:token').post(resetNewPassword)
+router.route('/users/forgot-password').post(forgotPassword)
+router.route('/users/password-reset/:id/:token').post(resetPassword)
+
 module.exports = router

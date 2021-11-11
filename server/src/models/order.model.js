@@ -4,13 +4,14 @@ const { Schema } = mongoose
 const orderSchema = Schema(
 	{
 		userId: { type: Schema.Types.ObjectId, ref: 'User' },
-		products: [
+		orderItems: [
 			{
 				productId: { type: Schema.Types.ObjectId, ref: 'Product' },
 				quantity: { type: Number, default: 1 },
 			},
 		],
-		total: { type: Number },
+		shippingPrice: { type: Number },
+		totalPrice: { type: Number },
 		status: { type: String, default: 'pending' },
 		address: { type: String },
 	},

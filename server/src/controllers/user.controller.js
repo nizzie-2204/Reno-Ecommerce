@@ -89,7 +89,7 @@ exports.get = async (req, res, next) => {
 	}
 }
 
-exports.resetPassword = async (req, res, next) => {
+exports.forgotPassword = async (req, res, next) => {
 	try {
 		if (!req.body.email) {
 			const error = new Error('Please provide email')
@@ -121,7 +121,7 @@ exports.resetPassword = async (req, res, next) => {
 	}
 }
 
-exports.resetNewPassword = async (req, res, next) => {
+exports.resetPassword = async (req, res, next) => {
 	try {
 		const user = await User.findById(req.params.id)
 
