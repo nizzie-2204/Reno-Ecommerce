@@ -13,7 +13,7 @@ const { verifyToken, verifyTokenAdmin } = require('../../middlewares/auth')
 router
 	.route('/categories')
 	.post(verifyToken, verifyTokenAdmin, addCategory)
-	.get(verifyToken, verifyTokenAdmin, getAllCategory)
+	.get(verifyToken, getAllCategory)
 
 router
 	.route('/categories/:id')

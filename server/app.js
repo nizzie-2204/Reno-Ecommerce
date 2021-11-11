@@ -10,6 +10,7 @@ const { connectDB } = require('./src/configs/mongodb')
 const authRouter = require('./src/routes/v1/auth.route')
 const userRouter = require('./src/routes/v1/user.route')
 const categoryRouter = require('./src/routes/v1/category.route')
+const sizeRouter = require('./src/routes/v1/size.route')
 
 const app = express()
 connectDB()
@@ -27,7 +28,7 @@ app.use(
 )
 
 // Routes
-app.use('/api/v1', authRouter, userRouter, categoryRouter)
+app.use('/api/v1', authRouter, userRouter, categoryRouter, sizeRouter)
 
 // Unhandled route
 app.all('*', (req, res, next) => {
