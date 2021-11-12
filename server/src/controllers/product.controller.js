@@ -30,17 +30,30 @@ exports.getAllProduct = async (req, res, next) => {
 		const orderBy = req.query.order === 'desc' ? -1 : 1
 		const sortBy = req.query.sortBy || 'createdAt'
 
-		const products = await Product.find({
-			...keyword,
-			category: category,
-		})
-			.skip(skip)
-			.limit(pageSize)
-			.sort([[sortBy, orderBy]])
-			.populate('category')
-			.populate('size')
+		if (category) {
+			const products = await Product.find({
+				...keyword,
+				category: category,
+			})
+				.skip(skip)
+				.limit(pageSize)
+				.sort([[sortBy, orderBy]])
+				.populate('category')
+				.populate('size')
 
-		res.status(200).json({ count: products.length, page, pages, products })
+			res.status(200).json({ count: products.length, page, pages, products })
+		} else {
+			const products = await Product.find({
+				...keyword,
+			})
+				.skip(skip)
+				.limit(pageSize)
+				.sort([[sortBy, orderBy]])
+				.populate('category')
+				.populate('size')
+
+			res.status(200).json({ count: products.length, page, pages, products })
+		}
 	} catch (error) {
 		next(error)
 	}
