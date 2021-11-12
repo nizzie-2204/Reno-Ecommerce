@@ -41,7 +41,6 @@ exports.login = async (req, res, next) => {
 		}
 
 		const user = await User.findOne({ email: req.body.email })
-		console.log(req.body)
 		const { password, ...info } = user._doc
 
 		if (!user) {

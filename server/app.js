@@ -12,6 +12,7 @@ const userRouter = require('./src/routes/v1/user.route')
 const categoryRouter = require('./src/routes/v1/category.route')
 const sizeRouter = require('./src/routes/v1/size.route')
 const productRouter = require('./src/routes/v1/product.route')
+const orderRouter = require('./src/routes/v1/order.route')
 
 const app = express()
 connectDB()
@@ -35,7 +36,8 @@ app.use(
 	userRouter,
 	categoryRouter,
 	sizeRouter,
-	productRouter
+	productRouter,
+	orderRouter
 )
 
 // Unhandled route
