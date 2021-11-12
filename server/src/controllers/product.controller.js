@@ -3,33 +3,44 @@ const Product = require('../models/product.model')
 exports.getAllProduct = async (req, res, next) => {
 	try {
 		// Pagination
-		if (req.query.page) {
-			const page = parseInt(req.query.page) || 1
-			const pageSize = parseInt(req.query.limit) || 12
-			const skip = (page - 1) * pageSize
-			const total = await Product.countDocuments()
-			const pages = Math.ceil(total / pageSize)
+		const page = parseInt(req.query.page) || 1
+		const pageSize = parseInt(req.query.limit) || 50
+		const skip = (page - 1) * pageSize
+		const total = await Product.countDocuments()
+		const pages = Math.ceil(total / pageSize)
 
-			if (page > pages) {
-				const error = new Error('No page found')
-				error.statusCode = 400
-				return next(error)
-			}
-
-			const products = await Product.find()
-				.skip(skip)
-				.limit(pageSize)
-				.populate('category')
-				.populate('size')
-
-			res.status(200).json({ count: products.length, page, pages, products })
-		} else {
-			const products = await Product.find()
-				.populate('category')
-				.populate('size')
-
-			res.status(200).json({ products })
+		if (page > pages) {
+			const error = new Error('No page found')
+			error.statusCode = 400
+			return next(error)
 		}
+
+		// Search name and category by keyword
+		const keyword = req.query.search
+			? {
+					name: {
+						$regex: req.query.search,
+						$options: 'i',
+					},
+			  }
+			: {}
+		const category = req.query.category
+
+		// Sort and order
+		const orderBy = req.query.order === 'desc' ? -1 : 1
+		const sortBy = req.query.sortBy || 'createdAt'
+
+		const products = await Product.find({
+			...keyword,
+			category: category,
+		})
+			.skip(skip)
+			.limit(pageSize)
+			.sort([[sortBy, orderBy]])
+			.populate('category')
+			.populate('size')
+
+		res.status(200).json({ count: products.length, page, pages, products })
 	} catch (error) {
 		next(error)
 	}
