@@ -10,9 +10,15 @@ const useStyles = makeStyles((theme) => ({
 	root: {
 		width: '100%',
 		maxWidth: 345,
+		position: 'relative',
 
 		'&:hover $media': {
 			transform: 'scale(1.2)',
+		},
+
+		'&:hover $action': {
+			opacity: 1,
+			top: '55%',
 		},
 	},
 	media: {
@@ -45,6 +51,27 @@ const useStyles = makeStyles((theme) => ({
 		alignItems: 'center',
 		justifyContent: 'center',
 		padding: 20,
+	},
+	action: {
+		position: 'absolute',
+		content: "''",
+		top: '80%',
+		left: '50%',
+		transform: 'translate(-50%, -50%)',
+		padding: '11px 16px',
+		fontSize: 15,
+		fontWeight: 600,
+		backgroundColor: theme.palette.background.paper,
+		color: '#303253',
+		borderRadius: 30,
+		opacity: 0,
+		transition: '0.5s ease-out',
+		boxShadow: '0 5px 5px -1px rgb(0 0 0 / 20%)',
+		textTransform: 'capitalize',
+		'&:hover': {
+			backgroundColor: theme.palette.primary.main,
+			color: theme.palette.text.secondary,
+		},
 	},
 }))
 

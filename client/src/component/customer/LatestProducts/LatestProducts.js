@@ -1,20 +1,18 @@
-import React from 'react'
-import { useStyles } from './styles'
 import {
 	Box,
 	Button,
 	Card,
 	CardActionArea,
-	CardActions,
 	CardContent,
 	CardMedia,
 	Grid,
 	IconButton,
-	Paper,
 	Typography,
 } from '@material-ui/core'
-import { BiCartAlt, BiMenu, BiSearchAlt2 } from 'react-icons/bi'
 import Rating from '@material-ui/lab/Rating'
+import React from 'react'
+import { BiCartAlt } from 'react-icons/bi'
+import { useStyles } from './styles'
 
 const LatestProducts = () => {
 	const classes = useStyles()
@@ -22,7 +20,6 @@ const LatestProducts = () => {
 		<Grid
 			container
 			sm
-			style={{ marginBottom: 500 }}
 			direction="column"
 			alignItems="center"
 			className={classes.lastestProducts}
@@ -57,9 +54,15 @@ const LatestProducts = () => {
 									<Typography variant="body2" component="p">
 										$599
 									</Typography>
-									<Rating size="small" name="size-medium" defaultValue={2} />
+									<Rating
+										readOnly
+										size="small"
+										name="size-medium"
+										defaultValue={2}
+									/>
 								</Box>
 							</CardContent>
+							<Button className={classes.action}>View detail</Button>
 						</CardActionArea>
 					</Card>
 				</Grid>
@@ -89,9 +92,15 @@ const LatestProducts = () => {
 									<Typography variant="body2" component="p">
 										$599
 									</Typography>
-									<Rating size="small" name="size-medium" defaultValue={2} />
+									<Rating
+										readOnly
+										size="small"
+										name="size-medium"
+										defaultValue={2}
+									/>
 								</Box>
 							</CardContent>
+							<Button className={classes.action}>View detail</Button>
 						</CardActionArea>
 					</Card>
 				</Grid>
@@ -121,9 +130,15 @@ const LatestProducts = () => {
 									<Typography variant="body2" component="p">
 										$599
 									</Typography>
-									<Rating size="small" name="size-medium" defaultValue={2} />
+									<Rating
+										readOnly
+										size="small"
+										name="size-medium"
+										defaultValue={2}
+									/>
 								</Box>
 							</CardContent>
+							<Button className={classes.action}>View detail</Button>
 						</CardActionArea>
 					</Card>
 				</Grid>
@@ -153,9 +168,15 @@ const LatestProducts = () => {
 									<Typography variant="body2" component="p">
 										$599
 									</Typography>
-									<Rating size="small" name="size-medium" defaultValue={2} />
+									<Rating
+										readOnly
+										size="small"
+										name="size-medium"
+										defaultValue={2}
+									/>
 								</Box>
 							</CardContent>
+							<Button className={classes.action}>View detail</Button>
 						</CardActionArea>
 					</Card>
 				</Grid>

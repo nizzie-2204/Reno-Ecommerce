@@ -5,6 +5,7 @@ import Header from './component/customer/Header/Header'
 import Banner from './component/customer/Banner/Banner'
 import Category from './component/customer/Category/Category'
 import LatestProducts from './component/customer/LatestProducts/LatestProducts'
+import Footer from './component/customer/Footer/Footer'
 
 function App() {
 	return (
@@ -14,6 +15,7 @@ function App() {
 				<Banner />
 				<Category />
 				<LatestProducts />
+				<Footer />
 			</div>
 		</ThemeProvider>
 	)
