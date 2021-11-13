@@ -3,6 +3,7 @@ import CustomerLayout from '../../../component/customer/CustomerLayout/CustomerL
 import Banner from '../../../component/customer/Banner/Banner'
 import Category from '../../../component/customer/Category/Category'
 import LastestProducts from '../../../component/customer/LatestProducts/LatestProducts'
+import { Helmet } from 'react-helmet-async'
 
 const Home = () => {
 	useEffect(() => {
@@ -10,6 +11,10 @@ const Home = () => {
 	}, [])
 	return (
 		<>
+			<Helmet>
+				<title>Reno - Home</title>
+				<meta name="description" content="Helmet application" />
+			</Helmet>
 			<CustomerLayout>
 				<Banner />
 				<Category />
