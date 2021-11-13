@@ -1,21 +1,19 @@
-import './App.css'
 import { ThemeProvider } from '@material-ui/styles'
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
+import './App.css'
+import Home from './pages/customer/Home/Home'
+import Login from './pages/Login/Login'
 import theme from './theme/theme'
-import Header from './component/customer/Header/Header'
-import Banner from './component/customer/Banner/Banner'
-import Category from './component/customer/Category/Category'
-import LatestProducts from './component/customer/LatestProducts/LatestProducts'
-import Footer from './component/customer/Footer/Footer'
-
 function App() {
 	return (
 		<ThemeProvider theme={theme}>
 			<div className="App">
-				<Header />
-				<Banner />
-				<Category />
-				<LatestProducts />
-				<Footer />
+				<Router>
+					<Routes>
+						<Route exact path="/" element={<Home />} />
+						<Route exact path="/login" element={<Login />} />
+					</Routes>
+				</Router>
 			</div>
 		</ThemeProvider>
 	)
