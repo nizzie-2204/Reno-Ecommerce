@@ -10,7 +10,7 @@ import {
 	TextField,
 	Toolbar,
 } from '@material-ui/core'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { BiCartAlt, BiMenu, BiSearchAlt2 } from 'react-icons/bi'
 import logo from '../../../assets/images/logo.jpg'
 import Dropdown from './Drawer/Dropdown'
@@ -27,9 +27,23 @@ const Header = () => {
 	const handleDrawerClose = () => {
 		setOpen(false)
 	}
+
+	// Active boxShadow and background Header
+	const [activeHeader, setActiveHeader] = useState(false)
+	const handleChangeStyleHeader = () => {
+		if (window.scrollY > 10) {
+			setActiveHeader(true)
+		} else setActiveHeader(false)
+	}
+	window.addEventListener('scroll', handleChangeStyleHeader)
+
 	return (
 		<>
-			<AppBar position="fixed" className={classes.header}>
+			<AppBar
+				position="fixed"
+				className={`${classes.header} ${activeHeader && classes.activeHeader}`}
+				elevation={0}
+			>
 				<Toolbar className={classes.toolbar}>
 					<Box
 						edge="start"
@@ -84,7 +98,7 @@ const Header = () => {
 							<BiCartAlt className={classes.cart} />
 						</IconButton>
 						<Hidden mdDown implementation="js">
-							<Button className={classes.signIn}>Login</Button>
+							<Button className={classes.signIn}>Sign in</Button>
 						</Hidden>
 					</Box>
 
