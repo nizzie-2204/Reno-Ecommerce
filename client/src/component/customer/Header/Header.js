@@ -15,6 +15,7 @@ import { BiCartAlt, BiMenu, BiSearchAlt2 } from 'react-icons/bi'
 import logo from '../../../assets/images/logo.jpg'
 import Dropdown from './Drawer/Dropdown'
 import { useStyles } from './styles'
+import { Link } from 'react-router-dom'
 
 const Header = () => {
 	const classes = useStyles()
@@ -45,14 +46,9 @@ const Header = () => {
 				elevation={0}
 			>
 				<Toolbar className={classes.toolbar}>
-					<Box
-						edge="start"
-						className={classes.logo}
-						color="inherit"
-						aria-label="open drawer"
-					>
+					<Link to="/" className={classes.logo}>
 						<img src={logo} alt="logo" />
-					</Box>
+					</Link>
 					<Hidden mdDown implementation="js">
 						<ListItem className={classes.list} disableGutters>
 							<ListItemText
@@ -98,7 +94,9 @@ const Header = () => {
 							<BiCartAlt className={classes.cart} />
 						</IconButton>
 						<Hidden mdDown implementation="js">
-							<Button className={classes.signIn}>Sign in</Button>
+							<Button component={Link} to="/login" className={classes.signIn}>
+								Sign in
+							</Button>
 						</Hidden>
 					</Box>
 

@@ -1,18 +1,17 @@
 import React, { useEffect } from 'react'
 import CustomerLayout from '../../component/customer/CustomerLayout/CustomerLayout'
-import LoginForm from '../../component/LoginForm/LoginForm'
-
-const Login = () => {
+import RegisterForm from '../../component/RegisterForm/RegisterForm'
+const Register = () => {
 	useEffect(() => {
 		window.scrollTo(0, 0)
 	}, [])
 	return (
 		<>
 			<CustomerLayout>
-				<LoginForm />
+				<RegisterForm />
 			</CustomerLayout>
 		</>
 	)
 }
 
-export default Login
+export default Register

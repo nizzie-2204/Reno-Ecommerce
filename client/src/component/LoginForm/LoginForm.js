@@ -63,7 +63,7 @@ const LoginForm = () => {
 					<Link to="/" className={classes.redirect}>
 						Forgot Password?
 					</Link>
-					<Link to="/" className={classes.redirect}>
+					<Link to="/register" className={classes.redirect}>
 						Create your Account
 						<BiRightArrowAlt />
 					</Link>
