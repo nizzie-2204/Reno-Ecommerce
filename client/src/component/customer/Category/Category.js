@@ -4,12 +4,7 @@ import { useStyles } from './styles'
 const Category = () => {
 	const classes = useStyles()
 	return (
-		<Grid
-			container
-			justifyContent="space-between"
-			sm
-			style={{ marginBottom: 500 }}
-		>
+		<Grid container justifyContent="space-between" sm>
 			<Grid item lg={4} md={6} sm={12}>
 				<Paper className={classes.card}>
 					<Typography component="h3" className={classes.heading}>

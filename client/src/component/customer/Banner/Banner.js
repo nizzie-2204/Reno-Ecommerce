@@ -2,7 +2,6 @@ import { Box, Button, Typography } from '@material-ui/core'
 import React from 'react'
 import Carousel from 'react-multi-carousel'
 import 'react-multi-carousel/lib/styles.css'
-import 'react-responsive-carousel/lib/styles/carousel.min.css' // requires a loader
 import { useStyles } from './styles'
 
 const responsive = {
