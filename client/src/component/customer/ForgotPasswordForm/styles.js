@@ -79,7 +79,7 @@ const useStyles = makeStyles((theme) => ({
 	action: {
 		width: 350,
 		height: 50,
-		background: '#2254b2',
+		background: '#1b138c',
 		borderRadius: 25,
 		color: theme.palette.text.secondary,
 		transition: '0.5s',

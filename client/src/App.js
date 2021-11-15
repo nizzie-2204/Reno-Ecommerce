@@ -9,6 +9,9 @@ import { HelmetProvider } from 'react-helmet-async'
 import NotFound from './pages/customer/NotFound/NotFound'
 import ForgotPassword from './pages/ForgotPassword/ForgotPassword'
 import ResetPassword from './pages/ResetPassword/ResetPassword'
+import Cart from './component/customer/Cart/Cart'
+import Shop from './component/customer/Shop/Shop'
+import ProductDetail from './component/customer/ProductDetail/ProductDetail'
 
 // Customer: Cart Product Checkout ForgotPassword
 
@@ -25,6 +28,9 @@ function App() {
 							<Route path="/register" element={<Register />} />
 							<Route path="/reset-password" element={<ResetPassword />} />
 							<Route path="/forgot-password" element={<ForgotPassword />} />
+							<Route path="/cart" element={<Cart />} />
+							<Route path="/shop" element={<Shop />} />
+							<Route path="/product/:id" element={<ProductDetail />} />
 							{/* Not found */}
 							<Route path="*" element={<NotFound />} />
 						</Routes>

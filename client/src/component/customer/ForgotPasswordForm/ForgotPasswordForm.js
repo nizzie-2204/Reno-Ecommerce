@@ -10,12 +10,16 @@ import React from 'react'
 import { BiMailSend } from 'react-icons/bi'
 import { Link } from 'react-router-dom'
 import bgForgotPasword from '../../../assets/images/forgot-password.png'
+import bgWave from '../../../assets/images/login-2.png'
 import { useStyles } from './styles'
 
 const ForgotPasswordForm = () => {
 	const classes = useStyles()
 	return (
 		<Box className={classes.login}>
+			<Hidden mdDown implementation="js">
+				<img src={bgWave} alt="login" className={classes.img1} />
+			</Hidden>
 			<Box className={classes.container}>
 				<Hidden mdDown implementation="js">
 					<Box className={classes.imgContainer}>

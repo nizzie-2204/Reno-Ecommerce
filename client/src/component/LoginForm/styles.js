@@ -73,7 +73,7 @@ const useStyles = makeStyles((theme) => ({
 	action: {
 		width: 350,
 		height: 50,
-		background: 'linear-gradient(90deg,#2e1c81,#160d6b,#03014e)',
+		background: '#1b138c',
 		borderRadius: 25,
 		color: theme.palette.text.secondary,
 		transition: '0.5s',
