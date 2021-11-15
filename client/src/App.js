@@ -12,32 +12,38 @@ import ResetPassword from './pages/ResetPassword/ResetPassword'
 import Cart from './component/customer/Cart/Cart'
 import Shop from './component/customer/Shop/Shop'
 import ProductDetail from './component/customer/ProductDetail/ProductDetail'
+import { PersistGate } from 'redux-persist/integration/react'
+import { Provider } from 'react-redux'
 
-// Customer: Cart Product Checkout ForgotPassword
+import { store, persistor } from './redux/store'
 
 function App() {
 	return (
-		<HelmetProvider>
-			<ThemeProvider theme={theme}>
-				<div className="App">
-					<Router>
-						<Routes>
-							{/* Customer */}
-							<Route path="/" element={<Home />} />
-							<Route path="/login" element={<Login />} />
-							<Route path="/register" element={<Register />} />
-							<Route path="/reset-password" element={<ResetPassword />} />
-							<Route path="/forgot-password" element={<ForgotPassword />} />
-							<Route path="/cart" element={<Cart />} />
-							<Route path="/shop" element={<Shop />} />
-							<Route path="/product/:id" element={<ProductDetail />} />
-							{/* Not found */}
-							<Route path="*" element={<NotFound />} />
-						</Routes>
-					</Router>
-				</div>
-			</ThemeProvider>
-		</HelmetProvider>
+		<Provider store={store}>
+			<PersistGate loading={null} persistor={persistor}>
+				<HelmetProvider>
+					<ThemeProvider theme={theme}>
+						<div className="App">
+							<Router>
+								<Routes>
+									{/* Customer */}
+									<Route path="/" element={<Home />} />
+									<Route path="/login" element={<Login />} />
+									<Route path="/register" element={<Register />} />
+									<Route path="/reset-password" element={<ResetPassword />} />
+									<Route path="/forgot-password" element={<ForgotPassword />} />
+									<Route path="/cart" element={<Cart />} />
+									<Route path="/shop" element={<Shop />} />
+									<Route path="/product/:id" element={<ProductDetail />} />
+									{/* Not found */}
+									<Route path="*" element={<NotFound />} />
+								</Routes>
+							</Router>
+						</div>
+					</ThemeProvider>
+				</HelmetProvider>
+			</PersistGate>
+		</Provider>
 	)
 }
 
