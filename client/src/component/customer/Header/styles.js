@@ -8,6 +8,7 @@ const useStyles = makeStyles((theme) => ({
 		alignItems: 'center',
 		justifyContent: 'center',
 		transition: '0.5s',
+		paddingRight: '0 !important',
 	},
 	activeHeader: {
 		boxShadow:
@@ -27,19 +28,36 @@ const useStyles = makeStyles((theme) => ({
 		width: '40%',
 		height: 80,
 		padding: 0,
+		display: 'flex',
+		alignItems: 'center',
+		justifyContent: 'space-around',
 	},
 	listLink: {
 		textAlign: 'center',
 		color: theme.palette.text.primary,
 		fontWeight: 600,
 		fontSize: 16,
-		height: 80,
-		lineHeight: '80px',
 		cursor: 'pointer',
 		transition: '0.3s',
-		'&:hover': {
-			color: theme.palette.text.secondary,
-			backgroundColor: theme.palette.primary.main,
+		position: 'relative',
+		padding: 0,
+		width: 'auto',
+
+		'&::before': {
+			position: 'absolute',
+			content: "''",
+			bottom: -7,
+			left: 0,
+			width: '100%',
+			height: 2,
+			backgroundColor: theme.palette.text.primary,
+			transition: '0.5s',
+			transformOrigin: 'left',
+			transform: 'scale(0)',
+		},
+
+		'&:hover::before': {
+			transform: 'scale(1)',
 		},
 	},
 	actions: {

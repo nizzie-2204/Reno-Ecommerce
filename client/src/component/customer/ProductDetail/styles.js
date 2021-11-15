@@ -86,6 +86,12 @@ const useStyles = makeStyles((theme) => ({
 		borderRadius: 10,
 		backgroundColor: theme.palette.primary.main,
 		color: theme.palette.text.secondary,
+
+		'&:hover': {
+			backgroundColor: '#ebebeb',
+			color: theme.palette.text.primary,
+			boxShadow: '0 5px 5px -2px rgb(0 0 0 / 50%)',
+		},
 	},
 }))
 

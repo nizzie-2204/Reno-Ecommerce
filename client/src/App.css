@@ -48,6 +48,8 @@ body {
 	color: #1a202c;
 	font-weight: 400;
 	background-color: white;
+	padding-right: 0 !important;
+	overflow: unset !important;
 }
 
 button {

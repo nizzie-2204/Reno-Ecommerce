@@ -5,17 +5,18 @@ import {
 	Hidden,
 	IconButton,
 	InputAdornment,
+	List,
 	ListItem,
 	ListItemText,
 	TextField,
 	Toolbar,
 } from '@material-ui/core'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { BiCartAlt, BiMenu, BiSearchAlt2 } from 'react-icons/bi'
+import { Link } from 'react-router-dom'
 import logo from '../../../assets/images/logo.jpg'
 import Dropdown from './Drawer/Dropdown'
 import { useStyles } from './styles'
-import { Link } from 'react-router-dom'
 
 const Header = () => {
 	const classes = useStyles()
@@ -50,28 +51,40 @@ const Header = () => {
 						<img src={logo} alt="logo" />
 					</Link>
 					<Hidden mdDown implementation="js">
-						<ListItem className={classes.list} disableGutters>
-							<ListItemText
-								disableTypography
-								primary={`Home`}
+						<List className={classes.list}>
+							<ListItem
 								className={classes.listLink}
-							/>
-							<ListItemText
-								disableTypography
-								primary={`Shop`}
+								component={Link}
+								to="/"
+								disableGutters
+							>
+								<ListItemText disableTypography primary={`Home`} />
+							</ListItem>
+							<ListItem
 								className={classes.listLink}
-							/>
-							<ListItemText
-								disableTypography
-								primary={`Contact us`}
+								component={Link}
+								to="/shop"
+								disableGutters
+							>
+								<ListItemText disableTypography primary={`Shop`} />
+							</ListItem>
+							<ListItem
 								className={classes.listLink}
-							/>
-							<ListItemText
-								disableTypography
-								primary={`About us`}
+								component={Link}
+								to="/"
+								disableGutters
+							>
+								<ListItemText disableTypography primary={`Contact us`} />
+							</ListItem>
+							<ListItem
 								className={classes.listLink}
-							/>
-						</ListItem>
+								component={Link}
+								to="/"
+								disableGutters
+							>
+								<ListItemText disableTypography primary={`About us`} />
+							</ListItem>
+						</List>
 					</Hidden>
 
 					<Box className={classes.actions}>
