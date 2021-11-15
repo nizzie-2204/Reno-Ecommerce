@@ -7,43 +7,30 @@ import {
 	Typography,
 } from '@material-ui/core'
 import React from 'react'
-import { useStyles } from './styles'
-import bgLogin from '../../assets/images/login1.png'
-import bgLogin2 from '../../assets/images/login-2.png'
-import { BiMailSend, BiLockAlt, BiRightArrowAlt } from 'react-icons/bi'
+import { BiLockAlt } from 'react-icons/bi'
 import { Link } from 'react-router-dom'
-const LoginForm = () => {
+import bgForgotPasword from '../../../assets/images/forgot-password.png'
+import { useStyles } from './styles'
+
+const ResetPasswordForm = () => {
 	const classes = useStyles()
 	return (
 		<Box className={classes.login}>
-			<Hidden mdDown implementation="js">
-				<img src={bgLogin2} alt="login" className={classes.img1} />
-			</Hidden>
 			<Box className={classes.container}>
 				<Hidden mdDown implementation="js">
-					<Box className={classes.img2Container}>
-						<img src={bgLogin} alt="login1" className={classes.img2} />
+					<Box className={classes.imgContainer}>
+						<img
+							src={bgForgotPasword}
+							alt="not-found"
+							className={classes.img}
+						/>
 					</Box>
 				</Hidden>
 				<form className={classes.form}>
 					<Typography component="h2" className={classes.heading}>
-						Member login
+						Create new password
 					</Typography>
-					<TextField
-						className={classes.input}
-						placeholder="Email"
-						type="email"
-						InputProps={{
-							startAdornment: (
-								<InputAdornment position="start">
-									<BiMailSend className={classes.inputIcon} />
-								</InputAdornment>
-							),
-							classes: {
-								input: classes.input,
-							},
-						}}
-					/>
+
 					<TextField
 						className={classes.input}
 						placeholder="Password"
@@ -59,18 +46,27 @@ const LoginForm = () => {
 							},
 						}}
 					/>
-					<Button className={classes.action}>Login</Button>
-					<Link to="/forgot-password" className={classes.redirect}>
-						Forgot Password?
-					</Link>
-					<Link to="/register" className={classes.redirect}>
-						Create your Account
-						<BiRightArrowAlt className={classes.redirectIcon} />
-					</Link>
+
+					<TextField
+						className={classes.input}
+						placeholder="Confirm password"
+						type="password"
+						InputProps={{
+							startAdornment: (
+								<InputAdornment position="start">
+									<BiLockAlt className={classes.inputIcon} />
+								</InputAdornment>
+							),
+							classes: {
+								input: classes.input,
+							},
+						}}
+					/>
+					<Button className={classes.action}>Reset password</Button>
 				</form>
 			</Box>
 		</Box>
 	)
 }
 
-export default LoginForm
+export default ResetPasswordForm

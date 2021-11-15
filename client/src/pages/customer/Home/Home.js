@@ -4,6 +4,7 @@ import Banner from '../../../component/customer/Banner/Banner'
 import Category from '../../../component/customer/Category/Category'
 import LastestProducts from '../../../component/customer/LatestProducts/LatestProducts'
 import { Helmet } from 'react-helmet-async'
+import { Outlet } from 'react-router-dom'
 
 const Home = () => {
 	useEffect(() => {
@@ -20,6 +21,7 @@ const Home = () => {
 				<Category />
 				<LastestProducts />
 			</CustomerLayout>
+			<Outlet />
 		</>
 	)
 }

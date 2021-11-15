@@ -50,6 +50,12 @@ const useStyles = makeStyles((theme) => ({
 		textTransform: 'capitalize',
 		marginBottom: 20,
 	},
+	subHeading: {
+		fontSize: 16,
+		fontWeight: 400,
+		marginBottom: 20,
+		color: theme.palette.text.disabled,
+	},
 	input: {
 		fontSize: 20,
 		color: theme.palette.text.disabled,
@@ -73,13 +79,18 @@ const useStyles = makeStyles((theme) => ({
 	action: {
 		width: 350,
 		height: 50,
-		background: 'linear-gradient(90deg,#2e1c81,#160d6b,#03014e)',
+		background: '#2254b2',
 		borderRadius: 25,
 		color: theme.palette.text.secondary,
 		transition: '0.5s',
 		marginTop: 20,
 		marginBottom: 20,
 		fontSize: 18,
+
+		'&:hover': {
+			background: '#2254b2',
+			color: theme.palette.text.secondary,
+		},
 	},
 	redirect: {
 		color: theme.palette.text.primary,

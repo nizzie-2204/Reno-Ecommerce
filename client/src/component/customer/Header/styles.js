@@ -21,6 +21,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 	logo: {
 		width: '20%',
+		minWidth: 180,
 	},
 	list: {
 		width: '40%',
