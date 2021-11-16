@@ -5,6 +5,8 @@ import Category from '../../../component/customer/Category/Category'
 import LastestProducts from '../../../component/customer/LatestProducts/LatestProducts'
 import { Helmet } from 'react-helmet-async'
 import { Outlet } from 'react-router-dom'
+import Sidebar from '../../../component/admin/Sidebar/Sidebar'
+import Header from '../../../component/admin/Header/Header'
 
 const Home = () => {
 	useEffect(() => {

@@ -20,7 +20,7 @@ const Footer = () => {
 	const classes = useStyles()
 	return (
 		<footer className={classes.footer}>
-			<Grid container sm>
+			<Grid container>
 				<Grid item lg={3} md={6} sm={12}>
 					<List>
 						<ListItem className={classes.list}>
@@ -91,7 +91,7 @@ const Footer = () => {
 								className={classes.listLink}
 								style={{ lineHeight: 1.5 }}
 							/>
-							<ListItemAvatar className={classes.listImg}>
+							{/* <ListItemAvatar className={classes.listImg}>
 								<Avatar
 									className={classes.img}
 									alt={`Avatar`}
@@ -112,7 +112,7 @@ const Footer = () => {
 									alt={`Avatar`}
 									src={`${imgPayment2}`}
 								/>
-							</ListItemAvatar>
+							</ListItemAvatar> */}
 						</ListItem>
 					</List>
 				</Grid>

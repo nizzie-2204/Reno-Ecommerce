@@ -1,11 +1,10 @@
 import { Box, Button, Hidden, Typography } from '@material-ui/core'
 import React, { useEffect } from 'react'
-import { useStyles } from './styles'
 import { Helmet } from 'react-helmet-async'
-import CustomerLayout from '../../../component/customer/CustomerLayout/CustomerLayout'
-import imgNotFound from '../../../assets/images/not-found.png'
 import { Link } from 'react-router-dom'
-import { BiRightArrowAlt } from 'react-icons/bi'
+import imgNotFound from '../../../assets/images/not-found.png'
+import CustomerLayout from '../../../component/customer/CustomerLayout/CustomerLayout'
+import { useStyles } from './styles'
 
 const NotFound = () => {
 	const classes = useStyles()

@@ -12,18 +12,27 @@ const useStyles = makeStyles((theme) => ({
 		maxWidth: 345,
 		position: 'relative',
 
-		'&:hover $media': {
-			transform: 'scale(1.2)',
+		'& .MuiCardActionArea-root': {
+			cursor: 'default',
 		},
 
 		'&:hover $action': {
 			opacity: 1,
-			top: '55%',
+			top: '50%',
 		},
 	},
 	media: {
 		height: 250,
 		transition: '0.5s',
+
+		'&:hover': {
+			cursor: 'pointer',
+			transform: 'scale(1.2)',
+		},
+	},
+	content: {
+		position: 'relative',
+		zIndex: 1,
 	},
 	heading: {
 		fontSize: 30,
@@ -33,7 +42,6 @@ const useStyles = makeStyles((theme) => ({
 	},
 	topTitle: {
 		display: 'flex',
-		alignItems: 'center',
 		justifyContent: 'space-between',
 	},
 	name: {
@@ -45,6 +53,16 @@ const useStyles = makeStyles((theme) => ({
 		display: 'flex',
 		alignItems: 'center',
 		justifyContent: 'space-between',
+	},
+	iconCart: {
+		fontSize: 24,
+		color: theme.palette.text.disabled,
+		cursor: 'pointer',
+		transition: '0.3s',
+
+		'&:hover': {
+			color: theme.palette.text.primary,
+		},
 	},
 	gridItem: {
 		display: 'flex',

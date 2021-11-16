@@ -8,7 +8,6 @@ import {
 } from '@material-ui/core'
 import React from 'react'
 import { BiLockAlt } from 'react-icons/bi'
-import { Link } from 'react-router-dom'
 import bgForgotPasword from '../../../assets/images/forgot-password.png'
 import { useStyles } from './styles'
 

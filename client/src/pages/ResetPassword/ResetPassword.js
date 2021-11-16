@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react'
 import { Helmet } from 'react-helmet-async'
 import CustomerLayout from '../../component/customer/CustomerLayout/CustomerLayout'
-import ForgotPasswordForm from '../../component/customer/ForgotPasswordForm/ForgotPasswordForm'
 import ResetPasswordForm from '../../component/customer/ResetPasswordForm/ResetPasswordForm'
 const ResetPassword = () => {
 	useEffect(() => {

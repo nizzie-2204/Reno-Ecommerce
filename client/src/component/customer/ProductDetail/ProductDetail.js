@@ -1,12 +1,12 @@
-import { Box, Divider, Typography, Button } from '@material-ui/core'
-import React from 'react'
-import { useStyles } from './styles'
-import 'react-responsive-carousel/lib/styles/carousel.min.css' // requires a loader
-import { Carousel } from 'react-responsive-carousel'
-import { Helmet } from 'react-helmet-async'
-import CustomerLayout from '../CustomerLayout/CustomerLayout'
+import { Box, Button, Divider, Typography } from '@material-ui/core'
 import Rating from '@material-ui/lab/Rating'
-import { BiRightArrowAlt, BiMinus, BiPlus, BiX } from 'react-icons/bi'
+import React from 'react'
+import { Helmet } from 'react-helmet-async'
+import { BiMinus, BiPlus } from 'react-icons/bi'
+import { Carousel } from 'react-responsive-carousel'
+import 'react-responsive-carousel/lib/styles/carousel.min.css' // requires a loader
+import CustomerLayout from '../CustomerLayout/CustomerLayout'
+import { useStyles } from './styles'
 
 const ProductDetail = () => {
 	const classes = useStyles()

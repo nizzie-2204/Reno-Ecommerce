@@ -2,22 +2,22 @@ import {
 	Box,
 	Button,
 	Hidden,
-	TableContainer,
-	Typography,
 	Paper,
 	Table,
+	TableBody,
+	TableCell,
+	TableContainer,
 	TableHead,
 	TableRow,
-	TableCell,
-	TableBody,
+	Typography,
 } from '@material-ui/core'
 import React, { useState } from 'react'
-import { BiRightArrowAlt, BiMinus, BiPlus, BiX } from 'react-icons/bi'
+import { Helmet } from 'react-helmet-async'
+import { BiMinus, BiPlus, BiRightArrowAlt, BiX } from 'react-icons/bi'
 import { Link } from 'react-router-dom'
 import bgCart from '../../../assets/images/cart.svg'
-import { useStyles } from './styles'
 import CustomerLayout from '../CustomerLayout/CustomerLayout'
-import { Helmet } from 'react-helmet-async'
+import { useStyles } from './styles'
 
 const Cart = () => {
 	const classes = useStyles()

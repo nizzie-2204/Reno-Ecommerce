@@ -50,6 +50,7 @@ body {
 	background-color: white;
 	padding-right: 0 !important;
 	overflow: unset !important;
+	scroll-behavior: smooth;
 }
 
 button {

@@ -1,21 +1,30 @@
 import { ThemeProvider } from '@material-ui/styles'
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
-import './App.css'
-import Home from './pages/customer/Home/Home'
-import Login from './pages/Login/Login'
-import Register from './pages/Register/Register'
-import theme from './theme/theme'
 import { HelmetProvider } from 'react-helmet-async'
+import { Provider } from 'react-redux'
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
+// Redux
+import { PersistGate } from 'redux-persist/integration/react'
+import './App.css'
+import Cart from './component/customer/Cart/Cart'
+import Order from './component/customer/Order/Order'
+import ProductDetail from './component/customer/ProductDetail/ProductDetail'
+import Shop from './component/customer/Shop/Shop'
+// Admin pages
+import HomeAdmin from './pages/admin/Home/Home'
+import UserAdmin from './pages/admin/User/User'
+import CategoryAdmin from './pages/admin/Category/Category'
+import SizeAdmin from './pages/admin/Size/Size'
+import ProductAdmin from './pages/admin/Product/Product'
+import OrderAdmin from './pages/admin/Order/Order'
+// Customer pages
+import Home from './pages/customer/Home/Home'
 import NotFound from './pages/customer/NotFound/NotFound'
 import ForgotPassword from './pages/ForgotPassword/ForgotPassword'
+import Login from './pages/Login/Login'
+import Register from './pages/Register/Register'
 import ResetPassword from './pages/ResetPassword/ResetPassword'
-import Cart from './component/customer/Cart/Cart'
-import Shop from './component/customer/Shop/Shop'
-import ProductDetail from './component/customer/ProductDetail/ProductDetail'
-import { PersistGate } from 'redux-persist/integration/react'
-import { Provider } from 'react-redux'
-
-import { store, persistor } from './redux/store'
+import { persistor, store } from './redux/store'
+import theme from './theme/theme'
 
 function App() {
 	return (
@@ -35,6 +44,16 @@ function App() {
 									<Route path="/cart" element={<Cart />} />
 									<Route path="/shop" element={<Shop />} />
 									<Route path="/product/:id" element={<ProductDetail />} />
+									<Route path="/profile" element={<Order />} />
+
+									{/* Admin */}
+									<Route path="/admin/home" element={<HomeAdmin />} />
+									<Route path="/admin/user" element={<UserAdmin />} />
+									<Route path="/admin/product" element={<ProductAdmin />} />
+									<Route path="/admin/category" element={<CategoryAdmin />} />
+									<Route path="/admin/size" element={<SizeAdmin />} />
+									<Route path="/admin/order" element={<OrderAdmin />} />
+
 									{/* Not found */}
 									<Route path="*" element={<NotFound />} />
 								</Routes>

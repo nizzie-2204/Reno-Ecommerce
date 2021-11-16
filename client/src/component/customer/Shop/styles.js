@@ -33,6 +33,20 @@ const useStyles = makeStyles((theme) => ({
 		height: 250,
 		transition: '0.5s',
 	},
+	content: {
+		position: 'relative',
+		zIndex: 1,
+	},
+	iconCart: {
+		fontSize: 24,
+		color: theme.palette.text.disabled,
+		cursor: 'pointer',
+		transition: '0.3s',
+
+		'&:hover': {
+			color: theme.palette.text.primary,
+		},
+	},
 	heading: {
 		fontSize: 30,
 		fontWeight: 700,
@@ -48,7 +62,6 @@ const useStyles = makeStyles((theme) => ({
 	},
 	topTitle: {
 		display: 'flex',
-		alignItems: 'center',
 		justifyContent: 'space-between',
 	},
 	name: {

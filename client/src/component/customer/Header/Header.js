@@ -17,8 +17,10 @@ import { Link } from 'react-router-dom'
 import logo from '../../../assets/images/logo.jpg'
 import Dropdown from './Drawer/Dropdown'
 import { useStyles } from './styles'
+import { useNavigate } from 'react-router-dom'
 
 const Header = () => {
+	const navigate = useNavigate()
 	const classes = useStyles()
 	const [open, setOpen] = useState(false)
 
@@ -38,6 +40,10 @@ const Header = () => {
 		} else setActiveHeader(false)
 	}
 	window.addEventListener('scroll', handleChangeStyleHeader)
+
+	const handleRedirect = () => {
+		navigate('/cart')
+	}
 
 	return (
 		<>
@@ -103,6 +109,7 @@ const Header = () => {
 						<IconButton
 							disableRipple
 							style={{ backgroundColor: 'transparent' }}
+							onClick={handleRedirect}
 						>
 							<BiCartAlt className={classes.cart} />
 						</IconButton>
