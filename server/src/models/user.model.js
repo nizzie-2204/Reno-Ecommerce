@@ -16,11 +16,6 @@ const userSchema = Schema(
 		},
 		email: { type: String, required: true, unique: true, trim: true },
 		isAdmin: { type: Boolean, default: false },
-		phone: { type: Number, required: true, trim: true },
-		address: { type: String, required: true, trim: true },
-		sex: { type: String, require: true, enum: ['Men', 'Women'] },
-		dateOfBirth: { type: Date, require: true, default: Date.now() },
-		avatar: { type: String },
 		cart: [
 			{
 				productId: { type: Schema.Types.ObjectId, ref: 'Product' },

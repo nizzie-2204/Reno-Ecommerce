@@ -41,13 +41,14 @@ exports.login = async (req, res, next) => {
 		}
 
 		const user = await User.findOne({ email: req.body.email })
-		const { password, ...info } = user._doc
 
 		if (!user) {
 			const error = new Error('Email is not correct')
 			error.statusCode = 400
 			return next(error)
 		}
+
+		const { password, ...info } = user._doc
 
 		if (checkPassword(password, req.body.password)) {
 			const token = createToken({ id: user._id, isAdmin: user.isAdmin })

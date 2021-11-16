@@ -3,13 +3,12 @@ import axiosClient from './axiosClient'
 const authAPI = {
 	register: async (data) => {
 		const url = '/register'
-
-		return await axiosClient.post(url, { data })
+		return await axiosClient.post(url, data)
 	},
 
-	login: async () => {
+	login: async (data) => {
 		const url = '/login'
-		return await axiosClient.post(url)
+		return await axiosClient.post(url, data)
 	},
 }
 

@@ -95,6 +95,14 @@ const useStyles = makeStyles((theme) => ({
 		fontSize: 22,
 		marginLeft: 5,
 	},
+	error: {
+		width: 350,
+		color: '#c74a47',
+		backgroundColor: '#fbe2e2',
+		fontSize: '16px',
+		textAlign: 'left',
+		padding: '10px 15px',
+	},
 }))
 
 export { useStyles }

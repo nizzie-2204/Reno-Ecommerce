@@ -100,6 +100,15 @@ const useStyles = makeStyles((theme) => ({
 		color: theme.palette.text.primary,
 		marginLeft: 5,
 	},
+	error: {
+		width: 350,
+		color: '#c74a47',
+		backgroundColor: '#fbe2e2',
+		fontSize: 16,
+		textAlign: 'left',
+		padding: '10px 15px',
+		marginTop: 10,
+	},
 }))
 
 export { useStyles }

@@ -119,6 +119,24 @@ const useStyles = makeStyles((theme) => ({
 			boxShadow: '0 5px 5px -2px rgb(0 0 0 / 50%)',
 		},
 	},
+	email: {
+		color: theme.palette.text.primary,
+		textTransform: 'unset',
+		fontSize: 16,
+
+		'&:hover': {
+			backgroundColor: 'transparent',
+		},
+	},
+	menu: {
+		top: '60px !important',
+		left: '1153px !important',
+
+		'& .MuiList-root': {
+			width: 120,
+			padding: '10px 0',
+		},
+	},
 }))
 
 export { useStyles }

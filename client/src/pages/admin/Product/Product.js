@@ -17,6 +17,7 @@ import { Helmet } from 'react-helmet-async'
 import AdminLayout from '../../../component/admin/AdminLayout/AdminLayout'
 import { useStyles } from './styles'
 import { BiMinus, BiPlus, BiSearchAlt2, BiX, BiPencil } from 'react-icons/bi'
+import { Link } from 'react-router-dom'
 
 const Product = () => {
 	const classes = useStyles()
@@ -37,7 +38,13 @@ const Product = () => {
 						<IconButton className={classes.searchBtn}>
 							<BiSearchAlt2 />
 						</IconButton>
-						<Button className={classes.add}>Add Product</Button>
+						<Button
+							component={Link}
+							to="/admin/product/new"
+							className={classes.add}
+						>
+							Add Product
+						</Button>
 					</Box>
 					<TableContainer
 						component={Paper}
