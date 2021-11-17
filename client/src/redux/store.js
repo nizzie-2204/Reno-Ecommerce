@@ -15,9 +15,13 @@ import storage from 'redux-persist/lib/storage' // defaults to localStorage for 
 
 // Reducers
 import authReducer from './slices/authSlice'
+import sizeReducer from './slices/sizeSlice'
+import categoryReducer from './slices/categorySlice'
 
 const rootReducer = combineReducers({
 	auth: authReducer,
+	size: sizeReducer,
+	category: categoryReducer,
 })
 
 const persistConfig = {

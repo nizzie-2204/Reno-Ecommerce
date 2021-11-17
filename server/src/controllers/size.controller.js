@@ -51,8 +51,7 @@ exports.updateSize = async (req, res, next) => {
 
 exports.deleteSize = async (req, res, next) => {
 	try {
-		await Size.findOneAndDelete(req.params.id)
-
+		await Size.findByIdAndDelete(req.params.id)
 		res.status(200).json('Size has been deleted')
 	} catch (error) {
 		next(error)

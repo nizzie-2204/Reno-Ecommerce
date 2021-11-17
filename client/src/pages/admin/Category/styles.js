@@ -11,7 +11,7 @@ const useStyles = makeStyles((theme) => ({
 	tableHead: {
 		fontSize: 15,
 		fontWeight: 500,
-		backgroundColor: '#f7f7f7',
+		backgroundColor: '#b7b7b7',
 	},
 	cellProduct: {
 		display: 'flex',
@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
 		width: '100%',
 		display: 'flex',
 		alignItems: 'center',
-		marginBottom: 20,
+		marginBottom: 40,
 	},
 	searchField: {
 		flex: 1,
@@ -69,6 +69,22 @@ const useStyles = makeStyles((theme) => ({
 			backgroundColor: theme.palette.primary.main,
 			color: theme.palette.text.secondary,
 		},
+	},
+	emptyImg: {
+		width: 150,
+		height: 150,
+		marginBottom: 10,
+	},
+	emptyTitle: {
+		fontSize: 24,
+	},
+	emptyContainer: {
+		width: '100%',
+		height: '100%',
+		display: 'flex',
+		flexDirection: 'column',
+		alignItems: 'center',
+		justifyContent: 'center',
 	},
 }))
 

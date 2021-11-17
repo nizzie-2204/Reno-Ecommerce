@@ -55,19 +55,22 @@ const Product = () => {
 							<TableHead>
 								<TableRow>
 									<TableCell align="center" className={classes.tableHead}>
-										Order ID
+										Name
 									</TableCell>
 									<TableCell align="center" className={classes.tableHead}>
-										Created Date
+										Description
 									</TableCell>
 									<TableCell align="center" className={classes.tableHead}>
-										Delivery Price
+										Category
 									</TableCell>
 									<TableCell align="center" className={classes.tableHead}>
-										Delivery Status
+										Price
 									</TableCell>
 									<TableCell align="center" className={classes.tableHead}>
-										Payment method
+										Quantity
+									</TableCell>
+									<TableCell align="center" className={classes.tableHead}>
+										Actions
 									</TableCell>
 								</TableRow>
 							</TableHead>
@@ -91,6 +94,7 @@ const Product = () => {
 											<BiPlus style={{ cursor: 'pointer' }} />
 										</Box>
 									</TableCell>
+									<TableCell align="center">£69.99</TableCell>
 									<TableCell align="center">£69.99</TableCell>
 									<TableCell align="center">
 										<BiPencil

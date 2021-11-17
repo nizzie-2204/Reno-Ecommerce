@@ -12,14 +12,26 @@ import {
 	TextField,
 	Typography,
 } from '@material-ui/core'
-import React from 'react'
+import React, { useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import AdminLayout from '../../../component/admin/AdminLayout/AdminLayout'
 import { useStyles } from './styles'
 import { BiMinus, BiPlus, BiSearchAlt2, BiX, BiPencil } from 'react-icons/bi'
+import AddEditUser from './AddEditUser/AddEditUser'
 
 const User = () => {
 	const classes = useStyles()
+
+	// Modal
+	const [open, setOpen] = useState(false)
+
+	const handleOpen = () => {
+		setOpen(true)
+	}
+
+	const handleClose = () => {
+		setOpen(false)
+	}
 	return (
 		<>
 			<Helmet>
@@ -37,7 +49,10 @@ const User = () => {
 						<IconButton className={classes.searchBtn}>
 							<BiSearchAlt2 />
 						</IconButton>
-						<Button className={classes.add}>Add User</Button>
+						<Button className={classes.add} onClick={handleOpen}>
+							Add User
+						</Button>
+						<AddEditUser open={open} handleClose={handleClose} />
 					</Box>
 					<TableContainer
 						component={Paper}
@@ -48,19 +63,19 @@ const User = () => {
 							<TableHead>
 								<TableRow>
 									<TableCell align="center" className={classes.tableHead}>
-										Order ID
+										Fullname
+									</TableCell>
+									<TableCell align="center" className={classes.tableHead}>
+										Email
 									</TableCell>
 									<TableCell align="center" className={classes.tableHead}>
 										Created Date
 									</TableCell>
 									<TableCell align="center" className={classes.tableHead}>
-										Delivery Price
+										Updated Date
 									</TableCell>
 									<TableCell align="center" className={classes.tableHead}>
-										Delivery Status
-									</TableCell>
-									<TableCell align="center" className={classes.tableHead}>
-										Payment method
+										Actions
 									</TableCell>
 								</TableRow>
 							</TableHead>
@@ -76,15 +91,9 @@ const User = () => {
 											Leather Mens Slipper
 										</Typography>
 									</TableCell>
-									<TableCell align="center">£69.99</TableCell>
-									<TableCell align="center">
-										<Box className={classes.quantity}>
-											<BiMinus style={{ cursor: 'pointer' }} />
-											<Typography component="body2">1</Typography>
-											<BiPlus style={{ cursor: 'pointer' }} />
-										</Box>
-									</TableCell>
-									<TableCell align="center">£69.99</TableCell>
+									<TableCell align="center">a@gmail.com</TableCell>
+									<TableCell align="center">01-01-2012</TableCell>
+									<TableCell align="center"> 01-01-2012</TableCell>
 									<TableCell align="center">
 										<BiPencil
 											style={{

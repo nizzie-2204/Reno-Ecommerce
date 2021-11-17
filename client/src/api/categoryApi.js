@@ -8,12 +8,12 @@ const categoryAPI = {
 
 	addCategory: async (data) => {
 		const url = '/categories'
-		return await axiosClient.post(url, { data })
+		return await axiosClient.post(url, data)
 	},
 
-	updateCategory: async (id, data) => {
-		const url = `/categories/${id}`
-		return await axiosClient.post(url, { data })
+	updateCategory: async (data) => {
+		const url = `/categories/${data._id}`
+		return await axiosClient.put(url, data)
 	},
 
 	getCategory: async (id) => {

@@ -11,7 +11,7 @@ const useStyles = makeStyles((theme) => ({
 	tableHead: {
 		fontSize: 15,
 		fontWeight: 500,
-		backgroundColor: '#f7f7f7',
+		backgroundColor: '#b7b7b7',
 	},
 	cellProduct: {
 		display: 'flex',
@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
 		width: '100%',
 		display: 'flex',
 		alignItems: 'center',
-		marginBottom: 20,
+		marginBottom: 40,
 	},
 	searchField: {
 		flex: 1,

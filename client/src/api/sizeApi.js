@@ -8,12 +8,12 @@ const sizeAPI = {
 
 	addSize: async (data) => {
 		const url = '/sizes'
-		return await axiosClient.post(url, { data })
+		return await axiosClient.post(url, data)
 	},
 
-	updateSize: async (id, data) => {
-		const url = `/sizes/${id}`
-		return await axiosClient.post(url, { data })
+	updateSize: async (data) => {
+		const url = `/sizes/${data._id}`
+		return await axiosClient.put(url, data)
 	},
 
 	getSize: async (id) => {
