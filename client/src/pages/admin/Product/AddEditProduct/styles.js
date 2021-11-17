@@ -76,6 +76,15 @@ const useStyles = makeStyles((theme) => ({
 			color: theme.palette.text.secondary,
 		},
 	},
+	error: {
+		width: 350,
+		color: '#c74a47',
+		backgroundColor: '#fbe2e2',
+		fontSize: '16px',
+		textAlign: 'left',
+		padding: '10px 15px',
+		marginBottom: 20,
+	},
 }))
 
 export { useStyles }

@@ -13,11 +13,18 @@ import {
 import 'react-responsive-carousel/lib/styles/carousel.min.css' // requires a loader
 import { Carousel } from 'react-responsive-carousel'
 import Autocomplete from '@material-ui/lab/Autocomplete'
-import { Controller, useForm } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import { useDispatch, useSelector } from 'react-redux'
 import { BiCheckbox, BiCheckboxChecked } from 'react-icons/bi'
 import { getAllCategory } from '../../../../redux/slices/categorySlice'
 import { getAllSize } from '../../../../redux/slices/sizeSlice'
+import {
+	addProduct,
+	upload,
+	updateProduct,
+} from '../../../../redux/slices/productSlice'
+import { unwrapResult } from '@reduxjs/toolkit'
+import { useLocation } from 'react-router-dom'
 
 const icon = <BiCheckbox />
 const checkedIcon = <BiCheckboxChecked />
@@ -25,6 +32,7 @@ const checkedIcon = <BiCheckboxChecked />
 const AddEditProduct = () => {
 	const classes = useStyles()
 	const dispatch = useDispatch()
+	const location = useLocation()
 	const categories = useSelector((state) => state.category.categories)
 	const sizes = useSelector((state) => state.size.sizes)
 	const { register, handleSubmit, reset, control } = useForm()
@@ -41,9 +49,30 @@ const AddEditProduct = () => {
 		fetchData()
 	}, [])
 
+	// autocomplete
+
+	const [value, setValue] = useState([])
+
 	// Handle select multiple images
 	const [imagesDisplay, setImagesDisplay] = useState([])
 	const [imagesUpload, setImagesUpload] = useState([])
+
+	useEffect(() => {
+		if (location.state) {
+			reset({
+				name: location.state.name,
+				desc: location.state.desc,
+				price: location.state.price,
+				quantity: location.state.quantity,
+			})
+			setImagesDisplay(() => {
+				return location.state.images.map((image) => {
+					return image
+				})
+			})
+			setValue(location.state.size)
+		}
+	}, [location.state])
 
 	const handleOnChangePictures = (e) => {
 		const files = e.target.files
@@ -61,25 +90,77 @@ const AddEditProduct = () => {
 
 	useEffect(() => {
 		return () => {
-			imagesDisplay.length > 0 &&
+			imagesDisplay?.length > 0 &&
 				imagesDisplay.forEach((image) => {
 					URL.revokeObjectURL(image.preview)
 				})
 		}
 	}, [imagesDisplay])
 
-	// autocomplete
-
-	const [value, setValue] = useState([])
 	// handle product
 	const handleAddProduct = (data) => {
-		console.log(data)
-		console.log(imagesUpload)
-		console.log(value)
+		if (imagesUpload.length === 0) {
+			setError('Images are required')
+			return
+		}
+
+		if (value.length === 0) {
+			console.log(value)
+			setError('Sizes are required')
+			return
+		}
+
+		const action = upload(imagesUpload)
+		dispatch(action)
+			.then(unwrapResult)
+			.then((res) => {
+				const product = { ...data, size: sizes, images: res }
+				const action = addProduct(product)
+				dispatch(action)
+					.then(unwrapResult)
+					.then(() => {
+						reset()
+						setImagesUpload([])
+						setImagesDisplay([])
+						setError('')
+						setValue([])
+					})
+					.catch((error) => console.log(error))
+			})
+			.catch((error) => console.log(error))
 	}
 
 	const handleEditProduct = (data) => {
-		console.log(data)
+		if (imagesUpload.length === 0) {
+			// Not change images
+			const sizes = value.map((size) => {
+				return size._id
+			})
+			const product = { ...data, size: sizes, _id: location.state._id }
+			const action = updateProduct(product)
+			dispatch(action)
+				.then(unwrapResult)
+				.then(() => {})
+				.catch((error) => console.log(error))
+		} else {
+			const action = upload(imagesUpload)
+			dispatch(action)
+				.then(unwrapResult)
+				.then((res) => {
+					const product = {
+						...data,
+						size: sizes,
+						_id: location.state._id,
+						images: res,
+					}
+					const action = updateProduct(product)
+					dispatch(action)
+						.then(unwrapResult)
+						.then(() => {})
+						.catch((error) => console.log(error))
+				})
+				.catch((error) => console.log(error))
+		}
 	}
 
 	return (
@@ -91,12 +172,14 @@ const AddEditProduct = () => {
 			<AdminLayout>
 				<Box className={classes.container}>
 					<Typography component="h3" className={classes.heading}>
-						New product
+						{location.state ? 'Update' : 'New'} product
 					</Typography>
 					<Box className={classes.content}>
 						<form
 							className={classes.form}
-							onSubmit={handleSubmit(handleAddProduct)}
+							onSubmit={handleSubmit(
+								location.state ? handleEditProduct : handleAddProduct
+							)}
 						>
 							<Box className={classes.uploadContainer}>
 								<input
@@ -124,12 +207,14 @@ const AddEditProduct = () => {
 								variant="outlined"
 								className={classes.inputGroup}
 								{...register('name')}
+								required
 							/>
 							<TextField
 								label="Desc"
 								variant="outlined"
 								className={classes.inputGroup}
 								{...register('desc')}
+								required
 							/>
 							<TextField
 								label="Price"
@@ -137,6 +222,7 @@ const AddEditProduct = () => {
 								variant="outlined"
 								className={classes.inputGroup}
 								{...register('price')}
+								required
 							/>
 							<TextField
 								label="Quantity"
@@ -144,6 +230,7 @@ const AddEditProduct = () => {
 								variant="outlined"
 								className={classes.inputGroup}
 								{...register('quantity')}
+								required
 							/>
 							<TextField
 								className={classes.inputGroup}
@@ -152,6 +239,8 @@ const AddEditProduct = () => {
 								select
 								variant="outlined"
 								{...register('category')}
+								defaultValue={location?.state?.category._id}
+								required
 							>
 								{categories?.map((category) => {
 									return (
@@ -192,6 +281,11 @@ const AddEditProduct = () => {
 								)}
 								onChange={(_, selectedOptions) => setValue(selectedOptions)}
 							/>
+							{error !== '' && (
+								<Typography component="p" className={classes.error}>
+									{error}
+								</Typography>
+							)}
 							<Button type="submit" className={classes.saveBtn}>
 								Save
 							</Button>
@@ -202,7 +296,7 @@ const AddEditProduct = () => {
 							showStatus={false}
 							className={classes.carousel}
 						>
-							{imagesDisplay.length > 0 &&
+							{imagesDisplay?.length > 0 &&
 								imagesDisplay.map((image) => {
 									return (
 										<div>

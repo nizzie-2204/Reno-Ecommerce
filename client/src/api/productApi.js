@@ -8,12 +8,12 @@ const productAPI = {
 
 	addProduct: async (data) => {
 		const url = '/products'
-		return await axiosClient.post(url, { data })
+		return await axiosClient.post(url, data)
 	},
 
-	updateProduct: async (id, data) => {
-		const url = `/products/${id}`
-		return await axiosClient.post(url, { data })
+	updateProduct: async (data) => {
+		const url = `/products/${data._id}`
+		return await axiosClient.put(url, data)
 	},
 
 	getProduct: async (id) => {
