@@ -66,6 +66,8 @@ const useStyles = makeStyles((theme) => ({
 		padding: 10,
 		borderRadius: '50%',
 		border: '1px solid #e1e1e1',
+		marginRight: 10,
+		cursor: 'pointer',
 	},
 	actions: {
 		display: 'flex',

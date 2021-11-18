@@ -11,9 +11,15 @@ import {
 } from 'react-icons/bi'
 import { useStyles } from './styles'
 import { Link } from 'react-router-dom'
-
+import { useNavigate } from 'react-router-dom'
 const Sidebar = () => {
 	const classes = useStyles()
+	const navigate = useNavigate()
+
+	const handleLogout = () => {
+		localStorage.clear()
+		navigate('/login')
+	}
 	return (
 		<Box className={classes.sidebar}>
 			<Box className={classes.sidebarWrapper}>
@@ -76,14 +82,13 @@ const Sidebar = () => {
 							<BiDoughnutChart className={classes.sidebardIcon} />
 							<ListItemText disableTypography primary={`Size`} />
 						</ListItem>
-						<ListItem
-							className={classes.link}
-							component={Link}
-							to="/"
-							disableGutters
-						>
+						<ListItem className={classes.link} disableGutters>
 							<BiLogOut className={classes.sidebardIcon} />
-							<ListItemText disableTypography primary={`Log out`} />
+							<ListItemText
+								disableTypography
+								primary={`Log out`}
+								onClick={handleLogout}
+							/>
 						</ListItem>
 					</List>
 				</Box>

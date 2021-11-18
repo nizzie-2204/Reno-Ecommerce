@@ -174,7 +174,7 @@ const Category = () => {
 							</TableContainer>
 							<TablePagination
 								component="div"
-								count={1}
+								count={categories.length}
 								rowsPerPageOptions={[10]}
 								page={page}
 								onPageChange={handleChangePage}

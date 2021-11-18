@@ -27,6 +27,8 @@ const Header = () => {
 	const navigate = useNavigate()
 	const classes = useStyles()
 	const user = useSelector((state) => state.auth.user)
+	const token = localStorage.getItem('token')
+
 	const [open, setOpen] = useState(false)
 
 	const handleDrawerOpen = () => {
@@ -65,7 +67,7 @@ const Header = () => {
 	}
 
 	const handleLogout = () => {
-		localStorage.removeItem('token')
+		localStorage.clear()
 		navigate('/login')
 	}
 
@@ -141,7 +143,7 @@ const Header = () => {
 						>
 							<BiCartAlt className={classes.cart} />
 						</IconButton>
-						{user ? (
+						{token ? (
 							<>
 								<Button
 									className={classes.email}

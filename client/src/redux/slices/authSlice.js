@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import authAPI from '../../api/authApi'
+import { getAllUser } from '../slices/userSlice'
 
 export const login = createAsyncThunk(
 	'auth/login',
@@ -14,9 +15,13 @@ export const login = createAsyncThunk(
 
 export const signUp = createAsyncThunk(
 	'auth/signUp',
-	async (data, { rejectWithValue }) => {
+	async (data, { rejectWithValue, dispatch }) => {
 		try {
-			return await authAPI.register(data)
+			const result = await authAPI.register(data)
+
+			dispatch(getAllUser())
+
+			return
 		} catch (error) {
 			return rejectWithValue(error.response)
 		}

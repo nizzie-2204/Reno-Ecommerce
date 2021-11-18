@@ -8,12 +8,12 @@ const userAPI = {
 
 	addUser: async (data) => {
 		const url = '/users'
-		return await axiosClient.post(url, { data })
+		return await axiosClient.post(url, data)
 	},
 
-	updateUser: async (id, data) => {
-		const url = `/users/${id}`
-		return await axiosClient.post(url, { data })
+	updateUser: async (data) => {
+		const url = `/users/${data._id}`
+		return await axiosClient.put(url, data)
 	},
 
 	getUser: async (id) => {

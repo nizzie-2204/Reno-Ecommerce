@@ -11,28 +11,36 @@ const useStyles = makeStyles((theme) => ({
 		width: '100%',
 		maxWidth: 345,
 		position: 'relative',
+		cursor: 'pointer',
+		backgroundColor: 'transparent',
 
-		'& .MuiCardActionArea-root': {
-			cursor: 'default',
+		'&:hover': {
+			backgroundColor: 'transparent',
 		},
 
 		'&:hover $action': {
 			opacity: 1,
 			top: '50%',
 		},
+
+		'&:hover $media': {
+			transform: 'scale(1.2)',
+		},
 	},
 	media: {
 		height: 250,
 		transition: '0.5s',
-
-		'&:hover': {
-			cursor: 'pointer',
-			transform: 'scale(1.2)',
-		},
+		width: '100%',
+		position: 'relative',
+		zIndex: 1,
 	},
 	content: {
 		position: 'relative',
-		zIndex: 1,
+		zIndex: 2,
+		display: 'flex',
+		flexDirection: 'column',
+		width: '100%',
+		flex: 1,
 	},
 	heading: {
 		fontSize: 30,
@@ -48,25 +56,28 @@ const useStyles = makeStyles((theme) => ({
 		fontSize: 18,
 		fontWeight: 300,
 		color: theme.palette.text.disabled,
+		maxWidth: '80%',
 	},
 	bottomTitle: {
 		display: 'flex',
 		alignItems: 'center',
 		justifyContent: 'space-between',
+		marginTop: 'auto',
 	},
 	iconCart: {
 		fontSize: 24,
+		width: 24,
+		height: 24,
 		color: theme.palette.text.disabled,
 		cursor: 'pointer',
 		transition: '0.3s',
-
+		marginLeft: 10,
 		'&:hover': {
 			color: theme.palette.text.primary,
 		},
 	},
 	gridItem: {
 		display: 'flex',
-		alignItems: 'center',
 		justifyContent: 'center',
 		padding: 20,
 	},
@@ -86,10 +97,22 @@ const useStyles = makeStyles((theme) => ({
 		transition: '0.5s ease-out',
 		boxShadow: '0 5px 5px -1px rgb(0 0 0 / 20%)',
 		textTransform: 'capitalize',
+		zIndex: 2,
+
 		'&:hover': {
 			backgroundColor: theme.palette.primary.main,
 			color: theme.palette.text.secondary,
 		},
+
+		// '&:hover .media': {
+		// 	cursor: 'pointer',
+		// 	transform: 'scale(1.2)',
+		// },
+	},
+	cardArea: {
+		height: '100%',
+		display: 'flex',
+		flexDirection: 'column',
 	},
 }))
 

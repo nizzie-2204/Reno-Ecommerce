@@ -70,6 +70,22 @@ const useStyles = makeStyles((theme) => ({
 			color: theme.palette.text.secondary,
 		},
 	},
+	emptyImg: {
+		width: 150,
+		height: 150,
+		marginBottom: 10,
+	},
+	emptyTitle: {
+		fontSize: 24,
+	},
+	emptyContainer: {
+		width: '100%',
+		height: '100%',
+		display: 'flex',
+		flexDirection: 'column',
+		alignItems: 'center',
+		justifyContent: 'center',
+	},
 }))
 
 export { useStyles }

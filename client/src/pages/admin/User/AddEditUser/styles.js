@@ -38,6 +38,20 @@ const useStyles = makeStyles((theme) => ({
 		alignItems: 'center',
 		flexDirection: 'row',
 	},
+	formControl: {
+		display: 'flex',
+		width: '100%',
+		flexDirection: 'row',
+		marginBottom: 20,
+	},
+	error: {
+		color: '#c74a47',
+		backgroundColor: '#fbe2e2',
+		fontSize: 16,
+		textAlign: 'left',
+		padding: '10px 15px',
+		marginBottom: 20,
+	},
 }))
 
 export { useStyles }

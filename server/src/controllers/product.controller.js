@@ -4,7 +4,7 @@ exports.getAllProduct = async (req, res, next) => {
 	try {
 		// Pagination
 		const page = parseInt(req.query.page) || 1
-		const pageSize = parseInt(req.query.limit) || 10
+		const pageSize = parseInt(req.query.limit) || 100
 		const skip = (page - 1) * pageSize
 		const total = (await Product.countDocuments()) || 1
 		const pages = Math.ceil(total / pageSize)

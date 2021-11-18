@@ -177,7 +177,7 @@ const Size = () => {
 
 							<TablePagination
 								component="div"
-								count={1}
+								count={sizes.length}
 								rowsPerPageOptions={[10]}
 								page={page}
 								onPageChange={handleChangePage}

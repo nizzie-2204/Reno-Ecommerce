@@ -4,9 +4,9 @@ import uploadAPI from '../../api/uploadApi'
 
 export const getAllProduct = createAsyncThunk(
 	'product/getAllProduct',
-	async (_, { rejectWithValue }) => {
+	async (params, { rejectWithValue }) => {
 		try {
-			return await productAPI.getAllProduct()
+			return await productAPI.getAllProduct(params)
 		} catch (error) {
 			return rejectWithValue(error.response)
 		}
@@ -17,6 +17,8 @@ export const getProduct = createAsyncThunk(
 	'product/getProduct',
 	async (id, { rejectWithValue }) => {
 		try {
+			console.log(id)
+
 			return await productAPI.getProduct(id)
 		} catch (error) {
 			return rejectWithValue(error.response)
@@ -94,6 +96,13 @@ const productSlice = createSlice({
 		[getAllProduct.fulfilled]: (state, action) => {
 			state.productsLoading = false
 			state.products = action.payload.products
+		},
+		[getProduct.pending]: (state) => {
+			state.productLoading = true
+		},
+		[getProduct.fulfilled]: (state, action) => {
+			state.productLoading = false
+			state.product = action.payload.product
 		},
 	},
 })

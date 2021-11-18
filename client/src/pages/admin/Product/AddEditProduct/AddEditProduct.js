@@ -125,7 +125,7 @@ const AddEditProduct = () => {
 						setError('')
 						setValue([])
 					})
-					.catch((error) => console.log(error))
+					.catch((error) => setError('Name has already been taken'))
 			})
 			.catch((error) => console.log(error))
 	}
@@ -141,7 +141,7 @@ const AddEditProduct = () => {
 			dispatch(action)
 				.then(unwrapResult)
 				.then(() => {})
-				.catch((error) => console.log(error))
+				.catch((error) => setError('Name has already been taken'))
 		} else {
 			const action = upload(imagesUpload)
 			dispatch(action)
@@ -157,7 +157,7 @@ const AddEditProduct = () => {
 					dispatch(action)
 						.then(unwrapResult)
 						.then(() => {})
-						.catch((error) => console.log(error))
+						.catch((error) => setError('Name has already been taken'))
 				})
 				.catch((error) => console.log(error))
 		}

@@ -92,7 +92,11 @@ const Product = () => {
 								elevation="0"
 								style={{ marginBottom: 25 }}
 							>
-								<Table className={classes.table} aria-label="simple table">
+								<Table
+									className={classes.table}
+									stickyHeader
+									aria-label="sticky table"
+								>
 									<TableHead>
 										<TableRow>
 											<TableCell align="center" className={classes.tableHead}>
@@ -116,57 +120,64 @@ const Product = () => {
 										</TableRow>
 									</TableHead>
 									<TableBody>
-										{products.map((product) => {
-											return (
-												<TableRow key={product._id}>
-													<TableCell
-														component="th"
-														scope="row"
-														className={classes.productDesc}
-														align="center"
-													>
-														{product.name}
-													</TableCell>
-													<TableCell
-														align="center"
-														className={classes.productDesc}
-													>
-														{product.desc}
-													</TableCell>
-													<TableCell align="center">
-														{product.category.name}
-													</TableCell>
-													<TableCell align="center">${product.price}</TableCell>
-													<TableCell align="center">
-														{product.quantity}
-													</TableCell>
-													<TableCell align="center">
-														<BiPencil
-															style={{
-																cursor: 'pointer',
-																fontSize: 20,
-																marginRight: 20,
-															}}
-															onClick={() => {
-																handleEditProduct(product)
-															}}
-														/>
-														<BiX
-															style={{ cursor: 'pointer', fontSize: 20 }}
-															onClick={() => {
-																handleDeleteProduct(product._id)
-															}}
-														/>
-													</TableCell>
-												</TableRow>
+										{products
+											.slice(
+												page * rowsPerPage,
+												page * rowsPerPage + rowsPerPage
 											)
-										})}
+											.map((product) => {
+												return (
+													<TableRow key={product._id}>
+														<TableCell
+															component="th"
+															scope="row"
+															className={classes.productDesc}
+															align="center"
+														>
+															{product.name}
+														</TableCell>
+														<TableCell
+															align="center"
+															className={classes.productDesc}
+														>
+															{product.desc}
+														</TableCell>
+														<TableCell align="center">
+															{product.category.name}
+														</TableCell>
+														<TableCell align="center">
+															${product.price}
+														</TableCell>
+														<TableCell align="center">
+															{product.quantity}
+														</TableCell>
+														<TableCell align="center">
+															<BiPencil
+																style={{
+																	cursor: 'pointer',
+																	fontSize: 20,
+																	marginRight: 20,
+																}}
+																onClick={() => {
+																	handleEditProduct(product)
+																}}
+															/>
+															<BiX
+																style={{ cursor: 'pointer', fontSize: 20 }}
+																onClick={() => {
+																	handleDeleteProduct(product._id)
+																}}
+															/>
+														</TableCell>
+													</TableRow>
+												)
+											})}
 									</TableBody>
 								</Table>
 							</TableContainer>
 							<TablePagination
 								component="div"
-								count={1}
+								count={products.length}
 								rowsPerPageOptions={[10]}
 								page={page}
 								onPageChange={handleChangePage}

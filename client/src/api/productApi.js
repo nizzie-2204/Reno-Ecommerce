@@ -8,6 +8,7 @@ const productAPI = {
 
 	addProduct: async (data) => {
 		const url = '/products'
+
 		return await axiosClient.post(url, data)
 	},
 
