@@ -1,27 +1,24 @@
 import {
 	Box,
-	Button,
 	Card,
 	CardActionArea,
 	CardContent,
 	CardMedia,
 	Grid,
-	IconButton,
 	Typography,
 } from '@material-ui/core'
 import Rating from '@material-ui/lab/Rating'
 import React, { useEffect } from 'react'
-import { BiCartAlt } from 'react-icons/bi'
-import { useStyles } from './styles'
-import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 import { getAllProduct } from '../../../redux/slices/productSlice'
+import { useStyles } from './styles'
 
 const LatestProducts = () => {
 	const classes = useStyles()
 	const dispatch = useDispatch()
-	const products = useSelector((state) => state.product.products)
-
+	const navigate = useNavigate()
+	const products = useSelector((state) => state.product.products.products)
 	useEffect(() => {
 		const fetchProducts = () => {
 			const params = 'limit=8'
@@ -31,6 +28,10 @@ const LatestProducts = () => {
 
 		fetchProducts()
 	}, [])
+
+	const handleNavigate = (id) => {
+		navigate(`/product/${id}`)
+	}
 
 	return (
 		<Grid
@@ -45,7 +46,12 @@ const LatestProducts = () => {
 			<Grid item container className={classes.list}>
 				{products?.map((product) => (
 					<Grid item xl={3} lg={4} md={6} sm={12} className={classes.gridItem}>
-						<Card className={classes.root}>
+						<Card
+							className={classes.root}
+							onClick={() => {
+								handleNavigate(product._id)
+							}}
+						>
 							<CardActionArea className={classes.cardArea}>
 								<CardMedia
 									className={classes.media}
@@ -62,7 +68,6 @@ const LatestProducts = () => {
 										>
 											{product.name}
 										</Typography>
-										<BiCartAlt className={classes.iconCart} />
 									</Box>
 									<Box className={classes.bottomTitle}>
 										<Typography variant="body2" component="p">
@@ -76,13 +81,6 @@ const LatestProducts = () => {
 										/>
 									</Box>
 								</CardContent>
-								<Button
-									component={Link}
-									to={`/product/${product._id}`}
-									className={classes.action}
-								>
-									View detail
-								</Button>
 							</CardActionArea>
 						</Card>
 					</Grid>

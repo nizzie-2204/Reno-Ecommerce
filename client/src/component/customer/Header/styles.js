@@ -106,6 +106,7 @@ const useStyles = makeStyles((theme) => ({
 	cart: {
 		fontSize: 26,
 		fontWeight: 600,
+		cursor: 'pointer',
 	},
 	signIn: {
 		textTransform: 'capitalize',
@@ -136,6 +137,24 @@ const useStyles = makeStyles((theme) => ({
 			width: 120,
 			padding: '10px 0',
 		},
+	},
+	cartContainer: {
+		backgroundColor: 'transparent',
+		position: 'relative',
+	},
+	cartQuantity: {
+		position: 'absolute',
+		top: 4,
+		right: 5,
+		fontSize: 14,
+		color: theme.palette.text.secondary,
+		backgroundColor: theme.palette.primary.main,
+		borderRadius: '50%',
+		width: 18,
+		height: 18,
+		display: 'flex',
+		alignItems: 'center',
+		justifyContent: 'center',
 	},
 }))
 

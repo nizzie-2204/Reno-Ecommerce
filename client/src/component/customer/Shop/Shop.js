@@ -1,58 +1,189 @@
+import { css } from '@emotion/react'
 import {
 	Box,
-	Button,
 	Card,
 	CardActionArea,
 	CardContent,
 	CardMedia,
 	Grid,
-	IconButton,
 	MenuItem,
 	TextField,
 	Typography,
 } from '@material-ui/core'
-import Rating from '@material-ui/lab/Rating'
-import React, { useEffect, useState } from 'react'
-import { BiCartAlt } from 'react-icons/bi'
-import { useStyles } from './styles'
-import CustomerLayout from '../CustomerLayout/CustomerLayout'
-import { Helmet } from 'react-helmet-async'
-import { Link } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
-import { getAllProduct } from '../../../redux/slices/productSlice'
 import Pagination from '@material-ui/lab/Pagination'
+import Rating from '@material-ui/lab/Rating'
 import { unwrapResult } from '@reduxjs/toolkit'
+import queryString from 'query-string'
+import React, { useEffect, useRef, useState } from 'react'
+import { Helmet } from 'react-helmet-async'
+import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate, useSearchParams } from 'react-router-dom'
+import RingLoader from 'react-spinners/RingLoader'
+import { getAllCategory } from '../../../redux/slices/categorySlice'
+import { getAllProduct } from '../../../redux/slices/productSlice'
+import CustomerLayout from '../CustomerLayout/CustomerLayout'
+import { useStyles } from './styles'
+
+const override = css`
+	display: block;
+	margin: 0 auto;
+`
 
 const Shop = () => {
 	const classes = useStyles()
+	const navigate = useNavigate()
+	const dispatch = useDispatch()
+	const [searchParams] = useSearchParams()
+	const products = useSelector((state) => state.product.products)
+	const categories = useSelector((state) => state.category.categories)
+	const productsLoading = useSelector((state) => state.product.productsLoading)
+
 	useEffect(() => {
-		window.scrollTo(0, 0)
+		const fetchCategories = () => {
+			const action = getAllCategory()
+			dispatch(action)
+		}
+		fetchCategories()
 	}, [])
 
-	const dispatch = useDispatch()
-	const products = useSelector((state) => state.product.products)
+	const handleNavigate = (id) => {
+		navigate(`/product/${id}`)
+	}
 
 	// Pagination
-	const [count, setCount] = useState(0)
-	const [page, setPage] = useState(1)
+	const [filter, setFilter] = useState({
+		search: searchParams.get('search') || null,
+		count: 0,
+		order: searchParams.get('order') || null,
+		sortBy: searchParams.get('sortBy') || null,
+		category: searchParams.get('category') || null,
+		page: parseInt(searchParams.get('page')) || 1,
+		limit: 12,
+	})
+
 	const handleChange = (event, value) => {
+		if (value === filter.page) return
+
 		// setPage(value)
-		console.log(value)
+		setFilter({
+			...filter,
+			page: value,
+		})
+		navigate(`/shop?page=${value}`)
+		navigate({
+			pathname: '/shop',
+			search: `?page=${value}`,
+		})
+	}
+
+	const categoryRef = useRef('')
+
+	const handleChangeCategory = (e) => {
+		categoryRef.current = e.target.value
+		setFilter({
+			...filter,
+			category: e.target.value,
+			page: 1,
+		})
+		navigate({
+			pathname: '/shop',
+			search: `?${queryString.stringify({
+				limit: filter.limit,
+				page: filter.page,
+				category: e.target.value,
+				order: filter.order,
+				sortBy: filter.sortBy,
+				// ...filter,
+				search: searchParams.get('search'),
+			})}`,
+		})
+	}
+
+	const handleChangePrice = (e) => {
+		// setOrder(e.target.value)
+		// setSortBy('price')
+		// setPage(1)
+		setFilter({
+			...filter,
+			order: e.target.value,
+			sortBy: 'price',
+			page: 1,
+		})
+		if (filter.category)
+			navigate({
+				pathname: '/shop',
+				search: `?${queryString.stringify({
+					limit: filter.limit,
+					page: filter.page,
+					category: filter.category,
+					order: e.target.value,
+					search: searchParams.get('search'),
+					sortBy: 'price',
+				})}`,
+			})
+		else
+			navigate({
+				pathname: '/shop',
+				search: `?${queryString.stringify({
+					limit: filter.limit,
+					page: filter.page,
+					order: e.target.value,
+					search: searchParams.get('search'),
+					sortBy: 'price',
+				})}`,
+			})
 	}
 
 	useEffect(() => {
 		const fetchProducts = () => {
-			const params = 'limit=12'
+			const params = queryString.stringify({
+				// ...filter,
+				limit: filter.limit,
+				page: filter.page,
+				category: filter.category,
+				order: filter.order,
+				sortBy: filter.sortBy,
+				search: searchParams.get('search') || null,
+			})
 			const action = getAllProduct(params)
 			dispatch(action)
 				.then(unwrapResult)
 				.then((res) => {
-					setCount(res.pages)
+					setFilter({
+						...filter,
+						count: res.pages,
+						page: res.page,
+					})
 				})
 		}
 
 		fetchProducts()
-	}, [])
+	}, [
+		filter.page,
+		dispatch,
+		filter.limit,
+		filter.category,
+		filter.order,
+		filter.sortBy,
+	])
+
+	useEffect(() => {
+		if (searchParams.get('search')) {
+			if (searchParams.get('search') !== filter.search) {
+				setFilter({
+					...filter,
+					category: null,
+					order: null,
+					sortBy: null,
+					search: searchParams.get('search'),
+				})
+			}
+		}
+	}, [searchParams.get('search')])
+
+	useEffect(() => {
+		window.scrollTo(0, 0)
+	}, [filter.page])
 
 	return (
 		<>
@@ -67,96 +198,125 @@ const Shop = () => {
 					alignItems="center"
 					className={classes.lastestProducts}
 				>
-					<Box className={classes.filter}>
-						<Typography component="h3" className={classes.heading}>
-							All Products
-						</Typography>
-						<Box className={classes.select}>
-							<TextField
-								id="select"
-								select
-								variant="outlined"
-								InputLabelProps={{ shrink: false }}
-								className={classes.textField}
-							>
-								<MenuItem value="">Sort by: Default</MenuItem>
-								<MenuItem value="a">a</MenuItem>
-								<MenuItem value="b">b</MenuItem>
-							</TextField>
-							<TextField
-								id="select2"
-								select
-								variant="outlined"
-								InputLabelProps={{ shrink: false }}
-								className={classes.textField}
-							>
-								<MenuItem value="">Category: ALl</MenuItem>
-								<MenuItem value="1">1</MenuItem>
-								<MenuItem value="2">2</MenuItem>
-							</TextField>
+					{products.length > 0 && (
+						<Box className={classes.filter}>
+							<Typography component="h3" className={classes.heading}>
+								All products
+							</Typography>
+							<Box className={classes.select}>
+								<Typography component="p" className={classes.selectHeading}>
+									Sort by:
+								</Typography>
+								<TextField
+									id="select"
+									select
+									variant="outlined"
+									className={classes.textField}
+									label={filter.order !== null ? '' : 'Price'}
+									onChange={handleChangePrice}
+									InputLabelProps={{ shrink: false }}
+									value={filter.order}
+								>
+									<MenuItem value="desc">Price: High to Low</MenuItem>
+									<MenuItem value="asc">Price: Low to High</MenuItem>
+								</TextField>
+								<TextField
+									id="select2"
+									select
+									variant="outlined"
+									className={classes.textField}
+									label={filter.category !== null ? '' : 'Category'}
+									InputLabelProps={{ shrink: false }}
+									onChange={handleChangeCategory}
+									ref={categoryRef}
+									value={filter.category}
+								>
+									{categories?.map((category) => {
+										return (
+											<MenuItem value={category._id} key={category.name}>
+												{category.name}
+											</MenuItem>
+										)
+									})}
+								</TextField>
+							</Box>
 						</Box>
-					</Box>
-					<Grid item container className={classes.list}>
-						{products?.map((product) => (
-							<Grid
-								item
-								xl={3}
-								lg={4}
-								md={6}
-								sm={12}
-								className={classes.gridItem}
-							>
-								<Card className={classes.root}>
-									<CardActionArea className={classes.cardArea}>
-										<CardMedia
-											className={classes.media}
-											image={product.images[0].preview}
-											title={product.name}
-										/>
-										<CardContent className={classes.content}>
-											<Box className={classes.topTitle}>
-												<Typography
-													gutterBottom
-													variant="h5"
-													component="h2"
-													className={classes.name}
-												>
-													{product.name}
-												</Typography>
-												<BiCartAlt className={classes.iconCart} />
-											</Box>
-											<Box className={classes.bottomTitle}>
-												<Typography variant="body2" component="p">
-													${product.price}
-												</Typography>
-												<Rating
-													readOnly
-													size="small"
-													name="size-medium"
-													defaultValue={2}
-												/>
-											</Box>
-										</CardContent>
-										<Button
-											component={Link}
-											to={`/product/${product._id}`}
-											className={classes.action}
+					)}
+
+					{!productsLoading ? (
+						<>
+							<Grid item container className={classes.list}>
+								{products.length > 0 ? (
+									products.map((product) => (
+										<Grid
+											item
+											xl={3}
+											lg={4}
+											md={6}
+											sm={12}
+											className={classes.gridItem}
 										>
-											View detail
-										</Button>
-									</CardActionArea>
-								</Card>
+											<Card
+												className={classes.root}
+												onClick={() => {
+													handleNavigate(product._id)
+												}}
+											>
+												<CardActionArea className={classes.cardArea}>
+													<CardMedia
+														className={classes.media}
+														image={product.images[0].preview}
+														title={product.name}
+													/>
+													<CardContent className={classes.content}>
+														<Box className={classes.topTitle}>
+															<Typography
+																gutterBottom
+																variant="h5"
+																component="h2"
+																className={classes.name}
+															>
+																{product.name}
+															</Typography>
+														</Box>
+														<Box className={classes.bottomTitle}>
+															<Typography variant="body2" component="p">
+																${product.price}
+															</Typography>
+															<Rating
+																readOnly
+																size="small"
+																name="size-medium"
+																defaultValue={2}
+															/>
+														</Box>
+													</CardContent>
+												</CardActionArea>
+											</Card>
+										</Grid>
+									))
+								) : (
+									<Typography component="p" className={classes.empty}>
+										No products found
+									</Typography>
+								)}
 							</Grid>
-						))}
-					</Grid>
-					<Pagination
-						className={classes.pagition}
-						count={count}
-						page={page}
-						onChange={handleChange}
-						variant="outlined"
-						shape="rounded"
-					/>
+							{products.length > 0 && (
+								<Pagination
+									className={classes.pagition}
+									count={filter.count}
+									page={filter.page}
+									onChange={handleChange}
+									variant="outlined"
+									shape="rounded"
+								/>
+							)}
+						</>
+					) : (
+						<Box className={classes.loadingContainer}>
+							<RingLoader css={override} size={140} />
+						</Box>
+					)}
 				</Grid>
 			</CustomerLayout>
 		</>

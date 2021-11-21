@@ -71,12 +71,9 @@ export const deleteProduct = createAsyncThunk(
 	}
 )
 
-export const upload = createAsyncThunk(
-	'product/upload',
-	async (files, { rejectWithValue }) => {
-		return await uploadAPI.upload(files)
-	}
-)
+export const upload = createAsyncThunk('product/upload', async (files) => {
+	return await uploadAPI.upload(files)
+})
 
 const initialState = {
 	products: [],

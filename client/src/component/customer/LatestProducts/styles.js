@@ -56,7 +56,6 @@ const useStyles = makeStyles((theme) => ({
 		fontSize: 18,
 		fontWeight: 300,
 		color: theme.palette.text.disabled,
-		maxWidth: '80%',
 	},
 	bottomTitle: {
 		display: 'flex',

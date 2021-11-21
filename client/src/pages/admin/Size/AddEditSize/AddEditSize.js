@@ -1,13 +1,12 @@
-import React, { useEffect, useState } from 'react'
-import { makeStyles } from '@material-ui/core/styles'
-import Modal from '@material-ui/core/Modal'
+import { Button, TextField, Typography } from '@material-ui/core'
 import Backdrop from '@material-ui/core/Backdrop'
 import Fade from '@material-ui/core/Fade'
-import { useStyles } from './styles'
-import { Button, TextField, Typography } from '@material-ui/core'
+import Modal from '@material-ui/core/Modal'
+import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { addSize, updateSize } from '../../../../redux/slices/sizeSlice'
 import { useDispatch } from 'react-redux'
+import { addSize, updateSize } from '../../../../redux/slices/sizeSlice'
+import { useStyles } from './styles'
 const AddEditSize = ({ open, handleClose, size }) => {
 	const classes = useStyles()
 	const dispatch = useDispatch()

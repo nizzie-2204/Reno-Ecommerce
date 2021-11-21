@@ -21,7 +21,7 @@ export const signUp = createAsyncThunk(
 
 			dispatch(getAllUser())
 
-			return
+			return result
 		} catch (error) {
 			return rejectWithValue(error.response)
 		}

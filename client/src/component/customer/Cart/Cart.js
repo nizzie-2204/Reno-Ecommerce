@@ -11,9 +11,10 @@ import {
 	TableRow,
 	Typography,
 } from '@material-ui/core'
-import React, { useState } from 'react'
+import React, { useEffect } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { BiMinus, BiPlus, BiRightArrowAlt, BiX } from 'react-icons/bi'
+import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import bgCart from '../../../assets/images/cart.svg'
 import CustomerLayout from '../CustomerLayout/CustomerLayout'
@@ -21,8 +22,11 @@ import { useStyles } from './styles'
 
 const Cart = () => {
 	const classes = useStyles()
+	const user = useSelector((state) => state.auth.user)
 
-	const [isEmpty, setIsEmpty] = useState(false)
+	useEffect(() => {
+		window.scrollTo(0, 0)
+	}, [])
 
 	return (
 		<>
@@ -31,7 +35,7 @@ const Cart = () => {
 				<meta name="description" content="Helmet application" />
 			</Helmet>
 			<CustomerLayout>
-				{!isEmpty ? (
+				{!user.cart.length > 0 ? (
 					<Box className={classes.list}>
 						<Typography component="h3" className={classes.headingCart}>
 							Shopping Cart

@@ -1,9 +1,4 @@
-import React, { useEffect, useState } from 'react'
-import { makeStyles } from '@material-ui/core/styles'
-import Modal from '@material-ui/core/Modal'
-import Backdrop from '@material-ui/core/Backdrop'
-import Fade from '@material-ui/core/Fade'
-import { useStyles } from './styles'
+import { yupResolver } from '@hookform/resolvers/yup'
 import {
 	Button,
 	FormControl,
@@ -14,14 +9,17 @@ import {
 	TextField,
 	Typography,
 } from '@material-ui/core'
-import { useDispatch } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
-import { Controller, useForm } from 'react-hook-form'
-import { yupResolver } from '@hookform/resolvers/yup'
-import * as yup from 'yup'
-import { addUser, updateUser } from '../../../../redux/slices/userSlice'
+import Backdrop from '@material-ui/core/Backdrop'
+import Fade from '@material-ui/core/Fade'
+import Modal from '@material-ui/core/Modal'
 import { unwrapResult } from '@reduxjs/toolkit'
+import React, { useEffect, useState } from 'react'
+import { Controller, useForm } from 'react-hook-form'
+import { useDispatch } from 'react-redux'
+import * as yup from 'yup'
 import { signUp } from '../../../../redux/slices/authSlice'
+import { updateUser } from '../../../../redux/slices/userSlice'
+import { useStyles } from './styles'
 
 const schema = yup.object().shape({
 	fullName: yup.string().required(),
@@ -39,7 +37,6 @@ const AddEditUser = ({ open, handleClose, user }) => {
 	}
 
 	const dispatch = useDispatch()
-	const navigate = useNavigate()
 	const {
 		register,
 		handleSubmit,
@@ -49,7 +46,6 @@ const AddEditUser = ({ open, handleClose, user }) => {
 	} = useForm({
 		resolver: yupResolver(schema),
 	})
-	const [error, setError] = useState()
 
 	const handleAddUser = (data) => {
 		const user = {

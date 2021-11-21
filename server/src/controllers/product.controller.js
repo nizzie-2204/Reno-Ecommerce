@@ -6,18 +6,10 @@ exports.getAllProduct = async (req, res, next) => {
 		const page = parseInt(req.query.page) || 1
 		const pageSize = parseInt(req.query.limit) || 100
 		const skip = (page - 1) * pageSize
-		const total = (await Product.countDocuments()) || 1
-		const pages = Math.ceil(total / pageSize)
+		let total = await Product.countDocuments()
+		let pages = Math.ceil(total / pageSize)
 
-		if (page > pages) {
-			console.log(page)
-			console.log(pages)
-			const error = new Error('No page found')
-			error.statusCode = 400
-			return next(error)
-		}
-
-		// Search name and category by keyword
+		// Search name and category
 		const keyword = req.query.search
 			? {
 					name: {
@@ -27,12 +19,27 @@ exports.getAllProduct = async (req, res, next) => {
 			  }
 			: {}
 		const category = req.query.category
-
 		// Sort and order
-		const orderBy = req.query.order === 'desc' ? -1 : 1
+		const orderBy = req.query.order === 'asc' ? 1 : -1
 		const sortBy = req.query.sortBy || 'createdAt'
 
-		if (category) {
+		if (Object.keys(keyword).length !== 0 && !category) {
+			const products = await Product.find({
+				...keyword,
+			})
+				.skip(skip)
+				.limit(pageSize)
+				.sort([[sortBy, orderBy]])
+				.populate('category')
+				.populate('size')
+			if (products.length < pageSize)
+				pages = Math.ceil(products.length / pageSize)
+
+			res.status(200).json({ count: products.length, page, pages, products })
+		} else if (
+			(Object.keys(keyword).length !== 0 && category) ||
+			(Object.keys(keyword).length === 0 && category)
+		) {
 			const products = await Product.find({
 				...keyword,
 				category: category,
@@ -42,6 +49,9 @@ exports.getAllProduct = async (req, res, next) => {
 				.sort([[sortBy, orderBy]])
 				.populate('category')
 				.populate('size')
+
+			if (products.length < pageSize)
+				pages = Math.ceil(products.length / pageSize)
 
 			res.status(200).json({ count: products.length, page, pages, products })
 		} else {
@@ -53,7 +63,12 @@ exports.getAllProduct = async (req, res, next) => {
 				.sort([[sortBy, orderBy]])
 				.populate('category')
 				.populate('size')
-
+			// if (
+			// 	products.length < pageSize &&
+			// 	Object.keys(keyword).length === 0 &&
+			// 	!category
+			// )
+			// 	pages = Math.ceil(products.length / pageSize)
 			res.status(200).json({ count: products.length, page, pages, products })
 		}
 	} catch (error) {

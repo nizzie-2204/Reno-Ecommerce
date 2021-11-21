@@ -65,7 +65,6 @@ const useStyles = makeStyles((theme) => ({
 	heading: {
 		fontSize: 30,
 		fontWeight: 700,
-		textTransform: 'capitalize',
 
 		[theme.breakpoints.down('md')]: {
 			fontSize: 26,
@@ -83,7 +82,6 @@ const useStyles = makeStyles((theme) => ({
 		fontSize: 18,
 		fontWeight: 300,
 		color: theme.palette.text.disabled,
-		maxWidth: '80%',
 	},
 	bottomTitle: {
 		display: 'flex',
@@ -144,9 +142,10 @@ const useStyles = makeStyles((theme) => ({
 	},
 	textField: {
 		width: 200,
+		marginLeft: 20,
 
-		'&:last-of-type': {
-			marginLeft: 20,
+		'& .MuiInputLabel-outlined': {
+			color: theme.palette.text.primary,
 		},
 
 		[theme.breakpoints.down('md')]: {
@@ -157,8 +156,49 @@ const useStyles = makeStyles((theme) => ({
 			width: 200,
 		},
 	},
+	selectHeading: {
+		fontSize: 20,
+		fontWeight: 500,
+	},
 	pagition: {
 		margin: '30px 0',
+
+		'& .MuiPaginationItem-root': {
+			fontSize: 16,
+			backgroundColor: 'transparent',
+			borderColor: 'transparent',
+			margin: '0 5px',
+			padding: '0 8px',
+
+			'&:hover': {
+				backgroundColor: '#ebebeb',
+			},
+		},
+
+		'& .MuiPaginationItem-page.Mui-selected': {
+			backgroundColor: theme.palette.primary.main,
+			color: theme.palette.text.secondary,
+			padding: '0 8px',
+			margin: '0 5px',
+
+			'&:hover': {
+				backgroundColor: theme.palette.primary.main,
+			},
+		},
+	},
+	select: {
+		display: 'flex',
+		alignItems: 'center',
+	},
+	loadingContainer: {
+		margin: '130px 0',
+	},
+	empty: {
+		fontSize: 20,
+		fontWeight: 500,
+		width: '100%',
+		textAlign: 'center',
+		padding: '100px 0',
 	},
 }))
 

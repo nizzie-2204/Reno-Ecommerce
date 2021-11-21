@@ -68,6 +68,16 @@ const useStyles = makeStyles((theme) => ({
 		border: '1px solid #e1e1e1',
 		marginRight: 10,
 		cursor: 'pointer',
+		transition: '0.3s',
+
+		'&:hover': {
+			backgroundColor: theme.palette.primary.main,
+			color: theme.palette.text.secondary,
+		},
+	},
+	activeSize: {
+		backgroundColor: theme.palette.primary.main,
+		color: theme.palette.text.secondary,
 	},
 	actions: {
 		display: 'flex',
@@ -94,6 +104,13 @@ const useStyles = makeStyles((theme) => ({
 			color: theme.palette.text.primary,
 			boxShadow: '0 5px 5px -2px rgb(0 0 0 / 50%)',
 		},
+	},
+	loadingContainer: {
+		height: 'calc(100vh - 140px)',
+		width: '100%',
+		display: 'flex',
+		alignItems: 'center',
+		justifyContent: 'center',
 	},
 }))
 

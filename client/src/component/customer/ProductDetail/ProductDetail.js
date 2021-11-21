@@ -1,21 +1,36 @@
+import { css } from '@emotion/react'
 import { Box, Button, Divider, Typography } from '@material-ui/core'
 import Rating from '@material-ui/lab/Rating'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { BiMinus, BiPlus } from 'react-icons/bi'
+import { useDispatch, useSelector } from 'react-redux'
 import { Carousel } from 'react-responsive-carousel'
 import 'react-responsive-carousel/lib/styles/carousel.min.css' // requires a loader
+import { useParams } from 'react-router-dom'
+import RingLoader from 'react-spinners/RingLoader'
+import { toast, ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
+import { getProduct } from '../../../redux/slices/productSlice'
 import CustomerLayout from '../CustomerLayout/CustomerLayout'
 import { useStyles } from './styles'
-import { useParams } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
-import { getProduct } from '../../../redux/slices/productSlice'
+
+const override = css`
+	display: block;
+	margin: 0 auto;
+`
 
 const ProductDetail = () => {
 	const classes = useStyles()
 	const dispatch = useDispatch()
 	const { id } = useParams()
+	const user = useSelector((state) => state.auth.user)
 	const product = useSelector((state) => state.product.product)
+	const productLoading = useSelector((state) => state.product.productLoading)
+
+	useEffect(() => {
+		window.scrollTo(0, 0)
+	}, [])
 
 	useEffect(() => {
 		const fetchProduct = () => {
@@ -25,7 +40,74 @@ const ProductDetail = () => {
 		fetchProduct()
 	}, [])
 
-	console.log(product)
+	const [quantity, setQuantity] = useState(1)
+	const handleIncreaseQuantity = () => {
+		if (quantity > product.quantity) return
+		else setQuantity(quantity + 1)
+	}
+
+	const handleDecreaseQuantity = () => {
+		if (quantity <= 1) return
+		else setQuantity(quantity - 1)
+	}
+
+	const [indexSize, setIndexSize] = useState()
+	const [size, setSize] = useState()
+	const handleChangeSize = (index, size) => {
+		setIndexSize(index)
+		setSize(size)
+	}
+
+	const handleAddToCart = () => {
+		if (indexSize === undefined) {
+			toast('Please choose your size', {
+				position: 'bottom-center',
+				autoClose: 3000,
+				hideProgressBar: false,
+				closeOnClick: true,
+				pauseOnHover: true,
+				draggable: true,
+				progress: undefined,
+				type: 'error',
+			})
+			return
+		} else {
+			toast('Add to cart successfully!', {
+				position: 'bottom-center',
+				autoClose: 3000,
+				hideProgressBar: false,
+				closeOnClick: true,
+				pauseOnHover: true,
+				draggable: true,
+				progress: undefined,
+				type: 'success',
+			})
+
+			const existedProductInCart = user.cart.find(
+				(item) => item._id === product._id
+			)
+
+			if (existedProductInCart) {
+				const productData = {
+					product,
+					quantity: existedProductInCart.quantity + 1,
+					chooseSize: size,
+				}
+
+				console.log(productData)
+			} else {
+				const productData = { product, quantity, chooseSize: size }
+				console.log(productData)
+			}
+
+			// const action = updateUser({
+			// 	cart: [...user.cart, productData]
+			// })
+			// dispatch(action).then(unwrapResult).then((res) => {
+			// 	console.log(res)
+			// }).catch(error => console.log(error ))
+		}
+	}
 	return (
 		<>
 			<Helmet>
@@ -35,7 +117,7 @@ const ProductDetail = () => {
 			<CustomerLayout>
 				<Box className={classes.detail}>
 					<>
-						{product && (
+						{!productLoading ? (
 							<>
 								<Box className={classes.imgContainer}>
 									<Carousel
@@ -71,8 +153,15 @@ const ProductDetail = () => {
 										<Typography component="p" style={{ marginRight: 20 }}>
 											Size
 										</Typography>
-										{product?.size?.map((size) => (
-											<Box className={classes.size}>{size.name}</Box>
+										{product?.size?.map((size, index) => (
+											<Box
+												className={`${classes.size}
+												${indexSize === index && classes.activeSize}
+												`}
+												onClick={() => handleChangeSize(index, size)}
+											>
+												{size.name}
+											</Box>
 										))}
 									</Box>
 									<Box className={classes.actions}>
@@ -80,17 +169,49 @@ const ProductDetail = () => {
 											Quantity
 										</Typography>
 										<Box className={classes.quantity}>
-											<BiMinus style={{ cursor: 'pointer' }} />
-											<Typography component="p">1</Typography>
-											<BiPlus style={{ cursor: 'pointer' }} />
+											<BiMinus
+												style={{ cursor: 'pointer' }}
+												onClick={handleDecreaseQuantity}
+											/>
+											<Typography
+												component="p"
+												style={{
+													userSelect: 'none',
+												}}
+											>
+												{quantity}
+											</Typography>
+											<BiPlus
+												style={{ cursor: 'pointer' }}
+												onClick={handleIncreaseQuantity}
+											/>
 										</Box>
-										<Button className={classes.add}>Add to Cart</Button>
+										<Button className={classes.add} onClick={handleAddToCart}>
+											Add to Cart
+										</Button>
 									</Box>
 								</Box>
 							</>
+						) : (
+							<Box className={classes.loadingContainer}>
+								<RingLoader css={override} size={140} />
+							</Box>
 						)}
 					</>
 				</Box>
+				<ToastContainer
+					position="bottom-center"
+					autoClose={3000}
+					hideProgressBar={false}
+					newestOnTop={false}
+					closeOnClick
+					rtl={false}
+					pauseOnFocusLoss
+					draggable
+					pauseOnHover
+					theme="dark"
+					type="default"
+				/>
 			</CustomerLayout>
 		</>
 	)

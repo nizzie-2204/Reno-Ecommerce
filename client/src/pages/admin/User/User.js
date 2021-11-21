@@ -12,15 +12,15 @@ import {
 	TextField,
 	Typography,
 } from '@material-ui/core'
+import TablePagination from '@material-ui/core/TablePagination'
 import React, { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
-import AdminLayout from '../../../component/admin/AdminLayout/AdminLayout'
-import { useStyles } from './styles'
-import { BiMinus, BiPlus, BiSearchAlt2, BiX, BiPencil } from 'react-icons/bi'
-import AddEditUser from './AddEditUser/AddEditUser'
+import { BiPencil, BiSearchAlt2, BiX } from 'react-icons/bi'
 import { useDispatch, useSelector } from 'react-redux'
+import AdminLayout from '../../../component/admin/AdminLayout/AdminLayout'
 import { deleteUser, getAllUser } from '../../../redux/slices/userSlice'
-import TablePagination from '@material-ui/core/TablePagination'
+import AddEditUser from './AddEditUser/AddEditUser'
+import { useStyles } from './styles'
 
 const User = () => {
 	const classes = useStyles()

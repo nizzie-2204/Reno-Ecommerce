@@ -14,17 +14,20 @@ import {
 	Toolbar,
 	Typography,
 } from '@material-ui/core'
-import React, { useEffect, useState } from 'react'
+import queryString from 'query-string'
+import React, { useRef, useState } from 'react'
 import { BiCartAlt, BiMenu, BiSearchAlt2 } from 'react-icons/bi'
-import { Link } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import logo from '../../../assets/images/logo.jpg'
+import { getAllProduct } from '../../../redux/slices/productSlice'
 import Dropdown from './Drawer/Dropdown'
 import { useStyles } from './styles'
-import { useNavigate } from 'react-router-dom'
-import { useSelector } from 'react-redux'
 
 const Header = () => {
 	const navigate = useNavigate()
+	const dispatch = useDispatch()
+	const [searchParams, setsearchParams] = useSearchParams()
 	const classes = useStyles()
 	const user = useSelector((state) => state.auth.user)
 	const token = localStorage.getItem('token')
@@ -73,6 +76,25 @@ const Header = () => {
 
 	const handleNavigateOrder = () => {
 		navigate('/order')
+	}
+
+	const searchRef = useRef('')
+	const handleChangeSearchTearm = (e) => {
+		searchRef.current = e.target.value
+	}
+
+	const handleSearch = () => {
+		const search = searchRef.current
+		if (search === '') return
+		const params = queryString.stringify({ search })
+		setsearchParams({ search })
+		navigate({
+			pathname: '/shop',
+			search: `${params}`,
+		})
+
+		const action = getAllProduct(params)
+		dispatch(action)
 	}
 
 	return (
@@ -130,18 +152,28 @@ const Header = () => {
 							placeholder="Search here ..."
 							InputProps={{
 								endAdornment: (
-									<InputAdornment position="end">
+									<InputAdornment
+										position="end"
+										style={{ cursor: 'pointer', fontSize: 20 }}
+										onClick={handleSearch}
+									>
 										<BiSearchAlt2 />
 									</InputAdornment>
 								),
 							}}
+							onChange={handleChangeSearchTearm}
+							ref={searchRef}
+							defaultValue={searchParams.get('search')}
 						/>
 						<IconButton
 							disableRipple
-							style={{ backgroundColor: 'transparent' }}
+							className={classes.cartContainer}
 							onClick={handleRedirect}
 						>
 							<BiCartAlt className={classes.cart} />
+							<Typography component="p" className={classes.cartQuantity}>
+								{user?.cart?.length || 0}
+							</Typography>
 						</IconButton>
 						{token ? (
 							<>

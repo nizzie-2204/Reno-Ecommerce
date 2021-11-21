@@ -16,12 +16,7 @@ const userSchema = Schema(
 		},
 		email: { type: String, required: true, unique: true, trim: true },
 		isAdmin: { type: Boolean, default: false },
-		cart: [
-			{
-				productId: { type: Schema.Types.ObjectId, ref: 'Product' },
-				quantity: { type: Number },
-			},
-		],
+		cart: [],
 	},
 	{ timestamps: true }
 )

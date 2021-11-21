@@ -4,16 +4,7 @@ const { Schema } = mongoose
 const orderSchema = Schema(
 	{
 		userId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
-		orderItems: [
-			{
-				productId: {
-					type: Schema.Types.ObjectId,
-					ref: 'Product',
-					required: true,
-				},
-				quantity: { type: Number, default: 1 },
-			},
-		],
+		orderItems: [],
 		paymentMethod: {
 			type: String,
 			required: true,
