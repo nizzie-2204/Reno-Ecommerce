@@ -1,6 +1,7 @@
 import {
 	Box,
 	Button,
+	Checkbox,
 	Hidden,
 	Paper,
 	Table,
@@ -35,7 +36,7 @@ const Cart = () => {
 				<meta name="description" content="Helmet application" />
 			</Helmet>
 			<CustomerLayout>
-				{!user.cart.length > 0 ? (
+				{!user?.cart?.length > 0 ? (
 					<Box className={classes.list}>
 						<Typography component="h3" className={classes.headingCart}>
 							Shopping Cart
@@ -48,7 +49,7 @@ const Cart = () => {
 							<Table className={classes.table} aria-label="simple table">
 								<TableHead>
 									<TableRow>
-										<TableCell align="center" className={classes.tableHead}>
+										<TableCell colSpan={2} className={classes.tableHead}>
 											Product
 										</TableCell>
 										<TableCell align="center" className={classes.tableHead}>
@@ -60,19 +61,28 @@ const Cart = () => {
 										<TableCell align="center" className={classes.tableHead}>
 											Total
 										</TableCell>
-										<TableCell
-											align="center"
-											className={classes.tableHead}
-										></TableCell>
+										<TableCell align="center" className={classes.tableHead}>
+											Remove
+										</TableCell>
 									</TableRow>
 								</TableHead>
 								<TableBody>
-									<TableRow>
+									<TableRow
+										className={classes.tableROw}
+										style={{ backgroundColor: '#fff3ed' }}
+									>
+										<TableCell>
+											<Checkbox
+												color="primary"
+												// checked={true}
+												className={classes.checkbox}
+											/>
+										</TableCell>
 										<TableCell
 											component="th"
 											scope="row"
 											className={classes.cellProduct}
-											align="center"
+											style={{ justifyContent: 'flex-start' }}
 										>
 											<img
 												src="https://i.imgur.com/EZxObwA.jpeg"
@@ -84,12 +94,15 @@ const Cart = () => {
 											</Typography>
 										</TableCell>
 										<TableCell align="center">£69.99</TableCell>
-										<TableCell align="center">
+										<TableCell align="center" style={{ position: 'relative' }}>
 											<Box className={classes.quantity}>
 												<BiMinus style={{ cursor: 'pointer' }} />
 												<Typography component="body2">1</Typography>
 												<BiPlus style={{ cursor: 'pointer' }} />
 											</Box>
+											<Typography component="p" className={classes.inStock}>
+												In stock: 4
+											</Typography>
 										</TableCell>
 										<TableCell align="center">£69.99</TableCell>
 										<TableCell align="center">

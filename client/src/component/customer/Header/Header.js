@@ -20,6 +20,7 @@ import { BiCartAlt, BiMenu, BiSearchAlt2 } from 'react-icons/bi'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import logo from '../../../assets/images/logo.jpg'
+import { clearUser } from '../../../redux/slices/authSlice'
 import { getAllProduct } from '../../../redux/slices/productSlice'
 import Dropdown from './Drawer/Dropdown'
 import { useStyles } from './styles'
@@ -72,6 +73,8 @@ const Header = () => {
 	const handleLogout = () => {
 		localStorage.clear()
 		navigate('/login')
+		const action = clearUser()
+		dispatch(action)
 	}
 
 	const handleNavigateOrder = () => {

@@ -85,6 +85,11 @@ const useStyles = makeStyles((theme) => ({
 		padding: '10px 15px',
 		marginBottom: 20,
 	},
+	inStock: {
+		flexDirection: 'row',
+		alignItems: 'center',
+		marginBottom: 30,
+	},
 }))
 
 export { useStyles }

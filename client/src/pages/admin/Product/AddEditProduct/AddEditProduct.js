@@ -6,14 +6,18 @@ import {
 	Box,
 	Button,
 	Checkbox,
+	FormControl,
+	FormControlLabel,
 	MenuItem,
+	Radio,
+	RadioGroup,
 	TextField,
 	Typography,
 } from '@material-ui/core'
 import 'react-responsive-carousel/lib/styles/carousel.min.css' // requires a loader
 import { Carousel } from 'react-responsive-carousel'
 import Autocomplete from '@material-ui/lab/Autocomplete'
-import { useForm } from 'react-hook-form'
+import { Controller, useForm } from 'react-hook-form'
 import { useDispatch, useSelector } from 'react-redux'
 import { BiCheckbox, BiCheckboxChecked } from 'react-icons/bi'
 import { getAllCategory } from '../../../../redux/slices/categorySlice'
@@ -50,7 +54,6 @@ const AddEditProduct = () => {
 	}, [])
 
 	// autocomplete
-
 	const [value, setValue] = useState([])
 
 	// Handle select multiple images
@@ -64,6 +67,7 @@ const AddEditProduct = () => {
 				desc: location.state.desc,
 				price: location.state.price,
 				quantity: location.state.quantity,
+				inStock: location.state.inStock.toString(),
 			})
 			setImagesDisplay(() => {
 				return location.state.images.map((image) => {
@@ -99,6 +103,7 @@ const AddEditProduct = () => {
 
 	// handle product
 	const handleAddProduct = (data) => {
+		console.log(data)
 		if (imagesUpload.length === 0) {
 			setError('Images are required')
 			return
@@ -224,14 +229,53 @@ const AddEditProduct = () => {
 								{...register('price')}
 								required
 							/>
-							<TextField
-								label="Quantity"
-								type="number"
-								variant="outlined"
-								className={classes.inputGroup}
-								{...register('quantity')}
-								required
-							/>
+							<FormControl component="fieldset" className={classes.inStock}>
+								<Typography variant="body1" style={{ marginRight: 20 }}>
+									In stock:{' '}
+								</Typography>
+								<Controller
+									rules={{ required: true }}
+									control={control}
+									defaultValue={location?.state?.inStock.toString() || 'true'}
+									{...register('inStock')}
+									required
+									render={({ field }) => {
+										const { onBlur, onChange, value } = field
+										return (
+											<RadioGroup style={{ flexDirection: 'row' }} {...field}>
+												<FormControlLabel
+													value="true"
+													control={
+														<Radio
+															style={{
+																color: '#1a202c',
+																'&$checked': {
+																	color: '#1a202c',
+																},
+															}}
+														/>
+													}
+													label="True"
+												/>
+												<FormControlLabel
+													value="false"
+													control={
+														<Radio
+															style={{
+																color: '#1a202c',
+																'&$checked': {
+																	color: '#1a202c',
+																},
+															}}
+														/>
+													}
+													label="false"
+												/>
+											</RadioGroup>
+										)
+									}}
+								/>
+							</FormControl>
 							<TextField
 								className={classes.inputGroup}
 								id="select"

@@ -75,6 +75,15 @@ const useStyles = makeStyles((theme) => ({
 			color: theme.palette.text.secondary,
 		},
 	},
+	sizeDisabled: {
+		padding: 10,
+		borderRadius: '50%',
+		border: '1px solid #e1e1e1',
+		marginRight: 10,
+		transition: '0.3s',
+		opacity: 0.5,
+		cursor: 'not-allowed',
+	},
 	activeSize: {
 		backgroundColor: theme.palette.primary.main,
 		color: theme.palette.text.secondary,
@@ -105,12 +114,41 @@ const useStyles = makeStyles((theme) => ({
 			boxShadow: '0 5px 5px -2px rgb(0 0 0 / 50%)',
 		},
 	},
+	addDisabled: {
+		marginLeft: 50,
+		padding: '10px 30px',
+		minWidth: 155,
+		borderRadius: 10,
+		backgroundColor: theme.palette.primary.main,
+		color: theme.palette.text.secondary,
+		opacity: 0.5,
+		cursor: 'not-allowed',
+
+		'&:hover': {
+			backgroundColor: theme.palette.primary.main,
+			color: theme.palette.text.secondary,
+		},
+	},
 	loadingContainer: {
 		height: 'calc(100vh - 140px)',
 		width: '100%',
 		display: 'flex',
 		alignItems: 'center',
 		justifyContent: 'center',
+	},
+	watermark: {
+		position: 'absolute',
+		top: '50%',
+		left: '50%',
+		transform: 'translate(-50%, -50%)',
+		padding: 20,
+		display: 'flex',
+		alignItems: 'center',
+		justifyContent: 'center',
+		backgroundColor: 'rgba(0, 0, 0, 0.8)',
+		color: theme.palette.text.secondary,
+		borderRadius: 15,
+		fontSize: 40,
 	},
 }))
 

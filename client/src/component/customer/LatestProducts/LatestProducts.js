@@ -18,7 +18,7 @@ const LatestProducts = () => {
 	const classes = useStyles()
 	const dispatch = useDispatch()
 	const navigate = useNavigate()
-	const products = useSelector((state) => state.product.products.products)
+	const products = useSelector((state) => state.product.products)
 	useEffect(() => {
 		const fetchProducts = () => {
 			const params = 'limit=8'

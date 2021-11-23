@@ -61,6 +61,7 @@ const Shop = () => {
 		limit: 12,
 	})
 
+	// Change page pagination
 	const handleChange = (event, value) => {
 		if (value === filter.page) return
 

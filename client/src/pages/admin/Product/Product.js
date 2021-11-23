@@ -112,7 +112,7 @@ const Product = () => {
 												Price
 											</TableCell>
 											<TableCell align="center" className={classes.tableHead}>
-												Quantity
+												In stock
 											</TableCell>
 											<TableCell align="center" className={classes.tableHead}>
 												Actions
@@ -149,7 +149,7 @@ const Product = () => {
 															${product.price}
 														</TableCell>
 														<TableCell align="center">
-															{product.quantity}
+															{product.inStock.toString()}
 														</TableCell>
 														<TableCell align="center">
 															<BiPencil

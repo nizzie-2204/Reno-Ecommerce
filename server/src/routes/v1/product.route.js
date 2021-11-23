@@ -18,7 +18,7 @@ router
 router
 	.route('/products/:id')
 	.put(verifyToken, verifyTokenAdmin, updateProduct)
-	.get(verifyToken, getProduct)
+	.get(getProduct)
 	.delete(verifyToken, verifyTokenAdmin, deleteProduct)
 
 module.exports = router

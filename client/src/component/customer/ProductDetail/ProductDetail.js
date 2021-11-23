@@ -42,11 +42,15 @@ const ProductDetail = () => {
 
 	const [quantity, setQuantity] = useState(1)
 	const handleIncreaseQuantity = () => {
+		if (!product.inStock) return
+
 		if (quantity > product.quantity) return
 		else setQuantity(quantity + 1)
 	}
 
 	const handleDecreaseQuantity = () => {
+		if (!product.inStock) return
+
 		if (quantity <= 1) return
 		else setQuantity(quantity - 1)
 	}
@@ -54,11 +58,15 @@ const ProductDetail = () => {
 	const [indexSize, setIndexSize] = useState()
 	const [size, setSize] = useState()
 	const handleChangeSize = (index, size) => {
+		if (!product.inStock) return
 		setIndexSize(index)
 		setSize(size)
 	}
 
 	const handleAddToCart = () => {
+		if (!product.inStock) return
+
+		// Empty size
 		if (indexSize === undefined) {
 			toast('Please choose your size', {
 				position: 'bottom-center',
@@ -71,8 +79,12 @@ const ProductDetail = () => {
 				type: 'error',
 			})
 			return
-		} else {
-			toast('Add to cart successfully!', {
+		}
+
+		// Unauthenticated
+		console.log(user)
+		if (Object.keys(user).length === 0) {
+			toast('Please login to continue', {
 				position: 'bottom-center',
 				autoClose: 3000,
 				hideProgressBar: false,
@@ -80,33 +92,44 @@ const ProductDetail = () => {
 				pauseOnHover: true,
 				draggable: true,
 				progress: undefined,
-				type: 'success',
+				type: 'error',
 			})
-
-			const existedProductInCart = user.cart.find(
-				(item) => item._id === product._id
-			)
-
-			if (existedProductInCart) {
-				const productData = {
-					product,
-					quantity: existedProductInCart.quantity + 1,
-					chooseSize: size,
-				}
-
-				console.log(productData)
-			} else {
-				const productData = { product, quantity, chooseSize: size }
-				console.log(productData)
-			}
-
-			// const action = updateUser({
-			// 	cart: [...user.cart, productData]
-			// })
-			// dispatch(action).then(unwrapResult).then((res) => {
-			// 	console.log(res)
-			// }).catch(error => console.log(error ))
+			return
 		}
+		// toast('Add to cart successfully!', {
+		// 	position: 'bottom-center',
+		// 	autoClose: 3000,
+		// 	hideProgressBar: false,
+		// 	closeOnClick: true,
+		// 	pauseOnHover: true,
+		// 	draggable: true,
+		// 	progress: undefined,
+		// 	type: 'success',
+		// })
+
+		// const existedProductInCart = user.cart.find(
+		// 	(item) => item._id === product._id
+		// )
+
+		// if (existedProductInCart) {
+		// 	const productData = {
+		// 		product,
+		// 		quantity: existedProductInCart.quantity + 1,
+		// 		chooseSize: size,
+		// 	}
+
+		// 	console.log(productData)
+		// } else {
+		// 	const productData = { product, quantity, chooseSize: size }
+		// 	console.log(productData)
+		// }
+
+		// const action = updateUser({
+		// 	cart: [...user.cart, productData]
+		// })
+		// dispatch(action).then(unwrapResult).then((res) => {
+		// 	console.log(res)
+		// }).catch(error => console.log(error ))
 	}
 	return (
 		<>
@@ -126,8 +149,16 @@ const ProductDetail = () => {
 										showStatus={false}
 									>
 										{product?.images?.map((image) => (
-											<Box>
+											<Box style={{ position: 'relative' }}>
 												<img src={image.preview} alt="product" />
+												{!product.inStock && (
+													<Typography
+														component="p"
+														className={classes.watermark}
+													>
+														Sold out
+													</Typography>
+												)}
 											</Box>
 										))}
 									</Carousel>
@@ -155,7 +186,9 @@ const ProductDetail = () => {
 										</Typography>
 										{product?.size?.map((size, index) => (
 											<Box
-												className={`${classes.size}
+												className={`${
+													product.inStock ? classes.size : classes.sizeDisabled
+												}
 												${indexSize === index && classes.activeSize}
 												`}
 												onClick={() => handleChangeSize(index, size)}
@@ -186,7 +219,13 @@ const ProductDetail = () => {
 												onClick={handleIncreaseQuantity}
 											/>
 										</Box>
-										<Button className={classes.add} onClick={handleAddToCart}>
+										<Button
+											disableRipple={!product.inStock && true}
+											className={
+												product.inStock ? classes.add : classes.addDisabled
+											}
+											onClick={handleAddToCart}
+										>
 											Add to Cart
 										</Button>
 									</Box>

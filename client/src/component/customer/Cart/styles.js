@@ -151,6 +151,21 @@ const useStyles = makeStyles((theme) => ({
 			color: theme.palette.text.secondary,
 		},
 	},
+	inStock: {
+		fontSize: 14,
+		position: 'absolute',
+		bottom: 15,
+		left: '50%',
+		transform: 'translateX(-50%)',
+		// paddingTop: 10,
+	},
+	tableRow: {
+		display: 'flex',
+		alignItems: 'center',
+	},
+	checkbox: {
+		color: theme.palette.text.primary,
+	},
 }))
 
 export { useStyles }

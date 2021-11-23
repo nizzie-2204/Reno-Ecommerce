@@ -33,7 +33,11 @@ const authSlice = createSlice({
 	initialState: {
 		user: {},
 	},
-	reducers: {},
+	reducers: {
+		clearUser: (state) => {
+			state.user = {}
+		},
+	},
 	extraReducers: {
 		[login.fulfilled]: (state, action) => {
 			// console.log(action.payload.user)
@@ -42,4 +46,5 @@ const authSlice = createSlice({
 	},
 })
 
+export const { clearUser } = authSlice.actions
 export default authSlice.reducer
