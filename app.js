@@ -4,7 +4,7 @@ const path = require('path')
 const helmet = require('helmet')
 const cors = require('cors')
 const fileUpload = require('express-fileupload')
-require('dotenv').config()
+// require('dotenv').config()
 
 const { errorHandler } = require('./src/middlewares/errorHandler')
 const { connectDB } = require('./src/configs/mongodb')
