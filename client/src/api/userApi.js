@@ -26,15 +26,15 @@ const userAPI = {
 		return await axiosClient.delete(url)
 	},
 
-	forgotPassword: async (email) => {
-		const url = '/users/forgot-password'
-		return await axiosClient.post(url, { email })
-	},
+	// forgotPassword: async (email) => {
+	// 	const url = '/users/forgot-password'
+	// 	return await axiosClient.post(url, { email })
+	// },
 
-	resetPassword: async (id, token) => {
-		const url = `/users/password-reset/:${id}/:${token}`
-		return await axiosClient.post(url)
-	},
+	// resetPassword: async (id, token) => {
+	// 	const url = `/users/password-reset/:${id}/:${token}`
+	// 	return await axiosClient.post(url)
+	// },
 }
 
 export default userAPI

@@ -1,5 +1,6 @@
 const express = require('express')
 const morgan = require('morgan')
+const path = require('path')
 const helmet = require('helmet')
 const cors = require('cors')
 const fileUpload = require('express-fileupload')
@@ -53,6 +54,23 @@ app.all('*', (req, res, next) => {
 
 // Error handle
 app.use(errorHandler)
+
+// Serve static assets if in production
+if (process.env.NODE_ENV === 'production') {
+	// Set static folder
+	app.use(express.static(path.join(__dirname, 'client/build')))
+
+	app.get('*', function (_, res) {
+		res.sendFile(
+			path.join(__dirname, './client/build/index.html'),
+			function (err) {
+				if (err) {
+					res.status(500).send(err)
+				}
+			}
+		)
+	})
+}
 
 const port = process.env.PORT || 5000
 app.listen(port, () => {
