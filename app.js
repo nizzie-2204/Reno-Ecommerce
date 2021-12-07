@@ -4,7 +4,6 @@ const path = require('path')
 const helmet = require('helmet')
 const cors = require('cors')
 const fileUpload = require('express-fileupload')
-// require('dotenv').config()
 
 const { errorHandler } = require('./src/middlewares/errorHandler')
 const { connectDB } = require('./src/configs/mongodb')
@@ -56,22 +55,23 @@ app.all('*', (req, res, next) => {
 app.use(errorHandler)
 
 // Serve static assets if in production
+if (process.env.NODE_ENV === 'production') {
+	// Set static folder
+	app.use(express.static(path.join(__dirname, 'client/build')))
 
-// Set static folder
-app.use(express.static(path.join(__dirname, 'client/build')))
-
-app.get('*', function (_, res) {
-	res.sendFile(
-		path.join(__dirname, './client/build/index.html'),
-		function (err) {
-			if (err) {
-				res.status(500).send(err)
+	app.get('*', function (_, res) {
+		res.sendFile(
+			path.join(__dirname, './client/build/index.html'),
+			function (err) {
+				if (err) {
+					res.status(500).send(err)
+				}
 			}
-		}
-	)
-})
+		)
+	})
+}
 
 const port = process.env.PORT || 5000
-app.listen(port, () => {
+app.listen(port || 5000, () => {
 	console.log(`Listening: http://localhost:${port}`)
 })
