@@ -2,9 +2,13 @@ const Order = require('../models/order.model')
 
 exports.getAllOrder = async (req, res, next) => {
 	try {
-		const orders = await Order.find()
-
-		res.status(200).json({ orders })
+		if (req.user.id) {
+			const orders = await Order.find({ userId: req.user.id })
+			res.status(200).json({ orders })
+		} else {
+			const orders = await Order.find()
+			res.status(200).json({ orders })
+		}
 	} catch (error) {
 		next(error)
 	}
@@ -26,7 +30,8 @@ exports.getOrder = async (req, res, next) => {
 
 exports.addlOrder = async (req, res, next) => {
 	try {
-		const order = await Order.create(req.body)
+		console.log(req.body)
+		const order = await Order.create(req.body.data)
 
 		res.status(200).json({ order })
 	} catch (error) {

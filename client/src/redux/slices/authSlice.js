@@ -1,6 +1,8 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import authAPI from '../../api/authApi'
-import { getAllUser } from '../slices/userSlice'
+import paymentAPI from '../../api/paymentApi'
+import userAPI from '../../api/userApi'
+import { getAllUser, getUser } from '../slices/userSlice'
 
 export const login = createAsyncThunk(
 	'auth/login',
@@ -28,6 +30,34 @@ export const signUp = createAsyncThunk(
 	}
 )
 
+export const updateUser = createAsyncThunk(
+	'user/updateUser',
+	async (data, { rejectWithValue, dispatch }) => {
+		try {
+			const result = await userAPI.updateUser(data)
+
+			dispatch(getUser(data._id))
+
+			return result
+		} catch (error) {
+			return rejectWithValue(error.response)
+		}
+	}
+)
+
+export const payment = createAsyncThunk(
+	'user/payment',
+	async (data, { rejectWithValue, dispatch }) => {
+		try {
+			const result = paymentAPI.addPayment(data)
+
+			return result
+		} catch (error) {
+			return rejectWithValue(error.response)
+		}
+	}
+)
+
 const authSlice = createSlice({
 	name: 'auth',
 	initialState: {
@@ -41,6 +71,9 @@ const authSlice = createSlice({
 	extraReducers: {
 		[login.fulfilled]: (state, action) => {
 			// console.log(action.payload.user)
+			state.user = action.payload.user
+		},
+		[updateUser.fulfilled]: (state, action) => {
 			state.user = action.payload.user
 		},
 	},

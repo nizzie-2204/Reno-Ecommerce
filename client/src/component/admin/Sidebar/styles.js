@@ -34,20 +34,30 @@ const useStyles = makeStyles((theme) => ({
 		fontSize: 20,
 		display: 'flex',
 		alignItems: 'center',
-		padding: '10px 20px',
 		cursor: 'pointer',
-		borderRadius: 6,
 		transition: '0.3s',
 		color: theme.palette.text.primary,
+		borderRadius: 6,
 
-		'&:hover': {
-			textDecoration: 'none',
+		'&.active > li': {
 			backgroundColor: 'rgb(240, 240, 255)',
+		},
+
+		'& .MuiListItem-root': {
+			transition: '0.3s',
+			borderRadius: 6,
+			padding: '10px 20px',
+
+			'&:hover': {
+				textDecoration: 'none',
+				backgroundColor: 'rgb(240, 240, 255)',
+				borderRadius: 6,
+			},
 		},
 	},
 
 	sidebarList: {
-		padding: 15,
+		padding: 10,
 	},
 
 	sidebarListItem: {

@@ -1,7 +1,6 @@
 import {
 	Box,
 	Button,
-	Checkbox,
 	Hidden,
 	Paper,
 	Table,
@@ -12,22 +11,152 @@ import {
 	TableRow,
 	Typography,
 } from '@material-ui/core'
-import React, { useEffect } from 'react'
+import { unwrapResult } from '@reduxjs/toolkit'
+import React, { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { BiMinus, BiPlus, BiRightArrowAlt, BiX } from 'react-icons/bi'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import bgCart from '../../../assets/images/cart.svg'
+import { payment, updateUser } from '../../../redux/slices/authSlice'
 import CustomerLayout from '../CustomerLayout/CustomerLayout'
 import { useStyles } from './styles'
+import StripeCheckout from 'react-stripe-checkout'
+import { nanoid } from 'nanoid'
+import { useNavigate } from 'react-router-dom'
+import { addOrder } from '../../../redux/slices/order'
+
+const KEY = process.env.REACT_APP_STRIPE_KEY
 
 const Cart = () => {
 	const classes = useStyles()
 	const user = useSelector((state) => state.auth.user)
+	const dispatch = useDispatch()
+	const navigate = useNavigate()
 
 	useEffect(() => {
 		window.scrollTo(0, 0)
 	}, [])
+
+	const handleIncreaseQuantity = (product) => {
+		const thisProductInCart = user.cart.find((productInCart) => {
+			return productInCart.product.id === product._id
+		})
+		const newProduct = {
+			...thisProductInCart,
+			quantity: thisProductInCart.quantity + 1,
+		}
+
+		const filteredProducts = user.cart.filter((productInCart) => {
+			return (
+				productInCart.product.id !== product._id ||
+				(productInCart.product.id === product._id &&
+					productInCart.chooseSize !== product.chooseSize)
+			)
+		})
+
+		const action = updateUser({
+			_id: user._id,
+			cart: [...filteredProducts, newProduct],
+		})
+		dispatch(action)
+	}
+
+	const handleDecreaseQuantity = (product) => {
+		if (product.quantity - 1 === 0) {
+			const filteredProducts = user.cart.filter((productInCart) => {
+				return (
+					productInCart.product.id !== product._id ||
+					(productInCart.product.id === product._id &&
+						productInCart.chooseSize !== product.chooseSize)
+				)
+			})
+
+			const action = updateUser({
+				_id: user._id,
+				cart: filteredProducts,
+			})
+			dispatch(action)
+		} else {
+			const thisProductInCart = user.cart.find((productInCart) => {
+				return productInCart.product.id === product._id
+			})
+
+			const newProduct = {
+				...thisProductInCart,
+				quantity: thisProductInCart.quantity - 1,
+			}
+
+			const filteredProducts = user.cart.filter((productInCart) => {
+				return (
+					productInCart.product.id !== product._id ||
+					(productInCart.product.id === product._id &&
+						productInCart.chooseSize !== product.chooseSize)
+				)
+			})
+
+			const cloneProducts = user.cart
+			// cloneProducts.splice()
+
+			const action = updateUser({
+				_id: user._id,
+				cart: [...filteredProducts, newProduct],
+			})
+			dispatch(action)
+		}
+	}
+
+	const handleDeleteProduct = (product) => {
+		const filteredProducts = user.cart.filter((productInCart) => {
+			return (
+				productInCart.product._id !== product.product._id ||
+				(productInCart.chooseSize._id !== product.chooseSize._id &&
+					productInCart.product._id === product.product._id)
+			)
+		})
+
+		console.log(filteredProducts)
+
+		const action = updateUser({
+			_id: user._id,
+			cart: filteredProducts,
+		})
+		dispatch(action)
+	}
+
+	const total = user?.cart?.reduce((sum, price) => {
+		return sum + price.product.price * price.quantity
+	}, 0)
+
+	const onToken = (token) => {
+		console.log(token)
+		const action = payment({
+			tokenId: token.id,
+			amount: total * 100,
+		})
+		dispatch(action)
+			.then(unwrapResult)
+			.then((res) => {
+				const action = addOrder({
+					userId: user._id,
+					orderItems: user.cart,
+					paymentMethod: 'Card',
+					totalPrice: total,
+					address: token.card.name,
+				})
+				dispatch(action)
+				const action2 = updateUser({
+					_id: user._id,
+					cart: [],
+				})
+				dispatch(action2)
+					.then(unwrapResult)
+					.then((res) => {
+						navigate('/order')
+					})
+			})
+			.catch((error) => console.log(error))
+	}
 
 	return (
 		<>
@@ -36,21 +165,22 @@ const Cart = () => {
 				<meta name="description" content="Helmet application" />
 			</Helmet>
 			<CustomerLayout>
-				{!user?.cart?.length > 0 ? (
+				{user?.cart?.length > 0 ? (
 					<Box className={classes.list}>
 						<Typography component="h3" className={classes.headingCart}>
 							Shopping Cart
 						</Typography>
 						<TableContainer
 							component={Paper}
-							elevation="0"
+							elevation={0}
 							style={{ marginBottom: 25 }}
 						>
 							<Table className={classes.table} aria-label="simple table">
 								<TableHead>
 									<TableRow>
-										<TableCell colSpan={2} className={classes.tableHead}>
-											Product
+										<TableCell className={classes.tableHead}>Product</TableCell>
+										<TableCell align="center" className={classes.tableHead}>
+											Size
 										</TableCell>
 										<TableCell align="center" className={classes.tableHead}>
 											Price
@@ -67,48 +197,57 @@ const Cart = () => {
 									</TableRow>
 								</TableHead>
 								<TableBody>
-									<TableRow
-										className={classes.tableROw}
-										style={{ backgroundColor: '#fff3ed' }}
-									>
-										<TableCell>
-											<Checkbox
-												color="primary"
-												// checked={true}
-												className={classes.checkbox}
-											/>
-										</TableCell>
-										<TableCell
-											component="th"
-											scope="row"
-											className={classes.cellProduct}
-											style={{ justifyContent: 'flex-start' }}
-										>
-											<img
-												src="https://i.imgur.com/EZxObwA.jpeg"
-												alt="product"
-												className={classes.imgProduct}
-											/>
-											<Typography component="body2">
-												Leather Mens Slipper
-											</Typography>
-										</TableCell>
-										<TableCell align="center">£69.99</TableCell>
-										<TableCell align="center" style={{ position: 'relative' }}>
-											<Box className={classes.quantity}>
-												<BiMinus style={{ cursor: 'pointer' }} />
-												<Typography component="body2">1</Typography>
-												<BiPlus style={{ cursor: 'pointer' }} />
-											</Box>
-											<Typography component="p" className={classes.inStock}>
-												In stock: 4
-											</Typography>
-										</TableCell>
-										<TableCell align="center">£69.99</TableCell>
-										<TableCell align="center">
-											<BiX style={{ cursor: 'pointer', fontSize: 20 }} />
-										</TableCell>
-									</TableRow>
+									{user.cart.map((product) => (
+										<TableRow key={nanoid()} className={classes.tableROw}>
+											<TableCell
+												component="th"
+												scope="row"
+												className={classes.cellProduct}
+												style={{ justifyContent: 'flex-start' }}
+											>
+												<img
+													src={product.product.images[0].preview}
+													alt="product"
+													className={classes.imgProduct}
+												/>
+												<Typography component="span">
+													{product.product.name}
+												</Typography>
+											</TableCell>
+											<TableCell align="center">
+												{product.chooseSize.name}
+											</TableCell>
+											<TableCell align="center">
+												$ {product.product.price}
+											</TableCell>
+											<TableCell align="center">
+												<Box className={classes.quantity}>
+													<BiMinus
+														onClick={() => handleDecreaseQuantity(product)}
+														style={{ cursor: 'pointer' }}
+													/>
+													<Typography component="span">
+														{product.quantity}
+													</Typography>
+													<BiPlus
+														onClick={() => handleIncreaseQuantity(product)}
+														style={{
+															cursor: 'pointer',
+														}}
+													/>
+												</Box>
+											</TableCell>
+											<TableCell align="center">
+												£{`${product.quantity * product.product.price}`}
+											</TableCell>
+											<TableCell align="center">
+												<BiX
+													onClick={() => handleDeleteProduct(product)}
+													style={{ cursor: 'pointer', fontSize: 20 }}
+												/>
+											</TableCell>
+										</TableRow>
+									))}
 								</TableBody>
 							</Table>
 						</TableContainer>
@@ -117,10 +256,26 @@ const Cart = () => {
 								Continue shopping
 							</Button>
 							<Box className={classes.checkout}>
-								<Typography>Total: $255</Typography>
-								<Button component={Link} to="/" className={classes.checkoutBtn}>
-									Checkout
-								</Button>
+								<Typography>Total: ${total}</Typography>
+
+								<StripeCheckout
+									token={onToken}
+									stripeKey={KEY}
+									name="Reno shop"
+									amount={total * 100} // cents
+									currency="USD"
+									email={user?.email}
+									shippingAddress
+									billingAddress
+								>
+									<Button
+										// component={Link}
+										// to="/"
+										className={classes.checkoutBtn}
+									>
+										Checkout
+									</Button>
+								</StripeCheckout>
 							</Box>
 						</Box>
 					</Box>

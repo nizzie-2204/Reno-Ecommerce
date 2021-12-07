@@ -231,7 +231,7 @@ const AddEditProduct = () => {
 							/>
 							<FormControl component="fieldset" className={classes.inStock}>
 								<Typography variant="body1" style={{ marginRight: 20 }}>
-									In stock:{' '}
+									In stock:
 								</Typography>
 								<Controller
 									rules={{ required: true }}

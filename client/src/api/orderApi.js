@@ -1,9 +1,12 @@
 import axiosClient from './axiosClient'
 
 const orderAPI = {
-	getAllOrder: async (params) => {
+	getAllOrder: async (userId) => {
 		const url = '/orders'
-		return await axiosClient.get(url, { params })
+
+		if (userId) {
+			return await axiosClient.get(url, userId)
+		} else return await axiosClient.get(url)
 	},
 
 	addOrder: async (data) => {

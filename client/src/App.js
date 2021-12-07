@@ -27,6 +27,7 @@ import Cart from './component/customer/Cart/Cart'
 import Order from './component/customer/Order/Order'
 import ProductDetail from './component/customer/ProductDetail/ProductDetail'
 import Shop from './component/customer/Shop/Shop'
+import RoutesApp from './routes/Routes'
 
 function App() {
 	return (
@@ -36,7 +37,9 @@ function App() {
 					<ThemeProvider theme={theme}>
 						<div className="App">
 							<Router>
+								{/* <RoutesApp /> */}
 								<Routes>
+									{' '}
 									{/* Customer */}
 									<Route path="/" element={<Home />} />
 									<Route path="/login" element={<Login />} />
@@ -47,7 +50,6 @@ function App() {
 									<Route path="/shop" element={<Shop />} />
 									<Route path="/product/:id" element={<ProductDetail />} />
 									<Route path="/order" element={<Order />} />
-
 									{/* Admin */}
 									<Route path="/admin/home" element={<HomeAdmin />} />
 									<Route path="/admin/user" element={<UserAdmin />} />
@@ -59,7 +61,6 @@ function App() {
 										path="/admin/product/new"
 										element={<AddEditProductAdmin />}
 									/>
-
 									{/* Not found */}
 									<Route path="*" element={<NotFound />} />
 								</Routes>

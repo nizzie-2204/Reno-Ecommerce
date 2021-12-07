@@ -1,6 +1,7 @@
 import { css } from '@emotion/react'
 import { Box, Button, Divider, Typography } from '@material-ui/core'
 import Rating from '@material-ui/lab/Rating'
+import { unwrapResult } from '@reduxjs/toolkit'
 import React, { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { BiMinus, BiPlus } from 'react-icons/bi'
@@ -11,6 +12,7 @@ import { useParams } from 'react-router-dom'
 import RingLoader from 'react-spinners/RingLoader'
 import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import { updateUser } from '../../../redux/slices/authSlice'
 import { getProduct } from '../../../redux/slices/productSlice'
 import CustomerLayout from '../CustomerLayout/CustomerLayout'
 import { useStyles } from './styles'
@@ -64,6 +66,7 @@ const ProductDetail = () => {
 	}
 
 	const handleAddToCart = () => {
+		// Sold out
 		if (!product.inStock) return
 
 		// Empty size
@@ -82,8 +85,7 @@ const ProductDetail = () => {
 		}
 
 		// Unauthenticated
-		console.log(user)
-		if (Object.keys(user).length === 0) {
+		if (!user || Object.keys(user).length === 0) {
 			toast('Please login to continue', {
 				position: 'bottom-center',
 				autoClose: 3000,
@@ -96,40 +98,70 @@ const ProductDetail = () => {
 			})
 			return
 		}
-		// toast('Add to cart successfully!', {
-		// 	position: 'bottom-center',
-		// 	autoClose: 3000,
-		// 	hideProgressBar: false,
-		// 	closeOnClick: true,
-		// 	pauseOnHover: true,
-		// 	draggable: true,
-		// 	progress: undefined,
-		// 	type: 'success',
-		// })
 
-		// const existedProductInCart = user.cart.find(
-		// 	(item) => item._id === product._id
-		// )
+		const existedProduct = user?.cart.find((productInCart) => {
+			return (
+				productInCart.product._id === product._id &&
+				productInCart.chooseSize._id === size._id
+			)
+		})
 
-		// if (existedProductInCart) {
-		// 	const productData = {
-		// 		product,
-		// 		quantity: existedProductInCart.quantity + 1,
-		// 		chooseSize: size,
-		// 	}
+		if (existedProduct) {
+			const newProduct = {
+				...existedProduct,
+				quantity: existedProduct.quantity + quantity,
+			}
 
-		// 	console.log(productData)
-		// } else {
-		// 	const productData = { product, quantity, chooseSize: size }
-		// 	console.log(productData)
-		// }
+			const newProducts = user.cart.filter((product) => {
+				console.log(size?._id, product?.chooseSize?._id)
+				return (
+					product.product._id !== existedProduct.product._id ||
+					(product?.product?._id === existedProduct?.product?._id &&
+						product?.chooseSize?._id !== size?._id)
+				)
+			})
 
-		// const action = updateUser({
-		// 	cart: [...user.cart, productData]
-		// })
-		// dispatch(action).then(unwrapResult).then((res) => {
-		// 	console.log(res)
-		// }).catch(error => console.log(error ))
+			const action = updateUser({
+				_id: user._id,
+				cart: [...newProducts, newProduct],
+			})
+			dispatch(action)
+				.then(unwrapResult)
+				.then((res) => {
+					toast('Add to cart successfully!', {
+						position: 'bottom-center',
+						autoClose: 3000,
+						hideProgressBar: false,
+						closeOnClick: true,
+						pauseOnHover: true,
+						draggable: true,
+						progress: undefined,
+						type: 'success',
+					})
+				})
+				.catch((error) => console.log(error))
+		} else {
+			const productData = { product, quantity, chooseSize: size }
+			const action = updateUser({
+				_id: user?._id,
+				cart: [...user?.cart, productData],
+			})
+			dispatch(action)
+				.then(unwrapResult)
+				.then((res) => {
+					toast('Add to cart successfully!', {
+						position: 'bottom-center',
+						autoClose: 3000,
+						hideProgressBar: false,
+						closeOnClick: true,
+						pauseOnHover: true,
+						draggable: true,
+						progress: undefined,
+						type: 'success',
+					})
+				})
+				.catch((error) => console.log(error))
+		}
 	}
 	return (
 		<>

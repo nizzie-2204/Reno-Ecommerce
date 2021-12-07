@@ -4,17 +4,17 @@ exports.payment = async (req, res, next) => {
 	try {
 		stripe.charges.create(
 			{
-				source: req.body.tokenPayment,
-				amount: req.body.amount,
+				source: req.body.data.tokenId,
+				amount: req.body.data.amount,
 				currency: 'usd',
 			},
-			(error, res) => {
+			(error, stripe) => {
 				if (error) {
-					const err = new Error('Payment error')
+					const err = new Error(error.error)
 					err.statusCode = 500
 					return next(err)
 				} else {
-					res.status(200).json({ res })
+					res.status(200).json({ stripe })
 				}
 			}
 		)

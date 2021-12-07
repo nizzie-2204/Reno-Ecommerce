@@ -263,12 +263,25 @@ const Shop = () => {
 													handleNavigate(product._id)
 												}}
 											>
-												<CardActionArea className={classes.cardArea}>
-													<CardMedia
-														className={classes.media}
-														image={product.images[0].preview}
-														title={product.name}
-													/>
+												<CardActionArea
+													className={classes.cardArea}
+													style={{ position: 'relative' }}
+												>
+													<>
+														<CardMedia
+															className={classes.media}
+															image={product.images[0].preview}
+															title={product.name}
+														/>
+														{!product.inStock && (
+															<Typography
+																component="p"
+																className={classes.watermark}
+															>
+																Sold out
+															</Typography>
+														)}
+													</>
 													<CardContent className={classes.content}>
 														<Box className={classes.topTitle}>
 															<Typography
@@ -302,7 +315,7 @@ const Shop = () => {
 									</Typography>
 								)}
 							</Grid>
-							{products.length > 0 && (
+							{filter.count > 1 && (
 								<Pagination
 									className={classes.pagition}
 									count={filter.count}

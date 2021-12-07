@@ -200,6 +200,21 @@ const useStyles = makeStyles((theme) => ({
 		textAlign: 'center',
 		padding: '100px 0',
 	},
+	watermark: {
+		position: 'absolute',
+		top: '40%',
+		left: '50%',
+		transform: 'translate(-50%, -40%)',
+		padding: 20,
+		display: 'flex',
+		alignItems: 'center',
+		justifyContent: 'center',
+		backgroundColor: 'rgba(0, 0, 0, 0.8)',
+		color: theme.palette.text.secondary,
+		borderRadius: 15,
+		fontSize: 20,
+		zIndex: 999,
+	},
 }))
 
 export { useStyles }

@@ -4,7 +4,7 @@ const CryptoJS = require('crypto-js')
 const jwt = require('jsonwebtoken')
 
 const createToken = ({ id, isAdmin }) => {
-	return jwt.sign({ id, isAdmin }, process.env.JWT_SECRET, { expiresIn: '7d' })
+	return jwt.sign({ id, isAdmin }, process.env.JWT_SECRET)
 }
 
 const checkPassword = (dbPassword, password) => {

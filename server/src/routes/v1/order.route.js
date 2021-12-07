@@ -12,7 +12,7 @@ const { verifyToken, verifyTokenAdmin } = require('../../middlewares/auth')
 
 router
 	.route('/orders')
-	.post(verifyToken, verifyTokenAdmin, addlOrder)
+	.post(verifyToken, addlOrder)
 	.get(verifyToken, getAllOrder)
 
 router

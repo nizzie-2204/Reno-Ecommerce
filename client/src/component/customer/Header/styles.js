@@ -125,6 +125,10 @@ const useStyles = makeStyles((theme) => ({
 		textTransform: 'unset',
 		fontSize: 16,
 
+		'& .MuiButton-label': {
+			cursor: 'pointer',
+		},
+
 		'&:hover': {
 			backgroundColor: 'transparent',
 		},

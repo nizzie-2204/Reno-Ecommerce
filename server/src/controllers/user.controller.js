@@ -81,7 +81,7 @@ exports.getAll = async (req, res, next) => {
 
 exports.get = async (req, res, next) => {
 	try {
-		const user = await User.findById(req.params.id)
+		const user = await User.findById(req.params.id).select('-password')
 
 		res.status(200).json({ user })
 	} catch (error) {

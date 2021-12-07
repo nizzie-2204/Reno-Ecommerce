@@ -11,21 +11,39 @@ import {
 	TextField,
 	Typography,
 } from '@material-ui/core'
-import React, { useState } from 'react'
+import { unwrapResult } from '@reduxjs/toolkit'
+import React, { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { BiMinus, BiPlus, BiSearchAlt2, BiX } from 'react-icons/bi'
+import { useDispatch, useSelector } from 'react-redux'
+import { getAllOrder } from '../../../redux/slices/order'
 import CustomerLayout from '../CustomerLayout/CustomerLayout'
 import { useStyles } from './styles'
 
 const Order = () => {
 	const classes = useStyles()
+	const dispatch = useDispatch()
+	const user = useSelector((state) => state.auth.user)
 
+	const [orders, setOrders] = useState([])
 	const [value, setValue] = useState('')
 
 	const handleRadioChange = (event) => {
 		setValue(event.target.value)
 		// setError(false);
 	}
+
+	useEffect(() => {
+		const fetchOrder = () => {
+			const action = getAllOrder(user._id)
+			dispatch(action)
+				.then(unwrapResult)
+				.then((res) => {
+					setOrders(res.orders)
+				})
+		}
+		fetchOrder()
+	}, [])
 	return (
 		<>
 			<Helmet>
@@ -37,7 +55,7 @@ const Order = () => {
 					<Typography variant="h3" className={classes.heading}>
 						Order details
 					</Typography>
-					<Box className={classes.searchBar}>
+					{/* <Box className={classes.searchBar}>
 						<TextField
 							placeholder="Search for order ID"
 							variant="outlined"
@@ -46,7 +64,7 @@ const Order = () => {
 						<IconButton className={classes.searchBtn}>
 							<BiSearchAlt2 />
 						</IconButton>
-					</Box>
+					</Box> */}
 					<TableContainer
 						component={Paper}
 						elevation="0"
@@ -73,30 +91,27 @@ const Order = () => {
 								</TableRow>
 							</TableHead>
 							<TableBody>
-								<TableRow>
-									<TableCell
-										component="th"
-										scope="row"
-										className={classes.cellProduct}
-										align="center"
-									>
-										<Typography component="body2">
-											Leather Mens Slipper
-										</Typography>
-									</TableCell>
-									<TableCell align="center">£69.99</TableCell>
-									<TableCell align="center">
-										<Box className={classes.quantity}>
-											<BiMinus style={{ cursor: 'pointer' }} />
-											<Typography component="body2">1</Typography>
-											<BiPlus style={{ cursor: 'pointer' }} />
-										</Box>
-									</TableCell>
-									<TableCell align="center">£69.99</TableCell>
-									<TableCell align="center">
-										<BiX style={{ cursor: 'pointer', fontSize: 20 }} />
-									</TableCell>
-								</TableRow>
+								{orders.length > 0 &&
+									orders.map((order) => (
+										<TableRow>
+											<TableCell
+												component="th"
+												scope="row"
+												className={classes.cellProduct}
+												align="center"
+											>
+												<Typography component="body2">{order._id}</Typography>
+											</TableCell>
+											<TableCell align="center">
+												{new Date(order.createdAt).toLocaleString('vi-VN')}
+											</TableCell>
+											<TableCell align="center">${order.totalPrice}</TableCell>
+											<TableCell align="center">{order.status}</TableCell>
+											<TableCell align="center">
+												{order.paymentMethod.toString()}
+											</TableCell>
+										</TableRow>
+									))}
 							</TableBody>
 						</Table>
 					</TableContainer>

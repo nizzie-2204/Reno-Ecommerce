@@ -14,14 +14,16 @@ import {
 	Toolbar,
 	Typography,
 } from '@material-ui/core'
+import { unwrapResult } from '@reduxjs/toolkit'
 import queryString from 'query-string'
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { BiCartAlt, BiMenu, BiSearchAlt2 } from 'react-icons/bi'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import logo from '../../../assets/images/logo.jpg'
 import { clearUser } from '../../../redux/slices/authSlice'
 import { getAllProduct } from '../../../redux/slices/productSlice'
+import { getUser } from '../../../redux/slices/userSlice'
 import Dropdown from './Drawer/Dropdown'
 import { useStyles } from './styles'
 
@@ -31,7 +33,6 @@ const Header = () => {
 	const [searchParams, setsearchParams] = useSearchParams()
 	const classes = useStyles()
 	const user = useSelector((state) => state.auth.user)
-	const token = localStorage.getItem('token')
 
 	const [open, setOpen] = useState(false)
 
@@ -166,7 +167,7 @@ const Header = () => {
 							}}
 							onChange={handleChangeSearchTearm}
 							ref={searchRef}
-							defaultValue={searchParams.get('search')}
+							defaultValue={searchParams.get('search') || ''}
 						/>
 						<IconButton
 							disableRipple
@@ -178,14 +179,17 @@ const Header = () => {
 								{user?.cart?.length || 0}
 							</Typography>
 						</IconButton>
-						{token ? (
+						{user && Object.keys(user).length > 0 ? (
 							<>
 								<Button
 									className={classes.email}
 									aria-owns={anchorEl ? 'simple-menu' : undefined}
 									aria-haspopup="true"
-									onMouseOver={handleClick}
-									// onClick={handleClick}
+									// onMouseEnter={handleClick}
+									// onMouseLeave={handleClose}
+									// onMouseOut={handleClose}
+									onClick={handleClick}
+									disableRipple
 								>
 									{user.email}
 								</Button>
@@ -194,7 +198,7 @@ const Header = () => {
 									anchorEl={anchorEl}
 									open={Boolean(anchorEl)}
 									onClose={handleClose}
-									MenuListProps={{ onMouseLeave: handleClose }}
+									MenuListProps={{ onClick: handleClose }}
 									PopoverClasses={{
 										paper: classes.menu,
 									}}

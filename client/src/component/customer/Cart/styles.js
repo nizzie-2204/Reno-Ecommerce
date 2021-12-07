@@ -12,10 +12,29 @@ const useStyles = makeStyles((theme) => ({
 		justifyContent: 'center',
 		paddingTop: 80,
 	},
-	list: {
+	listEmpty: {
 		position: 'relative',
 		width: '100%',
 		height: '100vh',
+		zIndex: 999,
+		overflow: 'hidden',
+		display: 'flex',
+		flexDirection: 'column',
+		alignItems: 'center',
+		marginTop: 80,
+		padding: '100px 90px',
+
+		[theme.breakpoints.down('md')]: {
+			padding: '100px 60px',
+		},
+
+		[theme.breakpoints.down('sm')]: {
+			padding: '100px 40px',
+		},
+	},
+	list: {
+		position: 'relative',
+		width: '100%',
 		zIndex: 999,
 		overflow: 'hidden',
 		display: 'flex',

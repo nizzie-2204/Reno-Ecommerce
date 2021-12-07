@@ -158,12 +158,30 @@ const AddEditUser = ({ open, handleClose, user }) => {
 								>
 									<FormControlLabel
 										value="true"
-										control={<Radio />}
+										control={
+											<Radio
+												style={{
+													color: '#1a202c',
+													'&$checked': {
+														color: '#1a202c',
+													},
+												}}
+											/>
+										}
 										label="Admin"
 									/>
 									<FormControlLabel
 										value="false"
-										control={<Radio />}
+										control={
+											<Radio
+												style={{
+													color: '#1a202c',
+													'&$checked': {
+														color: '#1a202c',
+													},
+												}}
+											/>
+										}
 										label="Customer"
 									/>
 								</RadioGroup>

@@ -16,7 +16,9 @@ export const getUser = createAsyncThunk(
 	'user/getUser',
 	async (id, { rejectWithValue }) => {
 		try {
-			return await userAPI.getUser(id)
+			const result = await userAPI.getUser(id)
+			console.log(result)
+			return result
 		} catch (error) {
 			return rejectWithValue(error.response)
 		}
@@ -44,7 +46,7 @@ export const updateUser = createAsyncThunk(
 		try {
 			const result = await userAPI.updateUser(data)
 
-			dispatch(getAllUser())
+			dispatch(getUser(data._id))
 
 			return result
 		} catch (error) {
@@ -86,6 +88,18 @@ const userSlice = createSlice({
 		[getAllUser.fulfilled]: (state, action) => {
 			state.usersLoading = false
 			state.users = action.payload.users
+		},
+		// [getUser.pending]: (state) => {
+		// 	state.usersLoading = true
+		// },
+		[getUser.fulfilled]: (state, action) => {
+			console.log(action.payload)
+			state.user = action.payload.user
+		},
+
+		[updateUser.fulfilled]: (state, action) => {
+			console.log(action.payload)
+			state.user = action.payload.user
 		},
 	},
 })
