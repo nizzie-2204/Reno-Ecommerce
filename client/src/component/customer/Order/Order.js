@@ -16,7 +16,7 @@ import React, { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { BiMinus, BiPlus, BiSearchAlt2, BiX } from 'react-icons/bi'
 import { useDispatch, useSelector } from 'react-redux'
-import { getAllOrder } from '../../../redux/slices/order'
+import { getAllOrder } from '../../../redux/slices/orderSlice'
 import CustomerLayout from '../CustomerLayout/CustomerLayout'
 import { useStyles } from './styles'
 
@@ -103,7 +103,7 @@ const Order = () => {
 												<Typography component="body2">{order._id}</Typography>
 											</TableCell>
 											<TableCell align="center">
-												{new Date(order.createdAt).toLocaleString('vi-VN')}
+												{new Date(order.createdAt).toLocaleString()}
 											</TableCell>
 											<TableCell align="center">${order.totalPrice}</TableCell>
 											<TableCell align="center">{order.status}</TableCell>

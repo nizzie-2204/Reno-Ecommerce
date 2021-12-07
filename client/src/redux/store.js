@@ -19,6 +19,7 @@ import sizeReducer from './slices/sizeSlice'
 import categoryReducer from './slices/categorySlice'
 import productReducer from './slices/productSlice'
 import userReducer from './slices/userSlice'
+import orderReducer from './slices/orderSlice'
 
 const rootReducer = combineReducers({
 	auth: authReducer,
@@ -26,6 +27,7 @@ const rootReducer = combineReducers({
 	category: categoryReducer,
 	product: productReducer,
 	user: userReducer,
+	order: orderReducer,
 })
 
 const persistConfig = {

@@ -2,7 +2,7 @@ const Order = require('../models/order.model')
 
 exports.getAllOrder = async (req, res, next) => {
 	try {
-		if (req.user.id) {
+		if (!req.user.isAdmin) {
 			const orders = await Order.find({ userId: req.user.id })
 			res.status(200).json({ orders })
 		} else {
@@ -41,10 +41,11 @@ exports.addlOrder = async (req, res, next) => {
 
 exports.updateOrder = async (req, res, next) => {
 	try {
+		console.log(req.body)
 		const newOrder = await Order.findByIdAndUpdate(
 			req.params.id,
 			{
-				$set: req.body,
+				$set: req.body.data,
 			},
 			{
 				new: true,

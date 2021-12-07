@@ -13,7 +13,7 @@ import {
 	Typography,
 } from '@material-ui/core'
 import TablePagination from '@material-ui/core/TablePagination'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { BiPencil, BiSearchAlt2, BiX } from 'react-icons/bi'
 import { useDispatch, useSelector } from 'react-redux'
@@ -23,7 +23,9 @@ import {
 	getAllCategory,
 } from '../../../redux/slices/categorySlice'
 import AddEditCategory from './AddEditCategory/AddEditCategory'
+import { toast, ToastContainer } from 'react-toastify'
 import { useStyles } from './styles'
+import { unwrapResult } from '@reduxjs/toolkit'
 
 const Category = () => {
 	const classes = useStyles()
@@ -60,6 +62,39 @@ const Category = () => {
 	const handleDeleteCategory = (id) => {
 		const action = deleteCategory(id)
 		dispatch(action)
+			.then(unwrapResult)
+			.then(() => {
+				toast('Delete user successfully!', {
+					position: 'bottom-center',
+					autoClose: 3000,
+					hideProgressBar: false,
+					closeOnClick: true,
+					pauseOnHover: true,
+					draggable: true,
+					progress: undefined,
+					type: 'success',
+				})
+			})
+	}
+
+	// Search
+	const [filteredCategories, setFilteredCategories] = useState(categories)
+	const searchRef = useRef('')
+	const handleChangeSearch = (e) => {
+		const value = e.target.value
+		console.log(value)
+		if (searchRef.current) {
+			clearTimeout(searchRef.current)
+		}
+
+		searchRef.current = setTimeout(() => {
+			if (value === '') setFilteredCategories(categories)
+
+			const filtered = categories.filter((category) => {
+				return category.name.toLowerCase().includes(value.toLowerCase())
+			})
+			setFilteredCategories(filtered)
+		}, 400)
 	}
 
 	// Pagination
@@ -88,6 +123,8 @@ const Category = () => {
 							placeholder="Search for fullname"
 							variant="outlined"
 							className={classes.searchField}
+							ref={searchRef}
+							onChange={handleChangeSearch}
 						/>
 						<IconButton className={classes.searchBtn}>
 							<BiSearchAlt2 />
@@ -97,7 +134,7 @@ const Category = () => {
 						</Button>
 						<AddEditCategory open={open} handleClose={handleClose} />
 					</Box>
-					{categories.length > 0 ? (
+					{filteredCategories.length > 0 ? (
 						<>
 							<TableContainer
 								component={Paper}
@@ -124,7 +161,7 @@ const Category = () => {
 									</TableHead>
 
 									<TableBody>
-										{categories?.map((category) => {
+										{filteredCategories?.map((category) => {
 											return (
 												<TableRow>
 													<TableCell
@@ -195,6 +232,19 @@ const Category = () => {
 						</Box>
 					)}
 				</Box>
+				<ToastContainer
+					position="bottom-center"
+					autoClose={3000}
+					hideProgressBar={false}
+					newestOnTop={false}
+					closeOnClick
+					rtl={false}
+					pauseOnFocusLoss
+					draggable
+					pauseOnHover
+					theme="dark"
+					type="default"
+				/>
 			</AdminLayout>
 		</>
 	)

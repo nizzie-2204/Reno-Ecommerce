@@ -13,7 +13,8 @@ import {
 	Typography,
 } from '@material-ui/core'
 import TablePagination from '@material-ui/core/TablePagination'
-import React, { useEffect, useState } from 'react'
+import { unwrapResult } from '@reduxjs/toolkit'
+import React, { useEffect, useRef, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { BiPencil, BiSearchAlt2, BiX } from 'react-icons/bi'
 import { useDispatch, useSelector } from 'react-redux'
@@ -21,6 +22,7 @@ import AdminLayout from '../../../component/admin/AdminLayout/AdminLayout'
 import { deleteUser, getAllUser } from '../../../redux/slices/userSlice'
 import AddEditUser from './AddEditUser/AddEditUser'
 import { useStyles } from './styles'
+import { toast, ToastContainer } from 'react-toastify'
 
 const User = () => {
 	const classes = useStyles()
@@ -54,6 +56,27 @@ const User = () => {
 		setOpen2(false)
 	}
 
+	// Search
+	const [filteredUsers, setFilteredUsers] = useState(users)
+	const searchRef = useRef('')
+	const handleChangeSearch = (e) => {
+		const value = e.target.value
+
+		if (searchRef.current) {
+			clearTimeout(searchRef.current)
+		}
+
+		searchRef.current = setTimeout(() => {
+			if (value === '') setFilteredUsers(users)
+
+			const filtered = users.filter((user) => {
+				return user.fullName.toLowerCase().includes(value.toLowerCase())
+			})
+			console.log(filtered)
+			setFilteredUsers(filtered)
+		}, 400)
+	}
+
 	// Pagination
 	const [page, setPage] = useState(0)
 	const [rowsPerPage, setRowsPerPage] = useState(10)
@@ -70,6 +93,19 @@ const User = () => {
 	const handleDeleteUser = (id) => {
 		const action = deleteUser(id)
 		dispatch(action)
+			.then(unwrapResult)
+			.then(() => {
+				toast('Delete user successfully!', {
+					position: 'bottom-center',
+					autoClose: 3000,
+					hideProgressBar: false,
+					closeOnClick: true,
+					pauseOnHover: true,
+					draggable: true,
+					progress: undefined,
+					type: 'success',
+				})
+			})
 	}
 	return (
 		<>
@@ -84,6 +120,8 @@ const User = () => {
 							placeholder="Search for fullname"
 							variant="outlined"
 							className={classes.searchField}
+							ref={searchRef}
+							onChange={handleChangeSearch}
 						/>
 						<IconButton className={classes.searchBtn}>
 							<BiSearchAlt2 />
@@ -93,7 +131,7 @@ const User = () => {
 						</Button>
 						<AddEditUser open={open} handleClose={handleClose} />
 					</Box>
-					{users?.length > 0 ? (
+					{filteredUsers?.length > 0 ? (
 						<>
 							<TableContainer
 								component={Paper}
@@ -121,7 +159,7 @@ const User = () => {
 										</TableRow>
 									</TableHead>
 									<TableBody>
-										{users.map((user) => {
+										{filteredUsers.map((user) => {
 											return (
 												<TableRow>
 													<TableCell
@@ -191,6 +229,19 @@ const User = () => {
 						</Box>
 					)}
 				</form>
+				<ToastContainer
+					position="bottom-center"
+					autoClose={3000}
+					hideProgressBar={false}
+					newestOnTop={false}
+					closeOnClick
+					rtl={false}
+					pauseOnFocusLoss
+					draggable
+					pauseOnHover
+					theme="dark"
+					type="default"
+				/>
 			</AdminLayout>
 		</>
 	)

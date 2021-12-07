@@ -20,6 +20,7 @@ import * as yup from 'yup'
 import { signUp } from '../../../../redux/slices/authSlice'
 import { updateUser } from '../../../../redux/slices/userSlice'
 import { useStyles } from './styles'
+import { toast, ToastContainer } from 'react-toastify'
 
 const schema = yup.object().shape({
 	fullName: yup.string().required(),
@@ -62,6 +63,16 @@ const AddEditUser = ({ open, handleClose, user }) => {
 				handleClose()
 				reset()
 				setValue('false')
+				toast('Add user successfully!', {
+					position: 'bottom-center',
+					autoClose: 3000,
+					hideProgressBar: false,
+					closeOnClick: true,
+					pauseOnHover: true,
+					draggable: true,
+					progress: undefined,
+					type: 'success',
+				})
 			})
 			.catch((error) => console.log(error))
 	}
@@ -81,6 +92,16 @@ const AddEditUser = ({ open, handleClose, user }) => {
 				handleClose()
 				reset()
 				setValue('false')
+				toast('Update user successfully!', {
+					position: 'bottom-center',
+					autoClose: 3000,
+					hideProgressBar: false,
+					closeOnClick: true,
+					pauseOnHover: true,
+					draggable: true,
+					progress: undefined,
+					type: 'success',
+				})
 			})
 			.catch((error) => console.log(error))
 	}
@@ -96,109 +117,124 @@ const AddEditUser = ({ open, handleClose, user }) => {
 		}
 	}, [user])
 	return (
-		<Modal
-			aria-labelledby="transition-modal-title"
-			aria-describedby="transition-modal-description"
-			className={classes.modal}
-			open={open}
-			onClose={() => {
-				handleClose()
-				reset()
-			}}
-			closeAfterTransition
-			BackdropComponent={Backdrop}
-			BackdropProps={{
-				timeout: 300,
-			}}
-		>
-			<Fade in={open}>
-				<form
-					className={classes.paper}
-					onSubmit={handleSubmit(user ? handleUpdateUser : handleAddUser)}
-				>
-					<TextField
-						label="Fullname"
-						variant="outlined"
-						required
-						className={classes.input}
-						{...register('fullName')}
-					/>
-					{!user && (
+		<>
+			<Modal
+				aria-labelledby="transition-modal-title"
+				aria-describedby="transition-modal-description"
+				className={classes.modal}
+				open={open}
+				onClose={() => {
+					handleClose()
+					reset()
+				}}
+				closeAfterTransition
+				BackdropComponent={Backdrop}
+				BackdropProps={{
+					timeout: 300,
+				}}
+			>
+				<Fade in={open}>
+					<form
+						className={classes.paper}
+						onSubmit={handleSubmit(user ? handleUpdateUser : handleAddUser)}
+					>
 						<TextField
-							label="Password"
-							{...register('password')}
-							type="password"
+							label="Fullname"
+							variant="outlined"
+							required
+							className={classes.input}
+							{...register('fullName')}
+						/>
+						{!user && (
+							<TextField
+								label="Password"
+								{...register('password')}
+								type="password"
+								variant="outlined"
+								required
+								className={classes.input}
+							/>
+						)}
+						<TextField
+							label="Email"
+							type="email"
+							{...register('email')}
 							variant="outlined"
 							required
 							className={classes.input}
 						/>
-					)}
-					<TextField
-						label="Email"
-						type="email"
-						{...register('email')}
-						variant="outlined"
-						required
-						className={classes.input}
-					/>
-					<FormControl component="fieldset" className={classes.formControl}>
-						<FormLabel component="legend" className={classes.radioHeading}>
-							Role
-						</FormLabel>
-						<Controller
-							rules={{ required: true }}
-							control={control}
-							// defaultValue="business"
-							render={({ field }) => (
-								<RadioGroup
-									{...field}
-									value={value}
-									onChange={handleChange}
-									className={classes.radioContainer}
-								>
-									<FormControlLabel
-										value="true"
-										control={
-											<Radio
-												style={{
-													color: '#1a202c',
-													'&$checked': {
+						<FormControl component="fieldset" className={classes.formControl}>
+							<FormLabel component="legend" className={classes.radioHeading}>
+								Role
+							</FormLabel>
+							<Controller
+								rules={{ required: true }}
+								control={control}
+								// defaultValue="business"
+								render={({ field }) => (
+									<RadioGroup
+										{...field}
+										value={value}
+										onChange={handleChange}
+										className={classes.radioContainer}
+									>
+										<FormControlLabel
+											value="true"
+											control={
+												<Radio
+													style={{
 														color: '#1a202c',
-													},
-												}}
-											/>
-										}
-										label="Admin"
-									/>
-									<FormControlLabel
-										value="false"
-										control={
-											<Radio
-												style={{
-													color: '#1a202c',
-													'&$checked': {
+														'&$checked': {
+															color: '#1a202c',
+														},
+													}}
+												/>
+											}
+											label="Admin"
+										/>
+										<FormControlLabel
+											value="false"
+											control={
+												<Radio
+													style={{
 														color: '#1a202c',
-													},
-												}}
-											/>
-										}
-										label="Customer"
-									/>
-								</RadioGroup>
-							)}
-						/>
-					</FormControl>
-					{errors.password && (
-						<Typography component="p" className={classes.error}>
-							{errors.password.message}
-						</Typography>
-					)}
-					<Button className={classes.save} type="submit">
-						Save
-					</Button>
-				</form>
-			</Fade>
-		</Modal>
+														'&$checked': {
+															color: '#1a202c',
+														},
+													}}
+												/>
+											}
+											label="Customer"
+										/>
+									</RadioGroup>
+								)}
+							/>
+						</FormControl>
+						{errors.password && (
+							<Typography component="p" className={classes.error}>
+								{errors.password.message}
+							</Typography>
+						)}
+						<Button className={classes.save} type="submit">
+							Save
+						</Button>
+					</form>
+				</Fade>
+			</Modal>
+			<ToastContainer
+				position="bottom-center"
+				autoClose={3000}
+				hideProgressBar={false}
+				newestOnTop={false}
+				closeOnClick
+				rtl={false}
+				pauseOnFocusLoss
+				draggable
+				pauseOnHover
+				theme="dark"
+				type="default"
+			/>
+		</>
 	)
 }
 

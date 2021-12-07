@@ -12,7 +12,7 @@ import {
 	TextField,
 	Typography,
 } from '@material-ui/core'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { BiPencil, BiSearchAlt2, BiX } from 'react-icons/bi'
 import { useDispatch, useSelector } from 'react-redux'
@@ -24,6 +24,8 @@ import {
 } from '../../../redux/slices/productSlice'
 import { useStyles } from './styles'
 import TablePagination from '@material-ui/core/TablePagination'
+import { toast, ToastContainer } from 'react-toastify'
+import { unwrapResult } from '@reduxjs/toolkit'
 
 const Product = () => {
 	const classes = useStyles()
@@ -46,6 +48,39 @@ const Product = () => {
 	const handleDeleteProduct = (id) => {
 		const action = deleteProduct(id)
 		dispatch(action)
+			.then(unwrapResult)
+			.then(() => {
+				toast('Delete user successfully!', {
+					position: 'bottom-center',
+					autoClose: 3000,
+					hideProgressBar: false,
+					closeOnClick: true,
+					pauseOnHover: true,
+					draggable: true,
+					progress: undefined,
+					type: 'success',
+				})
+			})
+	}
+
+	// Search
+	const [filteredProducts, setFilteredProducts] = useState(products)
+	const searchRef = useRef('')
+	const handleChangeSearch = (e) => {
+		const value = e.target.value
+		console.log(value)
+		if (searchRef.current) {
+			clearTimeout(searchRef.current)
+		}
+
+		searchRef.current = setTimeout(() => {
+			if (value === '') setFilteredProducts(products)
+
+			const filtered = products.filter((size) => {
+				return size.name.toLowerCase().includes(value.toLowerCase())
+			})
+			setFilteredProducts(filtered)
+		}, 400)
 	}
 
 	// Pagination
@@ -73,6 +108,8 @@ const Product = () => {
 							placeholder="Search for fullname"
 							variant="outlined"
 							className={classes.searchField}
+							ref={searchRef}
+							onChange={handleChangeSearch}
 						/>
 						<IconButton className={classes.searchBtn}>
 							<BiSearchAlt2 />
@@ -85,7 +122,7 @@ const Product = () => {
 							Add Product
 						</Button>
 					</Box>
-					{products.length > 0 ? (
+					{filteredProducts.length > 0 ? (
 						<>
 							<TableContainer
 								component={Paper}
@@ -120,7 +157,7 @@ const Product = () => {
 										</TableRow>
 									</TableHead>
 									<TableBody>
-										{products
+										{filteredProducts
 											.slice(
 												page * rowsPerPage,
 												page * rowsPerPage + rowsPerPage
@@ -198,6 +235,19 @@ const Product = () => {
 						</Box>
 					)}
 				</Box>
+				<ToastContainer
+					position="bottom-center"
+					autoClose={3000}
+					hideProgressBar={false}
+					newestOnTop={false}
+					closeOnClick
+					rtl={false}
+					pauseOnFocusLoss
+					draggable
+					pauseOnHover
+					theme="dark"
+					type="default"
+				/>
 			</AdminLayout>
 		</>
 	)

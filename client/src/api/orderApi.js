@@ -6,7 +6,9 @@ const orderAPI = {
 
 		if (userId) {
 			return await axiosClient.get(url, userId)
-		} else return await axiosClient.get(url)
+		} else {
+			return await axiosClient.get(url)
+		}
 	},
 
 	addOrder: async (data) => {
@@ -14,9 +16,9 @@ const orderAPI = {
 		return await axiosClient.post(url, { data })
 	},
 
-	updateOrder: async (id, data) => {
-		const url = `/orders/${id}`
-		return await axiosClient.post(url, { data })
+	updateOrder: async (data) => {
+		const url = `/orders/${data.id}`
+		return await axiosClient.put(url, { data })
 	},
 
 	getOrder: async (id) => {

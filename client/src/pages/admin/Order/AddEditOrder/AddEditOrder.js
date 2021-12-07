@@ -1,33 +1,33 @@
-import { Button, TextField, Typography } from '@material-ui/core'
+import { Button, MenuItem, TextField, Typography } from '@material-ui/core'
 import Backdrop from '@material-ui/core/Backdrop'
 import Fade from '@material-ui/core/Fade'
 import Modal from '@material-ui/core/Modal'
 import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useDispatch } from 'react-redux'
-import {
-	addCategory,
-	updateCategory,
-} from '../../../../redux/slices/categorySlice'
-import { useStyles } from './styles'
 import { toast, ToastContainer } from 'react-toastify'
+import { updateOrder } from '../../../../redux/slices/orderSlice'
+import { addSize, updateSize } from '../../../../redux/slices/sizeSlice'
+import { useStyles } from './styles'
 
-const AddEditCategory = ({ open, handleClose, category }) => {
+const AddEditOrder = ({ open, handleClose, order }) => {
 	const classes = useStyles()
-
 	const dispatch = useDispatch()
 	const { register, handleSubmit, reset } = useForm()
 	const [error, setError] = useState('')
 
-	const handleAddCategory = (data) => {
-		const action = addCategory(data)
+	const handleEditOrder = (data) => {
+		const action = updateOrder({
+			id: order._id,
+			status: data.status,
+		})
 		dispatch(action)
 			.unwrap()
 			.then((res) => {
 				handleClose()
 				setError('')
 				reset()
-				toast('Add category successfully!', {
+				toast('Edit size successfully!', {
 					position: 'bottom-center',
 					autoClose: 3000,
 					hideProgressBar: false,
@@ -39,37 +39,17 @@ const AddEditCategory = ({ open, handleClose, category }) => {
 				})
 			})
 			.catch((error) => {
-				setError('Name has already been taken')
-			})
-	}
-
-	const handleEditCategory = (data) => {
-		const action = updateCategory(data)
-		dispatch(action)
-			.unwrap()
-			.then((res) => {
-				handleClose()
-				setError('')
-				reset()
-				toast('Update category successfully!', {
-					position: 'bottom-center',
-					autoClose: 3000,
-					hideProgressBar: false,
-					closeOnClick: true,
-					pauseOnHover: true,
-					draggable: true,
-					progress: undefined,
-					type: 'success',
-				})
-			})
-			.catch((error) => {
-				setError('Name has already been taken')
+				console.log(error)
+				setError(error.data.message)
 			})
 	}
 
 	useEffect(() => {
-		reset(category)
-	}, [category])
+		order &&
+			reset({
+				status: order.status.toString(),
+			})
+	}, [order])
 	return (
 		<>
 			<Modal
@@ -77,7 +57,11 @@ const AddEditCategory = ({ open, handleClose, category }) => {
 				aria-describedby="transition-modal-description"
 				className={classes.modal}
 				open={open}
-				onClose={handleClose}
+				onClose={() => {
+					handleClose()
+					reset()
+					setError('')
+				}}
 				closeAfterTransition
 				BackdropComponent={Backdrop}
 				BackdropProps={{
@@ -87,17 +71,24 @@ const AddEditCategory = ({ open, handleClose, category }) => {
 				<Fade in={open}>
 					<form
 						className={classes.paper}
-						onSubmit={handleSubmit(
-							category ? handleEditCategory : handleAddCategory
-						)}
+						onSubmit={handleSubmit(handleEditOrder)}
 					>
 						<TextField
-							label="Category"
+							id="select"
+							select
 							variant="outlined"
-							required
 							className={classes.input}
-							{...register('name')}
-						/>
+							label={order ? '' : 'Price'}
+							// onChange={handleChangePrice}
+							InputLabelProps={{ shrink: false }}
+							{...register('status')}
+							defaultValue={order?.status.toString()}
+						>
+							<MenuItem value="Pending">Pending</MenuItem>
+							<MenuItem value="Delivered">Delivered</MenuItem>
+							<MenuItem value="Canceled">Canceled</MenuItem>
+						</TextField>
+
 						{error !== '' && (
 							<Typography component="p" className={classes.error}>
 								{error}
@@ -126,4 +117,4 @@ const AddEditCategory = ({ open, handleClose, category }) => {
 	)
 }
 
-export default AddEditCategory
+export default AddEditOrder

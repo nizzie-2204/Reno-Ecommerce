@@ -29,6 +29,7 @@ import {
 } from '../../../../redux/slices/productSlice'
 import { unwrapResult } from '@reduxjs/toolkit'
 import { useLocation } from 'react-router-dom'
+import { toast, ToastContainer } from 'react-toastify'
 
 const icon = <BiCheckbox />
 const checkedIcon = <BiCheckboxChecked />
@@ -129,6 +130,16 @@ const AddEditProduct = () => {
 						setImagesDisplay([])
 						setError('')
 						setValue([])
+						toast('Add product successfully!', {
+							position: 'bottom-center',
+							autoClose: 3000,
+							hideProgressBar: false,
+							closeOnClick: true,
+							pauseOnHover: true,
+							draggable: true,
+							progress: undefined,
+							type: 'success',
+						})
 					})
 					.catch((error) => setError('Name has already been taken'))
 			})
@@ -161,7 +172,18 @@ const AddEditProduct = () => {
 					const action = updateProduct(product)
 					dispatch(action)
 						.then(unwrapResult)
-						.then(() => {})
+						.then(() => {
+							toast('Update product successfully!', {
+								position: 'bottom-center',
+								autoClose: 3000,
+								hideProgressBar: false,
+								closeOnClick: true,
+								pauseOnHover: true,
+								draggable: true,
+								progress: undefined,
+								type: 'success',
+							})
+						})
 						.catch((error) => setError('Name has already been taken'))
 				})
 				.catch((error) => console.log(error))
@@ -351,6 +373,19 @@ const AddEditProduct = () => {
 						</Carousel>
 					</Box>
 				</Box>
+				<ToastContainer
+					position="bottom-center"
+					autoClose={3000}
+					hideProgressBar={false}
+					newestOnTop={false}
+					closeOnClick
+					rtl={false}
+					pauseOnFocusLoss
+					draggable
+					pauseOnHover
+					theme="dark"
+					type="default"
+				/>
 			</AdminLayout>
 		</>
 	)

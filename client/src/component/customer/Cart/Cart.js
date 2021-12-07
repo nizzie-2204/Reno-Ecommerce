@@ -24,7 +24,7 @@ import { useStyles } from './styles'
 import StripeCheckout from 'react-stripe-checkout'
 import { nanoid } from 'nanoid'
 import { useNavigate } from 'react-router-dom'
-import { addOrder } from '../../../redux/slices/order'
+import { addOrder } from '../../../redux/slices/orderSlice'
 
 const KEY = process.env.REACT_APP_STRIPE_KEY
 
