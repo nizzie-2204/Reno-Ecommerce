@@ -10,18 +10,18 @@ import {
 	BiUser,
 } from 'react-icons/bi'
 import { useDispatch } from 'react-redux'
-import { Link, NavLink, useNavigate } from 'react-router-dom'
+import { Link, NavLink, useHistory } from 'react-router-dom'
 import { clearUser } from '../../../redux/slices/authSlice'
 import { useStyles } from './styles'
 
 const Sidebar = () => {
 	const classes = useStyles()
 	const dispatch = useDispatch()
-	const navigate = useNavigate()
+	const history = useHistory()
 
 	const handleLogout = () => {
 		localStorage.clear()
-		navigate('/login')
+		history.push('/login')
 		const action = clearUser()
 		dispatch(action)
 	}

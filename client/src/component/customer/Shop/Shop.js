@@ -17,7 +17,7 @@ import queryString from 'query-string'
 import React, { useEffect, useRef, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate, useSearchParams } from 'react-router-dom'
+import { useHistory, useLocation } from 'react-router-dom'
 import RingLoader from 'react-spinners/RingLoader'
 import { getAllCategory } from '../../../redux/slices/categorySlice'
 import { getAllProduct } from '../../../redux/slices/productSlice'
@@ -31,9 +31,10 @@ const override = css`
 
 const Shop = () => {
 	const classes = useStyles()
-	const navigate = useNavigate()
+	const history = useHistory()
 	const dispatch = useDispatch()
-	const [searchParams] = useSearchParams()
+	const location = useLocation()
+	const searchParams = new URLSearchParams(location.search)
 	const products = useSelector((state) => state.product.products)
 	const categories = useSelector((state) => state.category.categories)
 	const productsLoading = useSelector((state) => state.product.productsLoading)
@@ -47,7 +48,7 @@ const Shop = () => {
 	}, [])
 
 	const handleNavigate = (id) => {
-		navigate(`/product/${id}`)
+		history.push(`/product/${id}`)
 	}
 
 	// Pagination
@@ -70,8 +71,8 @@ const Shop = () => {
 			...filter,
 			page: value,
 		})
-		navigate(`/shop?page=${value}`)
-		navigate({
+		history.push(`/shop?page=${value}`)
+		history.push({
 			pathname: '/shop',
 			search: `?page=${value}`,
 		})
@@ -86,7 +87,7 @@ const Shop = () => {
 			category: e.target.value,
 			page: 1,
 		})
-		navigate({
+		history.push({
 			pathname: '/shop',
 			search: `?${queryString.stringify({
 				limit: filter.limit,
@@ -111,7 +112,7 @@ const Shop = () => {
 			page: 1,
 		})
 		if (filter.category)
-			navigate({
+			history.push({
 				pathname: '/shop',
 				search: `?${queryString.stringify({
 					limit: filter.limit,
@@ -123,7 +124,7 @@ const Shop = () => {
 				})}`,
 			})
 		else
-			navigate({
+			history.push({
 				pathname: '/shop',
 				search: `?${queryString.stringify({
 					limit: filter.limit,

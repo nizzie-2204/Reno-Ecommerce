@@ -23,7 +23,7 @@ import CustomerLayout from '../CustomerLayout/CustomerLayout'
 import { useStyles } from './styles'
 import StripeCheckout from 'react-stripe-checkout'
 import { nanoid } from 'nanoid'
-import { useNavigate } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 import { addOrder } from '../../../redux/slices/orderSlice'
 
 const KEY = process.env.REACT_APP_STRIPE_KEY
@@ -32,7 +32,7 @@ const Cart = () => {
 	const classes = useStyles()
 	const user = useSelector((state) => state.auth.user)
 	const dispatch = useDispatch()
-	const navigate = useNavigate()
+	const history = useHistory()
 
 	useEffect(() => {
 		window.scrollTo(0, 0)
@@ -152,7 +152,7 @@ const Cart = () => {
 				dispatch(action2)
 					.then(unwrapResult)
 					.then((res) => {
-						navigate('/order')
+						history.push('/order')
 					})
 			})
 			.catch((error) => console.log(error))

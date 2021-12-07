@@ -16,7 +16,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { BiPencil, BiSearchAlt2, BiX } from 'react-icons/bi'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import AdminLayout from '../../../component/admin/AdminLayout/AdminLayout'
 import {
 	getAllProduct,
@@ -30,7 +30,7 @@ import { unwrapResult } from '@reduxjs/toolkit'
 const Product = () => {
 	const classes = useStyles()
 	const dispatch = useDispatch()
-	const navigate = useNavigate()
+	const history = useHistory()
 	const products = useSelector((state) => state.product.products)
 
 	useEffect(() => {
@@ -42,7 +42,7 @@ const Product = () => {
 	}, [])
 
 	const handleEditProduct = (product) => {
-		navigate('/admin/product/new', { state: product })
+		history.push('/admin/product/new', { state: product })
 	}
 
 	const handleDeleteProduct = (id) => {

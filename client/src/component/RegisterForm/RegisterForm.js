@@ -9,7 +9,7 @@ import {
 	Typography,
 } from '@material-ui/core'
 import { BiMailSend, BiLockAlt, BiUser } from 'react-icons/bi'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 
 import bgRes2 from '../../assets/images/register-2.png'
 import bgRes1 from '../../assets/images/register-1.svg'
@@ -34,7 +34,7 @@ const schema = yup.object().shape({
 const RegisterForm = () => {
 	const classes = useStyles()
 	const dispatch = useDispatch()
-	const navigate = useNavigate()
+	const history = useHistory()
 	const {
 		register,
 		handleSubmit,
@@ -49,7 +49,7 @@ const RegisterForm = () => {
 		dispatch(action)
 			.then(unwrapResult)
 			.then(() => {
-				navigate('/login')
+				history.push('/login')
 			})
 			.catch((error) => {
 				if (error.status === 400) setError('Email has already been taken')

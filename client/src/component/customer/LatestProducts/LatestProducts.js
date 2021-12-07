@@ -10,14 +10,14 @@ import {
 import Rating from '@material-ui/lab/Rating'
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 import { getAllProduct } from '../../../redux/slices/productSlice'
 import { useStyles } from './styles'
 
 const LatestProducts = () => {
 	const classes = useStyles()
 	const dispatch = useDispatch()
-	const navigate = useNavigate()
+	const history = useHistory()
 	const products = useSelector((state) => state.product.products)
 	useEffect(() => {
 		const fetchProducts = () => {
@@ -30,7 +30,7 @@ const LatestProducts = () => {
 	}, [])
 
 	const handleNavigate = (id) => {
-		navigate(`/product/${id}`)
+		history.push(`/product/${id}`)
 	}
 
 	return (

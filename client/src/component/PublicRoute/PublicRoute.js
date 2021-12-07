@@ -1,14 +1,23 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
-import { Navigate, useLocation } from 'react-router-dom'
+import { Route, Redirect, useLocation } from 'react-router-dom'
 
-const PublicRoute = ({ children, ...rest }) => {
-	const location = useLocation()
+const PublicRoute = ({ component: Component, restricted = false, ...rest }) => {
+	const user = useSelector((state) => state.auth.user)
+	const isAuthenticated = Object.keys(user).length > 0
 
-	console.log(rest)
-
-	return children
-	//  : <Navigate to="/login" />
+	return (
+		<Route
+			{...rest}
+			render={(props) => {
+				return isAuthenticated && restricted ? (
+					[user.isAdmin ? <Redirect to="/admin/home" /> : <Redirect to="/" />]
+				) : (
+					<Component {...props} />
+				)
+			}}
+		/>
+	)
 }
 
 export default PublicRoute

@@ -1,5 +1,5 @@
 import React, { lazy, Suspense } from 'react'
-import { useLocation, Route, Routes } from 'react-router-dom'
+import { useLocation, Route, Switch } from 'react-router-dom'
 import { CSSTransition, TransitionGroup } from 'react-transition-group'
 import PrivateRoute from '../component/PrivateRoute/PrivateRoute'
 import PublicRoute from '../component/PublicRoute/PublicRoute'
@@ -34,108 +34,118 @@ const Shop = lazy(() => import('../component/customer/Shop/Shop'))
 
 const routesApp = [
 	{
+		exact: true,
 		path: '/admin/home',
-		element: <HomeAdmin />,
+		component: HomeAdmin,
 	},
 	{
+		exact: true,
 		path: '/admin/user',
-		element: <UserAdmin />,
+		component: UserAdmin,
 	},
 	{
+		exact: true,
 		path: '/admin/category',
-		element: <CategoryAdmin />,
+		component: CategoryAdmin,
 	},
 	{
+		exact: true,
 		path: '/admin/size',
-		element: <SizeAdmin />,
+		component: SizeAdmin,
 	},
 	{
+		exact: true,
 		path: '/admin/order',
-		element: <OrderAdmin />,
+		component: OrderAdmin,
 	},
 	{
+		exact: true,
 		path: '/admin/product',
-		element: <ProductAdmin />,
+		component: ProductAdmin,
 	},
 	{
+		exact: true,
 		path: '/admin/product/new',
-		element: <AddEditProductAdmin />,
+		component: AddEditProductAdmin,
 	},
 	{
+		exact: true,
 		path: '/',
-		element: <Home />,
+		component: Home,
 	},
 	{
+		exact: true,
 		path: '/login',
-		element: <Login />,
+		component: Login,
 		restricted: true,
 	},
 	{
+		exact: true,
 		path: '/register',
-		element: <Register />,
+		component: Register,
 		restricted: true,
 	},
+	// {
+	// 	path: '/reset-password',
+	// 	component: <ResetPassword />,
+	// 	restricted: true,
+	// },
+	// {
+	// 	path: '/forgot-password',
+	// 	component: <ForgotPassword />,
+	// 	restricted: true,
+	// },
 	{
-		path: '/reset-password',
-		element: <ResetPassword />,
-		restricted: true,
-	},
-	{
-		path: '/forgot-password',
-		element: <ForgotPassword />,
-		restricted: true,
-	},
-	{
+		exact: true,
 		path: '/cart',
-		element: <Cart />,
+		component: Cart,
 	},
 	{
 		path: '/shop',
-		element: <Shop />,
+		component: Shop,
 	},
 	{
+		exact: true,
 		path: '/product/:id',
-		element: <ProductDetail />,
+		component: ProductDetail,
 	},
 	{
+		exact: true,
 		path: '/order',
-		element: <Order />,
+		component: Order,
 	},
 ]
 
 const RoutesApp = () => {
 	const location = useLocation()
 	return (
-		<>
-			<TransitionGroup component={null}>
-				<CSSTransition timeout={300} classNames="page" key={location.key}>
-					<Suspense fallback={null}>
-						<Routes location={location}>
-							{routesApp.map((route, index) => {
-								return route.path.includes('/admin') ? (
-									<Route
-										element={
-											<PrivateRoute>
-												<AdminLayout>{route.element}</AdminLayout>
-											</PrivateRoute>
-										}
-										path={route.path}
-										key={index}
-									/>
-								) : (
-									<Route
-										element={route.element}
-										path={route.path}
-										key={index}
-										restricted={route.restricted}
-									/>
-								)
-							})}
-						</Routes>
-					</Suspense>
-				</CSSTransition>
-			</TransitionGroup>
-		</>
+		<TransitionGroup component={null}>
+			<CSSTransition timeout={300} classNames="page" key={location.key}>
+				<Suspense fallback={null}>
+					<Switch location={location}>
+						{routesApp.map((route, index) => {
+							const Component = route.component
+							return route.path.includes('/admin') ? (
+								<PrivateRoute
+									component={Component}
+									exact={route.exact}
+									path={route.path}
+									key={index}
+								/>
+							) : (
+								<PublicRoute
+									component={Component}
+									exact={route.exact}
+									path={route.path}
+									key={index}
+									restricted={route.restricted}
+								/>
+							)
+						})}
+					</Switch>
+				</Suspense>
+			</CSSTransition>
+		</TransitionGroup>
 	)
 }
 

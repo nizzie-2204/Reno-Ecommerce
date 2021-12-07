@@ -11,7 +11,7 @@ import { useStyles } from './styles'
 import bgLogin from '../../assets/images/login1.png'
 import bgLogin2 from '../../assets/images/login-2.png'
 import { BiMailSend, BiLockAlt, BiRightArrowAlt } from 'react-icons/bi'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import * as yup from 'yup'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
@@ -27,7 +27,7 @@ const schema = yup.object().shape({
 const LoginForm = () => {
 	const classes = useStyles()
 	const dispatch = useDispatch()
-	const navigate = useNavigate()
+	const history = useHistory()
 	const { register, handleSubmit } = useForm({
 		resolver: yupResolver(schema),
 	})
@@ -38,10 +38,9 @@ const LoginForm = () => {
 		dispatch(action)
 			.then(unwrapResult)
 			.then((res) => {
-				console.log(res)
 				localStorage.setItem('token', res.token)
-				if (res.user.isAdmin) navigate('/admin/home')
-				else navigate('/')
+				if (res.user.isAdmin) history.push('/admin/home')
+				else history.push('/')
 			})
 			.catch((error) => {
 				if (error.status === 400) setError(error.data.message)

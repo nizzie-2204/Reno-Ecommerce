@@ -1,13 +1,14 @@
 import { ThemeProvider } from '@material-ui/styles'
 import { HelmetProvider } from 'react-helmet-async'
 import { Provider } from 'react-redux'
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import './App.css'
 import theme from './theme/theme'
 
 // Redux
 import { PersistGate } from 'redux-persist/integration/react'
 import { persistor, store } from './redux/store'
+
 // Admin pages
 import HomeAdmin from './pages/admin/Home/Home'
 import UserAdmin from './pages/admin/User/User'
@@ -16,6 +17,7 @@ import SizeAdmin from './pages/admin/Size/Size'
 import ProductAdmin from './pages/admin/Product/Product'
 import AddEditProductAdmin from './pages/admin/Product/AddEditProduct/AddEditProduct'
 import OrderAdmin from './pages/admin/Order/Order'
+
 // Customer pages
 import Home from './pages/customer/Home/Home'
 import NotFound from './pages/customer/NotFound/NotFound'
@@ -37,33 +39,40 @@ function App() {
 					<ThemeProvider theme={theme}>
 						<div className="App">
 							<Router>
-								{/* <RoutesApp /> */}
-								<Routes>
-									{' '}
+								<RoutesApp />
+								<Switch>
 									{/* Customer */}
-									<Route path="/" element={<Home />} />
-									<Route path="/login" element={<Login />} />
-									<Route path="/register" element={<Register />} />
-									<Route path="/reset-password" element={<ResetPassword />} />
-									<Route path="/forgot-password" element={<ForgotPassword />} />
-									<Route path="/cart" element={<Cart />} />
-									<Route path="/shop" element={<Shop />} />
-									<Route path="/product/:id" element={<ProductDetail />} />
-									<Route path="/order" element={<Order />} />
-									{/* Admin */}
-									<Route path="/admin/home" element={<HomeAdmin />} />
-									<Route path="/admin/user" element={<UserAdmin />} />
-									<Route path="/admin/category" element={<CategoryAdmin />} />
-									<Route path="/admin/size" element={<SizeAdmin />} />
-									<Route path="/admin/order" element={<OrderAdmin />} />
-									<Route path="/admin/product" element={<ProductAdmin />} />
+									{/* <Route exact path="/" component={Home} />
+									<Route exact path="/login" component={Login} />
+									<Route exact path="/register" component={Register} />
+									<Route path="/reset-password" component={ResetPassword} />
 									<Route
-										path="/admin/product/new"
-										element={<AddEditProductAdmin />}
+										path="/forgot-password"
+										component={<ForgotPassword />}
 									/>
+									<Route exact path="/cart" component={Cart} />
+									<Route path="/shop" component={Shop} />
+									<Route exact path="/product/:id" component={ProductDetail} />
+									<Route exact path="/order" component={Order} /> */}
+									{/* Admin */}
+									{/* <Route exact path="/admin/home" component={HomeAdmin} />
+									<Route exact path="/admin/user" component={UserAdmin} />
+									<Route
+										exact
+										path="/admin/category"
+										component={CategoryAdmin}
+									/>
+									<Route exact path="/admin/size" component={SizeAdmin} />
+									<Route exact path="/admin/order" component={OrderAdmin} />
+									<Route exact path="/admin/product" component={ProductAdmin} />
+									<Route
+										exact
+										path="/admin/product/new"
+										component={AddEditProductAdmin}
+									/> */}
 									{/* Not found */}
-									<Route path="*" element={<NotFound />} />
-								</Routes>
+									<Route path="*" component={NotFound} />
+								</Switch>
 							</Router>
 						</div>
 					</ThemeProvider>

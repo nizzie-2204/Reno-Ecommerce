@@ -14,23 +14,23 @@ import {
 	Toolbar,
 	Typography,
 } from '@material-ui/core'
-import { unwrapResult } from '@reduxjs/toolkit'
 import queryString from 'query-string'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { BiCartAlt, BiMenu, BiSearchAlt2 } from 'react-icons/bi'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link, useNavigate, useSearchParams } from 'react-router-dom'
+import { Link, useHistory, useLocation } from 'react-router-dom'
 import logo from '../../../assets/images/logo.jpg'
 import { clearUser } from '../../../redux/slices/authSlice'
 import { getAllProduct } from '../../../redux/slices/productSlice'
-import { getUser } from '../../../redux/slices/userSlice'
 import Dropdown from './Drawer/Dropdown'
 import { useStyles } from './styles'
 
 const Header = () => {
-	const navigate = useNavigate()
+	const history = useHistory()
 	const dispatch = useDispatch()
-	const [searchParams, setsearchParams] = useSearchParams()
+	const location = useLocation()
+	const searchParams = new URLSearchParams(location.search)
+
 	const classes = useStyles()
 	const user = useSelector((state) => state.auth.user)
 
@@ -55,7 +55,7 @@ const Header = () => {
 	window.addEventListener('scroll', handleChangeStyleHeader)
 
 	const handleRedirect = () => {
-		navigate('/cart')
+		history.push('/cart')
 	}
 
 	// Popup user
@@ -73,13 +73,13 @@ const Header = () => {
 
 	const handleLogout = () => {
 		localStorage.clear()
-		navigate('/login')
+		history.push('/login')
 		const action = clearUser()
 		dispatch(action)
 	}
 
 	const handleNavigateOrder = () => {
-		navigate('/order')
+		history.push('/order')
 	}
 
 	const searchRef = useRef('')
@@ -91,8 +91,7 @@ const Header = () => {
 		const search = searchRef.current
 		if (search === '') return
 		const params = queryString.stringify({ search })
-		setsearchParams({ search })
-		navigate({
+		history.push({
 			pathname: '/shop',
 			search: `${params}`,
 		})

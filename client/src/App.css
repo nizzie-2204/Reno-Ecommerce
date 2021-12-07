@@ -60,7 +60,7 @@ button {
 	font-family: 'Poppins', sans-serif;
 }
 /* CSSTransition */
-/* .page-enter {
+.page-enter {
 	opacity: 0;
 }
 
@@ -76,4 +76,4 @@ button {
 .page-exit-active {
 	opacity: 0;
 	transition: opacity 50ms;
-} */
+}
